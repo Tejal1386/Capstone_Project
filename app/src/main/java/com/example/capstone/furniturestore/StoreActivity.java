@@ -40,7 +40,7 @@ public class StoreActivity extends AppCompatActivity {
     final Context context = this;
     public RecyclerView mBlogList;
     FirebaseDatabase database;
-    private DatabaseReference mDatabase;
+    private DatabaseReference prodDatabase,deptDatabase;
     TextView textView;
 
     MaterialSearchView searchView;
@@ -60,7 +60,7 @@ public class StoreActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_store);
 
-        mDatabase = FirebaseDatabase.getInstance().getReference("Products");
+        prodDatabase = FirebaseDatabase.getInstance().getReference("Products");
 
         view_Pager = (ViewPager) findViewById(R.id.viewPager);
 
@@ -79,15 +79,13 @@ public class StoreActivity extends AppCompatActivity {
        searchView = (MaterialSearchView) findViewById(R.id.search_view);
 
 
-       mDatabase.addValueEventListener(new ValueEventListener() {
+       prodDatabase.addValueEventListener(new ValueEventListener() {
            @Override
            public void onDataChange(DataSnapshot dataSnapshot) {
 
                Integer i = 0;
                for(DataSnapshot productSnapshot : dataSnapshot.getChildren())
                {
-
-
                    Products products = productSnapshot.getValue(Products.class);
                    listOfString.add(products.getProductName());
 
@@ -155,11 +153,6 @@ public class StoreActivity extends AppCompatActivity {
         textView.setSingleLine();
 
 
-        //Send a query to the database
-
-        database = FirebaseDatabase.getInstance();
-        mDatabase = database.getReference("products");
-        mDatabase.keepSynced(true);
 
         //Recycler View
 
@@ -226,9 +219,17 @@ public class StoreActivity extends AppCompatActivity {
 
     protected void onStart()
     {
+
+        //Send a query to the database
+        deptDatabase = FirebaseDatabase.getInstance().getReference("Department");
+
+       // database = FirebaseDatabase.getInstance();
+    //    mDatabase = database.getReference("Department");
+        deptDatabase.keepSynced(true);
+
         super.onStart();
         setupAutoPager();
-        FirebaseRecyclerAdapter<BlogHolder, BlogViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<BlogHolder, BlogViewHolder>(BlogHolder.class, R.layout.blog_row,BlogViewHolder.class,mDatabase) {
+        FirebaseRecyclerAdapter<BlogHolder, BlogViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<BlogHolder, BlogViewHolder>(BlogHolder.class, R.layout.blog_row,BlogViewHolder.class,deptDatabase) {
             @Override
             protected void populateViewHolder(BlogViewHolder viewHolder, BlogHolder model, int position) {
                 viewHolder.setTitle(model.getTitle());

@@ -5,28 +5,29 @@ package com.example.capstone.furniturestore.Class;
  */
 
 public class BlogHolder {
-    String image;
-    String title;
+    String DepartmentImage;
+    String DepartmentName;
+    String DepartmentID;
 
     public String getImage() {
-        return image;
+        return DepartmentImage;
     }
 
     public void setImage(String image) {
-        this.image = image;
+        this.DepartmentImage = image;
     }
 
     public String getTitle() {
-        return title;
+        return DepartmentName;
     }
 
     public void setTitle(String title) {
-        this.title = title;
+        this.DepartmentName = title;
     }
 
-    public BlogHolder(String image, String title) {
-        this.image = image;
-        this.title = title;
+    public BlogHolder(String image, String Name,String ID) {
+        this.DepartmentImage = image;
+        this.DepartmentName = Name;
     }
     public BlogHolder()
     {

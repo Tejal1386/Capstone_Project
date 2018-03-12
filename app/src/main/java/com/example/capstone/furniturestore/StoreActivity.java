@@ -1,42 +1,72 @@
 package com.example.capstone.furniturestore;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
-import android.widget.EditText;
-import android.widget.Toast;
+import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.TextView;
 
+import com.example.capstone.furniturestore.Class.BlogHolder;
+import com.example.capstone.furniturestore.Class.Products;
+import com.example.capstone.furniturestore.Class.User;
+import com.example.capstone.furniturestore.Class.ViewPagerAdapter;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
+import com.miguelcatalan.materialsearchview.MaterialSearchView;
+import com.squareup.picasso.Picasso;
+import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
 public class StoreActivity extends AppCompatActivity {
 
+    Intent intent;
+    final Context context = this;
+    public RecyclerView mBlogList;
+    FirebaseDatabase database;
+    private DatabaseReference mDatabase;
+    TextView textView;
+
+    MaterialSearchView searchView;
 
     Toolbar toolbar;
     ViewPager view_Pager;
     Timer timer;
     private int currentPage = 0;
+    ListView listview;
 
-    String[] flavours = { "Sofa", "Cupboard", "Dining", "Table","Chair","Bed", "Dressing Table",""};
+    List<String> listOfString = new ArrayList<String>();
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_store);
-        view_Pager = (ViewPager) findViewById(R.id.viewpager);
+
+        mDatabase = FirebaseDatabase.getInstance().getReference("Products");
+
+        view_Pager = (ViewPager) findViewById(R.id.viewPager);
 
         ViewPagerAdapter viewpageradapter = new ViewPagerAdapter(this);
         view_Pager.setAdapter(viewpageradapter);
         setupAutoPager();
-
 
         //toolBar settings
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -46,24 +76,97 @@ public class StoreActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, flavours);
-
-        final AutoCompleteTextView txtSearchBox = (AutoCompleteTextView) findViewById(R.id.autoCompleteTextSearch);
-
-        txtSearchBox.setAdapter(adapter);
-        txtSearchBox.setThreshold(1);
+       searchView = (MaterialSearchView) findViewById(R.id.search_view);
 
 
-        final EditText edittxtSearch = (EditText) findViewById(R.id.textsearch) ;
+       mDatabase.addValueEventListener(new ValueEventListener() {
+           @Override
+           public void onDataChange(DataSnapshot dataSnapshot) {
 
-        txtSearchBox.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+               Integer i = 0;
+               for(DataSnapshot productSnapshot : dataSnapshot.getChildren())
+               {
+
+
+                   Products products = productSnapshot.getValue(Products.class);
+                   listOfString.add(products.getProductName());
+
+                   i++;
+               }
+           }
+
+           @Override
+           public void onCancelled(DatabaseError databaseError) {
+
+           }
+       });
+
+
+       listview = (ListView) findViewById(R.id.listview);
+        ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1,listOfString);
+        listview.setAdapter(adapter);
+
+
+        searchView.setOnSearchViewListener(new MaterialSearchView.SearchViewListener() {
             @Override
-            public void onFocusChange(View view, boolean b) {
-                Toast.makeText(StoreActivity.this,txtSearchBox.getText().toString(),Toast.LENGTH_LONG).show();;
+            public void onSearchViewShown() {
+
+            }
+
+            @Override
+            public void onSearchViewClosed() {
+                listview = (ListView) findViewById(R.id.listview);
+                ArrayAdapter adapter = new ArrayAdapter(StoreActivity.this, android.R.layout.simple_list_item_1,listOfString);
+                listview.setAdapter(adapter);
 
             }
         });
+
+
+
+        searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+               if(newText != null && !newText.isEmpty()){
+                   List<String> lstfound = new ArrayList<String>();
+                   for(String item:listOfString){
+                       if(item.contains(newText))
+                          lstfound.add(item);
+                   }
+                   ArrayAdapter adapter = new ArrayAdapter(StoreActivity.this, android.R.layout.simple_list_item_1,lstfound);
+                   listview.setAdapter(adapter);
+               }
+               else {
+                   ArrayAdapter adapter = new ArrayAdapter(StoreActivity.this, android.R.layout.simple_list_item_1,listOfString);
+                   listview.setAdapter(adapter);
+               }
+               return true;
+            }
+        });
+
+        textView = (TextView) findViewById(R.id.textviewmarquee);
+        textView.setEllipsize(TextUtils.TruncateAt.MARQUEE);
+        textView.setSelected(true);
+        textView.setSingleLine();
+
+
+        //Send a query to the database
+
+        database = FirebaseDatabase.getInstance();
+        mDatabase = database.getReference("products");
+        mDatabase.keepSynced(true);
+
+        //Recycler View
+
+        mBlogList = (RecyclerView)findViewById(R.id.blog_list);
+        mBlogList.setHasFixedSize(true);
+        mBlogList.setLayoutManager(new GridLayoutManager(this, 2));
+
 
     }
 
@@ -94,23 +197,75 @@ public class StoreActivity extends AppCompatActivity {
 
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_item, menu);
+
+        MenuItem item = menu.findItem(R.id.action_search);
+        searchView.setMenuItem(item);
+
+
         // Retrieve the SearchView and plug it into SearchManager
-        //  final SearchView searchView = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.action_search));
-        //  SearchManager searchManager = (SearchManager) getSystemService(SEARCH_SERVICE);
-        //  searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+    /*   final SearchView searchView = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.search_view));
+        SearchManager searchManager = (SearchManager) getSystemService(SEARCH_SERVICE);
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));*/
         return true;
     }
+
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_basket) {
+       if (id == R.id.action_basket) {
             Intent intent = new Intent(getApplicationContext(), ShoppingBasketActivity.class);
             startActivity(intent);
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    protected void onStart()
+    {
+        super.onStart();
+        setupAutoPager();
+        FirebaseRecyclerAdapter<BlogHolder, BlogViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<BlogHolder, BlogViewHolder>(BlogHolder.class, R.layout.blog_row,BlogViewHolder.class,mDatabase) {
+            @Override
+            protected void populateViewHolder(BlogViewHolder viewHolder, BlogHolder model, int position) {
+                viewHolder.setTitle(model.getTitle());
+                viewHolder.setImage(getApplicationContext(),model.getImage());
+            }
+
+        };
+
+        mBlogList.setAdapter(firebaseRecyclerAdapter);
+
+    }
+    public static class BlogViewHolder extends RecyclerView.ViewHolder
+    {
+        View mView;
+        public BlogViewHolder(View itemView)
+        {
+            super((itemView));
+            mView=itemView;
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+
+                }
+
+            });
+        }
+        public  void setTitle(String title)
+        {
+            TextView post_title =(TextView)mView.findViewById(R.id.title);
+            post_title.setText(title);
+
+        }
+        public void setImage(Context ctx, String image)
+        {
+            ImageView post_image = (ImageView)mView.findViewById(R.id.post_image);
+            Picasso.with(ctx).load(image).into(post_image);
+        }
     }
 }

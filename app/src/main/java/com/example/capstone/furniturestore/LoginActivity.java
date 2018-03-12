@@ -9,6 +9,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.capstone.furniturestore.Class.User;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -97,11 +98,7 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
 
-
-
-
-
-            @Override
+           @Override
             public void onCancelled(DatabaseError databaseError) {
 
             }

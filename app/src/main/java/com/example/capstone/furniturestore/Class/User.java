@@ -1,4 +1,4 @@
-package com.example.capstone.furniturestore;
+package com.example.capstone.furniturestore.Class;
 
 /**
  * Created by tejalpatel on 2018-03-06.

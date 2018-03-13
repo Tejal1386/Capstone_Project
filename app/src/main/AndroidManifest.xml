@@ -23,7 +23,8 @@
         <activity android:name=".ShoppingBasketActivity" />
         <activity android:name=".UserAccountActivity" />
         <activity android:name=".ProductListActivity" />
-        <activity android:name=".SearchItemActivity"></activity>
+        <activity android:name=".SearchItemActivity" />
+        <activity android:name=".CategoryActivity"></activity>
     </application>
 
 </manifest>

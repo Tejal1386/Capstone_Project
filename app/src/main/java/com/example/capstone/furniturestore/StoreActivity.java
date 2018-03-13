@@ -74,6 +74,7 @@ public class StoreActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+
         textView = (TextView) findViewById(R.id.textviewmarquee);
         textView.setEllipsize(TextUtils.TruncateAt.MARQUEE);
         textView.setSelected(true);
@@ -165,6 +166,15 @@ public class StoreActivity extends AppCompatActivity {
             }
 
         };
+
+        mBlogList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                intent = new Intent(StoreActivity.this,CategoryActivity.class);
+                startActivity(intent);
+            }
+        });
+
 
         mBlogList.setAdapter(firebaseRecyclerAdapter);
 

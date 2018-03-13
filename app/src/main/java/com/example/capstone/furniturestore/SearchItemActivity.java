@@ -8,6 +8,12 @@ import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.example.capstone.furniturestore.Class.Products;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
 import java.util.ArrayList;
@@ -18,25 +24,54 @@ public class SearchItemActivity extends AppCompatActivity {
     Toolbar toolbar;
     ListView listview;
     MaterialSearchView searchView;
-
-    String[] flavours = { "Sofa", "Cupboard", "Dining", "Table","Chair","Bed", "Dressing Table",""};
+    private DatabaseReference prodDatabase;
+    List<String> listProductName = new ArrayList<String>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_item);
 
+        prodDatabase = FirebaseDatabase.getInstance().getReference("Products");
+
         //toolBar settings
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.searchtoolbar);
         setSupportActionBar(toolbar);
         toolbar.setTitleTextColor(1);
         getSupportActionBar().setTitle(" supreme Furniture");
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         searchView = (MaterialSearchView) findViewById(R.id.search_view);
-        listview = (ListView) findViewById(R.id.listview);
-        ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1,flavours);
+
+
+
+
+        prodDatabase.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Integer i = 0;
+                for(DataSnapshot productSnapshot : dataSnapshot.getChildren())
+                {
+                    Products products = productSnapshot.getValue(Products.class);
+                    listProductName.add(products.getProductName());
+
+                    i++;
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
+
+
+
+
+        listview = (ListView) findViewById(R.id.productListView);
+        ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1,listProductName);
         listview.setAdapter(adapter);
 
 
@@ -49,7 +84,7 @@ public class SearchItemActivity extends AppCompatActivity {
             @Override
             public void onSearchViewClosed() {
                 listview = (ListView) findViewById(R.id.listview);
-                ArrayAdapter adapter = new ArrayAdapter(SearchItemActivity.this, android.R.layout.simple_list_item_1,flavours);
+                ArrayAdapter adapter = new ArrayAdapter(SearchItemActivity.this, android.R.layout.simple_list_item_1,listProductName);
                 listview.setAdapter(adapter);
 
             }
@@ -67,7 +102,7 @@ public class SearchItemActivity extends AppCompatActivity {
             public boolean onQueryTextChange(String newText) {
                 if(newText != null && !newText.isEmpty()){
                     List<String> lstfound = new ArrayList<String>();
-                    for(String item:flavours){
+                    for(String item:listProductName){
                         if(item.contains(newText))
                             lstfound.add(item);
                     }
@@ -77,7 +112,7 @@ public class SearchItemActivity extends AppCompatActivity {
 
                 }
                 else {
-                    ArrayAdapter adapter = new ArrayAdapter(SearchItemActivity.this, android.R.layout.simple_list_item_1,flavours);
+                    ArrayAdapter adapter = new ArrayAdapter(SearchItemActivity.this, android.R.layout.simple_list_item_1,listProductName);
                     listview.setAdapter(adapter);
 
                 }
@@ -88,7 +123,7 @@ public class SearchItemActivity extends AppCompatActivity {
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_item, menu);
+       getMenuInflater().inflate(R.menu.menu_item, menu);
         MenuItem item = menu.findItem(R.id.action_search);
         searchView.setMenuItem(item);
         return true;

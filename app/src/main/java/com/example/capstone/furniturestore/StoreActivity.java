@@ -12,25 +12,19 @@ import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.example.capstone.furniturestore.Class.BlogHolder;
-import com.example.capstone.furniturestore.Class.Products;
-import com.example.capstone.furniturestore.Class.User;
-import com.example.capstone.furniturestore.Class.ViewPagerAdapter;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.ValueEventListener;
+import com.example.capstone.furniturestore.Adapter.SearchListAdapter;
+import com.example.capstone.furniturestore.Models.BlogHolder;
+import com.example.capstone.furniturestore.Adapter.ViewPagerAdapter;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 import com.squareup.picasso.Picasso;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import java.util.ArrayList;
-import java.util.List;
+
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -40,7 +34,7 @@ public class StoreActivity extends AppCompatActivity {
     final Context context = this;
     public RecyclerView mBlogList;
     FirebaseDatabase database;
-    private DatabaseReference prodDatabase,deptDatabase;
+    private DatabaseReference deptDatabase;
     TextView textView;
 
     MaterialSearchView searchView;
@@ -51,16 +45,20 @@ public class StoreActivity extends AppCompatActivity {
     private int currentPage = 0;
     ListView listview;
 
-    List<String> listOfString = new ArrayList<String>();
 
 
+    RecyclerView SearchList_RecyclerView;
+    SearchListAdapter searchListAdapter;
+    RecyclerView.LayoutManager layoutManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_store);
 
-        prodDatabase = FirebaseDatabase.getInstance().getReference("Products");
+        //Send a query to the database
+        deptDatabase = FirebaseDatabase.getInstance().getReference("Department");
+
 
         view_Pager = (ViewPager) findViewById(R.id.viewPager);
 
@@ -76,81 +74,11 @@ public class StoreActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-       searchView = (MaterialSearchView) findViewById(R.id.search_view);
-
-
-       prodDatabase.addValueEventListener(new ValueEventListener() {
-           @Override
-           public void onDataChange(DataSnapshot dataSnapshot) {
-
-               Integer i = 0;
-               for(DataSnapshot productSnapshot : dataSnapshot.getChildren())
-               {
-                   Products products = productSnapshot.getValue(Products.class);
-                   listOfString.add(products.getProductName());
-
-                   i++;
-               }
-           }
-
-           @Override
-           public void onCancelled(DatabaseError databaseError) {
-
-           }
-       });
-
-
-       listview = (ListView) findViewById(R.id.listview);
-        ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1,listOfString);
-        listview.setAdapter(adapter);
-
-
-        searchView.setOnSearchViewListener(new MaterialSearchView.SearchViewListener() {
-            @Override
-            public void onSearchViewShown() {
-
-            }
-
-            @Override
-            public void onSearchViewClosed() {
-                listview = (ListView) findViewById(R.id.listview);
-                ArrayAdapter adapter = new ArrayAdapter(StoreActivity.this, android.R.layout.simple_list_item_1,listOfString);
-                listview.setAdapter(adapter);
-
-            }
-        });
-
-
-
-        searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-               if(newText != null && !newText.isEmpty()){
-                   List<String> lstfound = new ArrayList<String>();
-                   for(String item:listOfString){
-                       if(item.contains(newText))
-                          lstfound.add(item);
-                   }
-                   ArrayAdapter adapter = new ArrayAdapter(StoreActivity.this, android.R.layout.simple_list_item_1,lstfound);
-                   listview.setAdapter(adapter);
-               }
-               else {
-                   ArrayAdapter adapter = new ArrayAdapter(StoreActivity.this, android.R.layout.simple_list_item_1,listOfString);
-                   listview.setAdapter(adapter);
-               }
-               return true;
-            }
-        });
-
         textView = (TextView) findViewById(R.id.textviewmarquee);
         textView.setEllipsize(TextUtils.TruncateAt.MARQUEE);
         textView.setSelected(true);
         textView.setSingleLine();
+
 
 
 
@@ -162,6 +90,9 @@ public class StoreActivity extends AppCompatActivity {
 
 
     }
+
+
+
 
     private void setupAutoPager()
     {
@@ -191,14 +122,9 @@ public class StoreActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_item, menu);
 
-        MenuItem item = menu.findItem(R.id.action_search);
-        searchView.setMenuItem(item);
+     //   MenuItem item = menu.findItem(R.id.action_search);
+      //  searchView.setMenuItem(item);
 
-
-        // Retrieve the SearchView and plug it into SearchManager
-    /*   final SearchView searchView = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.search_view));
-        SearchManager searchManager = (SearchManager) getSystemService(SEARCH_SERVICE);
-        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));*/
         return true;
     }
 
@@ -207,6 +133,12 @@ public class StoreActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
+
+        if (id == R.id.action_search) {
+            Intent intent = new Intent(getApplicationContext(), SearchItemActivity.class);
+            startActivity(intent);
+            return true;
+        }
 
         //noinspection SimplifiableIfStatement
        if (id == R.id.action_basket) {
@@ -220,11 +152,7 @@ public class StoreActivity extends AppCompatActivity {
     protected void onStart()
     {
 
-        //Send a query to the database
-        deptDatabase = FirebaseDatabase.getInstance().getReference("Department");
 
-       // database = FirebaseDatabase.getInstance();
-    //    mDatabase = database.getReference("Department");
         deptDatabase.keepSynced(true);
 
         super.onStart();

@@ -1,4 +1,4 @@
-package com.example.capstone.furniturestore.Class;
+package com.example.capstone.furniturestore.Adapter;
 
 import android.content.Context;
 import android.support.v4.view.PagerAdapter;

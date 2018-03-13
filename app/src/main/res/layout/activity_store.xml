@@ -13,23 +13,23 @@
 
         <include layout="@layout/toolbar"></include>
 
-
-        <com.miguelcatalan.materialsearchview.MaterialSearchView
-            android:id="@+id/search_view"
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            app:searchBackground="@color/colorPrimary"
-            app:searchSuggestionBackground="@color/colorPrimary"
-            app:searchBackIcon="@drawable/ic_action_backarrow"
-            android:textColor="@color/white"
-            android:textColorHint="@color/white"
-            />
-
-
         <ListView
             android:id="@+id/listview"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"></ListView>
+            android:layout_height="wrap_content">
+
+        </ListView>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/searchList_RecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        </android.support.v7.widget.RecyclerView>
+
+
+
+
+
 
     </LinearLayout>
 

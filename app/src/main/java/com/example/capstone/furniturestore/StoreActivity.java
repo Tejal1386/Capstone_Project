@@ -39,6 +39,8 @@ public class StoreActivity extends AppCompatActivity {
 
     MaterialSearchView searchView;
 
+    private static Context mContext;
+
     Toolbar toolbar;
     ViewPager view_Pager;
     Timer timer;
@@ -60,20 +62,33 @@ public class StoreActivity extends AppCompatActivity {
         deptDatabase = FirebaseDatabase.getInstance().getReference("Department");
 
 
+        mContext = context.getApplicationContext();
+
         view_Pager = (ViewPager) findViewById(R.id.viewPager);
 
         ViewPagerAdapter viewpageradapter = new ViewPagerAdapter(this);
         view_Pager.setAdapter(viewpageradapter);
         setupAutoPager();
 
-        //toolBar settings
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setTitleTextColor(1);
-        getSupportActionBar().setTitle(" supreme Furniture");
+        getSupportActionBar().setTitle("supreme furniture");
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        // add back arrow to toolbar
+        if (getSupportActionBar() != null){
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
 
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+                onBackPressed(); // Implemented by activity
+            }
+        });
 
         textView = (TextView) findViewById(R.id.textviewmarquee);
         textView.setEllipsize(TextUtils.TruncateAt.MARQUEE);
@@ -167,19 +182,13 @@ public class StoreActivity extends AppCompatActivity {
 
         };
 
-        mBlogList.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                intent = new Intent(StoreActivity.this,CategoryActivity.class);
-                startActivity(intent);
-            }
-        });
+
 
 
         mBlogList.setAdapter(firebaseRecyclerAdapter);
 
     }
-    public static class BlogViewHolder extends RecyclerView.ViewHolder
+    public  static class BlogViewHolder extends RecyclerView.ViewHolder
     {
         View mView;
         public BlogViewHolder(View itemView)
@@ -190,7 +199,8 @@ public class StoreActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
 
-
+                    Intent intent = new Intent(mContext, CategoryActivity.class);
+                    mContext.startActivity(intent);
                 }
 
             });
@@ -207,4 +217,6 @@ public class StoreActivity extends AppCompatActivity {
             Picasso.with(ctx).load(image).into(post_image);
         }
     }
+
+
 }

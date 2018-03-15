@@ -63,80 +63,23 @@ public class CategoryActivity extends AppCompatActivity {
 
 
 
-
-        //toolBar settings
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setTitleTextColor(1);
-        getSupportActionBar().setTitle(" supreme Furniture");
+        getSupportActionBar().setTitle("supreme Furniture");
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        // add back arrow to toolbar
+        if (getSupportActionBar() != null){
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
 
-        searchView = (MaterialSearchView) findViewById(R.id.search_view);
-
-
-        prodDatabase.addValueEventListener(new ValueEventListener() {
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-
-                Integer i = 0;
-                for (DataSnapshot productSnapshot : dataSnapshot.getChildren()) {
-                    Products products = productSnapshot.getValue(Products.class);
-                    listOfString.add(products.getProductName());
-
-                    i++;
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
+            public void onClick(View v) {
 
 
-        listview = (ListView) findViewById(R.id.listview);
-        ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, listOfString);
-        listview.setAdapter(adapter);
-
-
-        searchView.setOnSearchViewListener(new MaterialSearchView.SearchViewListener() {
-            @Override
-            public void onSearchViewShown() {
-
-            }
-
-            @Override
-            public void onSearchViewClosed() {
-                listview = (ListView) findViewById(R.id.listview);
-                ArrayAdapter adapter = new ArrayAdapter(CategoryActivity.this, android.R.layout.simple_list_item_1, listOfString);
-                listview.setAdapter(adapter);
-
-            }
-        });
-
-
-        searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                if (newText != null && !newText.isEmpty()) {
-                    List<String> lstfound = new ArrayList<String>();
-                    for (String item : listOfString) {
-                        if (item.contains(newText))
-                            lstfound.add(item);
-                    }
-                    ArrayAdapter adapter = new ArrayAdapter(CategoryActivity.this, android.R.layout.simple_list_item_1, lstfound);
-                    listview.setAdapter(adapter);
-                } else {
-                    ArrayAdapter adapter = new ArrayAdapter(CategoryActivity.this, android.R.layout.simple_list_item_1, listOfString);
-                    listview.setAdapter(adapter);
-                }
-                return true;
+                onBackPressed(); // Implemented by activity
             }
         });
 
@@ -156,10 +99,6 @@ public class CategoryActivity extends AppCompatActivity {
 
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_item, menu);
-
-        MenuItem item = menu.findItem(R.id.action_search);
-        searchView.setMenuItem(item);
-
 
         // Retrieve the SearchView and plug it into SearchManager
     /*   final SearchView searchView = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.search_view));

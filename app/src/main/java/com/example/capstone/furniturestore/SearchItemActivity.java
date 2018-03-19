@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -27,6 +28,9 @@ public class SearchItemActivity extends AppCompatActivity {
     private DatabaseReference prodDatabase;
     List<String> listProductName = new ArrayList<String>();
 
+    String[] list = {"One", "Two"};
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,9 +45,27 @@ public class SearchItemActivity extends AppCompatActivity {
         getSupportActionBar().setTitle(" supreme Furniture");
 
 
+        // add back arrow to toolbar
+        if (getSupportActionBar() != null){
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+                onBackPressed(); // Implemented by activity
+            }
+        });
+
+
         searchView = (MaterialSearchView) findViewById(R.id.search_view);
+        searchView.closeSearch();
+        searchView.setSuggestions(list);
 
-
+        searchView.setVoiceSearch(true);
 
 
         prodDatabase.addValueEventListener(new ValueEventListener() {
@@ -83,9 +105,11 @@ public class SearchItemActivity extends AppCompatActivity {
 
             @Override
             public void onSearchViewClosed() {
-                listview = (ListView) findViewById(R.id.listview);
+                listview = (ListView) findViewById(R.id.productListView);
                 ArrayAdapter adapter = new ArrayAdapter(SearchItemActivity.this, android.R.layout.simple_list_item_1,listProductName);
                 listview.setAdapter(adapter);
+
+
 
             }
         });
@@ -122,9 +146,26 @@ public class SearchItemActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        searchView.isSearchOpen();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (searchView.isSearchOpen()) {
+            searchView.closeSearch();
+
+        } else {
+            super.onBackPressed();
+        }
+    }
     public boolean onCreateOptionsMenu(Menu menu) {
-       getMenuInflater().inflate(R.menu.menu_item, menu);
+       getMenuInflater().inflate(R.menu.search_item_menu, menu);
         MenuItem item = menu.findItem(R.id.action_search);
+      //  item.getActionView().requestFocus();
         searchView.setMenuItem(item);
         return true;
     }

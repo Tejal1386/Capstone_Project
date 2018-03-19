@@ -6,19 +6,20 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.capstone.furniturestore.Class.Products;
-import com.example.capstone.furniturestore.Models.BlogHolder;
+import com.example.capstone.furniturestore.Models.Category;
+import com.example.capstone.furniturestore.Models.Department;
+import com.example.capstone.furniturestore.ViewHolder.CategoryViewHolder;
+import com.example.capstone.furniturestore.ViewHolder.DepartmentViewHolder;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -31,15 +32,15 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
-import java.util.TimerTask;
 
 public class CategoryActivity extends AppCompatActivity {
 
     Intent intent;
     final Context context = this;
-    public RecyclerView mBlogList;
+    public RecyclerView category_RecyclerView;
+    LinearLayoutManager layoutManager;
     FirebaseDatabase database;
-    private DatabaseReference prodDatabase, deptDatabase;
+    private DatabaseReference categoryDatabase;
     TextView textView;
 
     MaterialSearchView searchView;
@@ -58,114 +59,78 @@ public class CategoryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_category);
 
-        prodDatabase = FirebaseDatabase.getInstance().getReference("Products");
+        categoryDatabase =  FirebaseDatabase.getInstance().getReference("Category");
 
 
-
-
+        Intent i = getIntent();
+        String ID   = i.getExtras().getString("DeptID");
 
         //toolBar settings
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setTitleTextColor(1);
-        getSupportActionBar().setTitle(" supreme Furniture");
+        getSupportActionBar().setTitle(" Category");
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        // add back arrow to toolbar
+        if (getSupportActionBar() != null){
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
 
-        searchView = (MaterialSearchView) findViewById(R.id.search_view);
-
-
-        prodDatabase.addValueEventListener(new ValueEventListener() {
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            public void onClick(View v) {
 
-                Integer i = 0;
-                for (DataSnapshot productSnapshot : dataSnapshot.getChildren()) {
-                    Products products = productSnapshot.getValue(Products.class);
-                    listOfString.add(products.getProductName());
 
-                    i++;
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
+                onBackPressed(); // Implemented by activity
             }
         });
 
+       //Recycler View
 
-        listview = (ListView) findViewById(R.id.listview);
-        ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, listOfString);
-        listview.setAdapter(adapter);
+        category_RecyclerView = (RecyclerView) findViewById(R.id.recycle_category);
+        category_RecyclerView.setHasFixedSize(true);
+        category_RecyclerView.setNestedScrollingEnabled(false);
 
+        layoutManager = new LinearLayoutManager(getBaseContext());
+        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
 
-        searchView.setOnSearchViewListener(new MaterialSearchView.SearchViewListener() {
+        category_RecyclerView.setLayoutManager(new GridLayoutManager(this, 1));
+
+        load_Category();
+    }
+
+    public  void load_Category(){
+
+        FirebaseRecyclerAdapter<Category,CategoryViewHolder> adapter = new FirebaseRecyclerAdapter<Category, CategoryViewHolder>(Category.class, R.layout.category_layout,CategoryViewHolder.class,categoryDatabase) {
             @Override
-            public void onSearchViewShown() {
+            protected void populateViewHolder(CategoryViewHolder viewHolder, final Category model, int position) {
+                viewHolder.Category_Name.setText(model.getCategoryName());
+                Picasso.with(getBaseContext()).load(model.getCategoryImage()).into(viewHolder.Category_Image);
+                Category clickitem = model;
 
-            }
-
-            @Override
-            public void onSearchViewClosed() {
-                listview = (ListView) findViewById(R.id.listview);
-                ArrayAdapter adapter = new ArrayAdapter(CategoryActivity.this, android.R.layout.simple_list_item_1, listOfString);
-                listview.setAdapter(adapter);
-
-            }
-        });
-
-
-        searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                if (newText != null && !newText.isEmpty()) {
-                    List<String> lstfound = new ArrayList<String>();
-                    for (String item : listOfString) {
-                        if (item.contains(newText))
-                            lstfound.add(item);
+                viewHolder.setClickListener(new CategoryViewHolder.ItemClickListener() {
+                    @Override
+                    public void onClickItem(int pos) {
+                        Intent intent = new Intent(CategoryActivity.this, ProductListActivity.class);
+                         intent.putExtra("CategoryID", model.getCategoryID());
+                        startActivity(intent);
                     }
-                    ArrayAdapter adapter = new ArrayAdapter(CategoryActivity.this, android.R.layout.simple_list_item_1, lstfound);
-                    listview.setAdapter(adapter);
-                } else {
-                    ArrayAdapter adapter = new ArrayAdapter(CategoryActivity.this, android.R.layout.simple_list_item_1, listOfString);
-                    listview.setAdapter(adapter);
-                }
-                return true;
+                });
             }
-        });
+        };
 
-
-
-
-        //Recycler View
-
-        mBlogList = (RecyclerView) findViewById(R.id.blog_list);
-        mBlogList.setHasFixedSize(true);
-        mBlogList.setLayoutManager(new GridLayoutManager(this, 1));
-
+        category_RecyclerView.setAdapter(adapter);
 
     }
 
 
 
+
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_item, menu);
+        getMenuInflater().inflate(R.menu.search_item_menu, menu);
 
-        MenuItem item = menu.findItem(R.id.action_search);
-        searchView.setMenuItem(item);
-
-
-        // Retrieve the SearchView and plug it into SearchManager
-    /*   final SearchView searchView = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.search_view));
-        SearchManager searchManager = (SearchManager) getSystemService(SEARCH_SERVICE);
-        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));*/
-        return true;
+      return true;
     }
 
 
@@ -173,65 +138,9 @@ public class CategoryActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_basket) {
-            Intent intent = new Intent(getApplicationContext(), ShoppingBasketActivity.class);
-            startActivity(intent);
-            return true;
-        }
+
         return super.onOptionsItemSelected(item);
     }
 
-    protected void onStart() {
-
-        //Send a query to the database
-        deptDatabase = FirebaseDatabase.getInstance().getReference("Department");
-
-        // database = FirebaseDatabase.getInstance();
-        //    mDatabase = database.getReference("Department");
-        deptDatabase.keepSynced(true);
-
-        super.onStart();
-
-        FirebaseRecyclerAdapter<BlogHolder, StoreActivity.BlogViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<BlogHolder, StoreActivity.BlogViewHolder>(BlogHolder.class, R.layout.blog_row, StoreActivity.BlogViewHolder.class, deptDatabase) {
-            @Override
-            protected void populateViewHolder(StoreActivity.BlogViewHolder viewHolder, BlogHolder model, int position) {
-                viewHolder.setTitle(model.getTitle());
-                viewHolder.setImage(getApplicationContext(), model.getImage());
-            }
-
-        };
-
-        mBlogList.setAdapter(firebaseRecyclerAdapter);
-
-    }
-
-    public static class BlogViewHolder extends RecyclerView.ViewHolder {
-        View mView;
-
-        public BlogViewHolder(View itemView) {
-            super((itemView));
-            mView = itemView;
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-
-                }
-
-            });
-        }
-
-        public void setTitle(String title) {
-            TextView post_title = (TextView) mView.findViewById(R.id.title);
-            post_title.setText(title);
-
-        }
-
-        public void setImage(Context ctx, String image) {
-            ImageView post_image = (ImageView) mView.findViewById(R.id.post_image);
-            Picasso.with(ctx).load(image).into(post_image);
-        }
-    }
 
 }

@@ -22,12 +22,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //toolBar settings
+        /*toolBar settings
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle(" supreme Furniture");
+        getSupportActionBar().setTitle(" supreme Furniture");*/
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         btnLogin = (Button) findViewById(R.id.btnLogin);
         btnSignup = (Button) findViewById(R.id.btnSignUp);
@@ -60,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_item, menu);
+        getMenuInflater().inflate(R.menu.search_item_menu, menu);
         return true;
     }
 

@@ -18,7 +18,7 @@ public class ViewPagerAdapter extends PagerAdapter {
 
     private Context contex;
     private LayoutInflater layoutiflater;
-    private Integer [] image = {R.drawable.home1,R.drawable.home2};
+    private Integer [] image = {R.drawable.homeimage1,R.drawable.homeimage2,R.drawable.homeimage3,R.drawable.homeimage4};
 
     public ViewPagerAdapter(Context contex) {
         this.contex = contex;

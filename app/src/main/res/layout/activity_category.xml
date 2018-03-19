@@ -6,65 +6,72 @@
     android:layout_height="match_parent"
     tools:context="com.example.capstone.furniturestore.CategoryActivity"
     android:orientation="vertical">
+    <include layout="@layout/toolbar"></include>
 
-    <LinearLayout
-        android:orientation="vertical"
+    <android.support.v4.widget.NestedScrollView
+        android:fillViewport="true"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <include layout="@layout/toolbar"></include>
-
-
-        <com.miguelcatalan.materialsearchview.MaterialSearchView
-            android:id="@+id/search_view"
-            android:layout_height="wrap_content"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
-            app:searchBackground="@color/colorPrimary"
-            app:searchSuggestionBackground="@color/colorPrimary"
-            app:searchBackIcon="@drawable/ic_action_backarrow"
-            android:textColor="@color/white"
-            android:textColorHint="@color/white"
-            />
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp">
+                android:layout_marginTop="10dp">
+
+                <TextView
+                    android:textColor="@color/colorPrimary"
+                    android:text="Featured Categories"
+
+                    android:textStyle="bold"
+                    android:textSize="20sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
 
 
-        <ListView
-            android:id="@+id/listview"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:clickable="true"></ListView>
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="10dp"
+                >
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recycle_category"
+                    android:layout_width="match_parent"
 
-    </LinearLayout>
+                    android:layout_height="match_parent"
+                    android:clickable="true"
+                    android:clipToPadding="false"
+                    android:horizontalSpacing="30dp"
+                    android:verticalSpacing="30dp">
+
+                </android.support.v7.widget.RecyclerView>
+
+                <android.support.design.widget.FloatingActionButton
+                    android:id="@+id/fab"
+                    android:backgroundTint="@color/appTheme"
+                    app:rippleColor="@color/appTheme"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end|bottom"
+                    android:src="@drawable/ic_shopping_basket"
+                    android:layout_margin="16dp" />
+
+
+            </FrameLayout>
+
+
+        </LinearLayout>
+
+    </android.support.v4.widget.NestedScrollView>
 
 
 
-
-    <LinearLayout
-        android:gravity="center"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="-40dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="2dp"
-            android:text="Category List"
-            android:textColor="@color/colorPrimary"
-            android:textSize="30sp"
-            android:textStyle="bold" />
-
-    </LinearLayout>
-
-
-    <android.support.v7.widget.RecyclerView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-
-        android:horizontalSpacing="30dp"
-        android:verticalSpacing="30dp"
-        android:clipToPadding="false"
-        android:id="@+id/blog_list">
-
-    </android.support.v7.widget.RecyclerView>
 
 </LinearLayout>

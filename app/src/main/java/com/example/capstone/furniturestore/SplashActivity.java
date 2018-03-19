@@ -11,10 +11,9 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
-        Intent i = new Intent(this,MainActivity.class);
-        startActivity(i);
 
-      /*  Thread thread = new Thread(){
+
+       Thread thread = new Thread(){
             public void run()
             {
                 try {
@@ -28,6 +27,6 @@ public class SplashActivity extends AppCompatActivity {
             }
         };
 
-        thread.start();*/
+        thread.start();
     }
 }

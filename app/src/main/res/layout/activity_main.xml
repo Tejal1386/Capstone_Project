@@ -9,6 +9,7 @@
     tools:context="com.example.capstone.furniturestore.MainActivity">
 
 
+
     <LinearLayout
         android:orientation="vertical"
         android:layout_gravity="center"

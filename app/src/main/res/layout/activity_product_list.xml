@@ -7,21 +7,66 @@
     android:orientation="vertical"
     tools:context="com.example.capstone.furniturestore.ProductListActivity">
 
-    <LinearLayout
+    <include layout="@layout/toolbar"></include>
 
-        android:orientation="vertical"
+    <android.support.v4.widget.NestedScrollView
+        android:fillViewport="true"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <include layout="@layout/toolbar"></include>
-
-        <ListView
-            android:id="@+id/listproduct"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-        </ListView>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp">
+
+                <TextView
+                    android:layout_marginLeft="2dp"
+                    android:id="@+id/txt_categoryName"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:textSize="20sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
 
 
-    </LinearLayout>
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="10dp">
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recycle_product"
+                    android:layout_width="match_parent"
+
+                    android:layout_height="match_parent"
+                    android:clickable="true"
+                    android:clipToPadding="false"
+                    android:horizontalSpacing="30dp"
+                    android:verticalSpacing="30dp">
+
+                </android.support.v7.widget.RecyclerView>
+
+                <android.support.design.widget.FloatingActionButton
+                    android:id="@+id/fb_ShoppingBasket"
+                    android:backgroundTint="@color/appTheme"
+                    app:rippleColor="@color/appTheme"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end|bottom"
+                    android:src="@drawable/ic_shopping_basket"
+                    android:layout_margin="16dp" />
+
+
+            </FrameLayout>
+
+
+        </LinearLayout>
+
+    </android.support.v4.widget.NestedScrollView>
+
 </LinearLayout>

@@ -8,4 +8,5 @@
     <color name="appTheme"> #439388 </color>
     <color name="shadow">#BDBDBD </color>
     <color name="gray"> #757575 </color>
+    <color name="red"> #F44336 </color>
 </resources>

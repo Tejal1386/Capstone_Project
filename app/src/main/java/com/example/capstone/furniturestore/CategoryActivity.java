@@ -2,6 +2,7 @@ package com.example.capstone.furniturestore;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -35,24 +36,12 @@ import java.util.Timer;
 
 public class CategoryActivity extends AppCompatActivity {
 
-    Intent intent;
-    final Context context = this;
     public RecyclerView category_RecyclerView;
     LinearLayoutManager layoutManager;
-    FirebaseDatabase database;
     private DatabaseReference categoryDatabase;
-    TextView textView;
-
-    MaterialSearchView searchView;
-
     Toolbar toolbar;
-    ViewPager view_Pager;
-    Timer timer;
-    private int currentPage = 0;
-    ListView listview;
-
-    List<String> listOfString = new ArrayList<String>();
-
+    FloatingActionButton fb_ShoppingBasket;
+    String department_ID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +52,7 @@ public class CategoryActivity extends AppCompatActivity {
 
 
         Intent i = getIntent();
-        String ID   = i.getExtras().getString("DeptID");
+        department_ID   = i.getExtras().getString("DeptID");
 
         //toolBar settings
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -86,6 +75,17 @@ public class CategoryActivity extends AppCompatActivity {
             }
         });
 
+        fb_ShoppingBasket = (FloatingActionButton) findViewById(R.id.fb_ShoppingBasket);
+
+        fb_ShoppingBasket.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(CategoryActivity.this, ShoppingBasketActivity.class);
+                startActivity(intent);
+
+            }
+        });
+
        //Recycler View
 
         category_RecyclerView = (RecyclerView) findViewById(R.id.recycle_category);
@@ -102,18 +102,19 @@ public class CategoryActivity extends AppCompatActivity {
 
     public  void load_Category(){
 
-        FirebaseRecyclerAdapter<Category,CategoryViewHolder> adapter = new FirebaseRecyclerAdapter<Category, CategoryViewHolder>(Category.class, R.layout.category_layout,CategoryViewHolder.class,categoryDatabase) {
+        FirebaseRecyclerAdapter<Category,CategoryViewHolder> adapter = new FirebaseRecyclerAdapter<Category, CategoryViewHolder>(Category.class, R.layout.category_layout,CategoryViewHolder.class,categoryDatabase.orderByChild("CategoryDepartmentID").equalTo(department_ID)) {
             @Override
             protected void populateViewHolder(CategoryViewHolder viewHolder, final Category model, int position) {
                 viewHolder.Category_Name.setText(model.getCategoryName());
                 Picasso.with(getBaseContext()).load(model.getCategoryImage()).into(viewHolder.Category_Image);
-                Category clickitem = model;
 
                 viewHolder.setClickListener(new CategoryViewHolder.ItemClickListener() {
                     @Override
                     public void onClickItem(int pos) {
                         Intent intent = new Intent(CategoryActivity.this, ProductListActivity.class);
                          intent.putExtra("CategoryID", model.getCategoryID());
+                        intent.putExtra("CategoryName", model.getCategoryName());
+
                         startActivity(intent);
                     }
                 });

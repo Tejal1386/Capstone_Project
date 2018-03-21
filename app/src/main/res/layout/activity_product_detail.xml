@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.example.capstone.furniturestore.ProductDetailActivity">
+
+    <include layout="@layout/toolbar"></include>
+
+    <android.support.v4.widget.NestedScrollView
+        android:fillViewport="true"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:textSize="24dp"
+            android:text="product Name"
+            android:id="@+id/txtproductName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:textSize="18dp"
+            android:id="@+id/txtproductManufacturer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:id="@+id/imageproduct"/>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_marginTop="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Furniture"
+                android:id="@+id/txtproductSalePrice"
+                android:textSize="22dp"
+                android:textColor="@color/red"/>
+
+            <TextView
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Furniture"
+                android:id="@+id/txtproductPrice"
+                android:textSize="16dp"
+                android:textColor="@color/gray"/>
+
+        </LinearLayout>
+
+
+        <TextView
+            android:layout_marginTop="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Furniture"
+            android:id="@+id/txtproductshipping"
+            android:textSize="18dp"
+            android:textColor="@color/black"/>
+
+        <Button
+            android:text="Add To Cart"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/btn_AddToCart"/>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="10dp">
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/fb_ShoppingBasket"
+                android:backgroundTint="@color/appTheme"
+                app:rippleColor="@color/appTheme"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end|bottom"
+                android:src="@drawable/ic_shopping_basket"
+                android:layout_margin="16dp" />
+
+
+        </FrameLayout>
+
+
+
+    </LinearLayout>
+
+    </android.support.v4.widget.NestedScrollView>
+</LinearLayout>

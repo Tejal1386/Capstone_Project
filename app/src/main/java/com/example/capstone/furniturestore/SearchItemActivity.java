@@ -1,14 +1,17 @@
 package com.example.capstone.furniturestore;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import com.example.capstone.furniturestore.Class.Products;
+import com.example.capstone.furniturestore.Models.Category;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -26,13 +29,18 @@ public class SearchItemActivity extends AppCompatActivity {
     MaterialSearchView searchView;
     private DatabaseReference prodDatabase;
     List<String> listProductName = new ArrayList<String>();
+    List<String> listProductID = new ArrayList<String>();
+
+    String[] list;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_item);
 
-        prodDatabase = FirebaseDatabase.getInstance().getReference("Products");
+        //FireBase Database
+        prodDatabase = FirebaseDatabase.getInstance().getReference("Category");
 
         //toolBar settings
         toolbar = (Toolbar) findViewById(R.id.searchtoolbar);
@@ -40,21 +48,35 @@ public class SearchItemActivity extends AppCompatActivity {
         toolbar.setTitleTextColor(1);
         getSupportActionBar().setTitle(" supreme Furniture");
 
+        // add back arrow to toolbar
+      /*  if (getSupportActionBar() != null){
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+             onBackPressed(); // Implemented by activity
+            }
+        }); */
+
 
         searchView = (MaterialSearchView) findViewById(R.id.search_view);
-
-
+        searchView.closeSearch();
+        searchView.setVoiceSearch(true);
 
 
         prodDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Integer i = 0;
+
                 for(DataSnapshot productSnapshot : dataSnapshot.getChildren())
                 {
-                    Products products = productSnapshot.getValue(Products.class);
-                    listProductName.add(products.getProductName());
-
+                    Category product = productSnapshot.getValue(Category.class);
+                    listProductName.add(product.getCategoryName());
+                    listProductID.add(product.getCategoryID());
                     i++;
                 }
             }
@@ -66,14 +88,20 @@ public class SearchItemActivity extends AppCompatActivity {
         });
 
 
+        list = new String[listProductName.size()];
+        int i =0;
+        for (String listitem: listProductName){
+            list[i] = listProductName.get(i);
+            i++;
+        }
 
-
+        searchView.setSuggestions(list);
 
 
         listview = (ListView) findViewById(R.id.productListView);
-        ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1,listProductName);
-        listview.setAdapter(adapter);
+        final ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1,listProductName);
 
+        listview.setAdapter(adapter);
 
         searchView.setOnSearchViewListener(new MaterialSearchView.SearchViewListener() {
             @Override
@@ -83,14 +111,13 @@ public class SearchItemActivity extends AppCompatActivity {
 
             @Override
             public void onSearchViewClosed() {
-                listview = (ListView) findViewById(R.id.listview);
+                listview = (ListView) findViewById(R.id.productListView);
                 ArrayAdapter adapter = new ArrayAdapter(SearchItemActivity.this, android.R.layout.simple_list_item_1,listProductName);
+                //adapter.add(listProductID);
                 listview.setAdapter(adapter);
 
             }
         });
-
-
 
         searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
             @Override
@@ -112,18 +139,47 @@ public class SearchItemActivity extends AppCompatActivity {
 
                 }
                 else {
+
                     ArrayAdapter adapter = new ArrayAdapter(SearchItemActivity.this, android.R.layout.simple_list_item_1,listProductName);
                     listview.setAdapter(adapter);
+
 
                 }
                 return true;
             }
         });
 
+
+        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(SearchItemActivity.this, ProductListActivity.class);
+                //intent.putExtra("CategoryID" , listview.getItemAtPosition());
+                // intent.putExtra("CategoryName" , listview.getItemAtPosition(position).toString());
+                // startActivity(intent);
+            }
+        });
+
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        searchView.isSearchOpen();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (searchView.isSearchOpen()) {
+            searchView.closeSearch();
+
+        } else {
+            super.onBackPressed();
+        }
+    }
     public boolean onCreateOptionsMenu(Menu menu) {
-       getMenuInflater().inflate(R.menu.menu_item, menu);
+        getMenuInflater().inflate(R.menu.search_item_menu, menu);
         MenuItem item = menu.findItem(R.id.action_search);
         searchView.setMenuItem(item);
         return true;

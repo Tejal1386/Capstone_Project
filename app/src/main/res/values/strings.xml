@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">FurnitureStore</string>
+    <string name="slogan">slogan</string>
     <string name="search">Search</string>
 </resources>

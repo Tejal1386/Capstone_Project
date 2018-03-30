@@ -23,11 +23,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         //toolBar settings
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+     /*   toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle(" supreme Furniture");
+        getSupportActionBar().setTitle(" supreme Furniture");*/
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         btnLogin = (Button) findViewById(R.id.btnLogin);
         btnSignup = (Button) findViewById(R.id.btnSignUp);
@@ -53,11 +52,13 @@ public class MainActivity extends AppCompatActivity {
         txtlinkGuest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 intent = new Intent(MainActivity.this,StoreActivity.class);
                 startActivity(intent);
             }
         });
     }
+
 
 
 

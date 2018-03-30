@@ -253,8 +253,8 @@ public class StoreActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         if (id == R.id.action_search) {
-            //Intent intent = new Intent(getApplicationContext(), SearchListActivity.class);
-            //startActivity(intent);
+            Intent intent = new Intent(getApplicationContext(), SearchItemActivity.class);
+            startActivity(intent);
 
             return true;
         }

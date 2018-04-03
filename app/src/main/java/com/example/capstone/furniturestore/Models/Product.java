@@ -10,6 +10,10 @@ public class Product {
     private String ProductName;
     private String ProductImage;
     private double ProductPrice;
+<<<<<<< HEAD
+=======
+    private String ProductPricenew;
+>>>>>>> ff3554e66ed50144d851683ea491c4a2eca8c72e
     private double ProductSalePrice;
     private String ProductQunt;
     private String ProductBrand;
@@ -21,8 +25,6 @@ public class Product {
     private String ProductCatID;
     private String ProductSaleEndDate;
     private int ProductSaleLimit;
-    public Product() {
-    }
 
     public Product(String productID, String productName, String productImage, double productPrice, double productSalePrice)
     {
@@ -35,7 +37,19 @@ public class Product {
 
     }
 
-    public Product(String productID, String productName, String productImage, double productPrice, double productSalePrice, String productQunt, String productBrand, String productColor, String productDept, String productStyle, String productManufacturer, String productOffer, String productCatID, int productSaleLimit, String productSaleEndDate) {
+    private String number;
+
+    public Product(String productId, String productName,  String productPrice,String productQuantity, String productOffer,String productImage) {
+        ProductID = productId;
+        ProductName = productName;
+        ProductPricenew = productPrice;
+        ProductQunt = productQuantity;
+        ProductOffer = productOffer;
+        ProductImage =productImage;
+
+    }
+
+  public Product(String productID, String productName, String productImage, double productPrice, double productSalePrice, String productQunt, String productBrand, String productColor, String productDept, String productStyle, String productManufacturer, String productOffer, String productCatID,int productSaleLimit,String productSaleEndDate) {
         ProductID = productID;
         ProductName = productName;
         ProductImage = productImage;
@@ -95,6 +109,14 @@ public class Product {
 
     public double getProductPrice() {
         return ProductPrice;
+    }
+
+    public String getProductPricenew() {
+        return ProductPricenew;
+    }
+
+    public void setProductPricenew(String productPricenew) {
+        ProductPricenew = productPricenew;
     }
 
     public void setProductPrice(double productPrice) {
@@ -173,5 +195,12 @@ public class Product {
 
     public void setProductCatID(String productCatID) {
         ProductCatID = productCatID;
+    }
+
+    public String getnumber() {
+        return number;
+    }
+
+    public Product() {
     }
 }

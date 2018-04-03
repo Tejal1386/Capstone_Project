@@ -79,7 +79,7 @@ public class ProductInSaleActivity extends AppCompatActivity {
 
                     viewHolder.product_saleLimit.setText(" " + model.getProductSaleLimit() + " % off");
 
-
+                    viewHolder.product_saleEndDate.setText(model.getProductSaleEndDate());
 
                 viewHolder.setClickListener(new ProductViewHolder.ItemClickListener() {
                     @Override

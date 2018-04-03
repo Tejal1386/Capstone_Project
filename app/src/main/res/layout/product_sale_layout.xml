@@ -35,10 +35,19 @@
                 android:layout_marginLeft="5dp"
                 android:layout_marginTop="5dp"
                 android:layout_width="match_parent"
-                android:layout_height="48dp"
+                android:layout_height="wrap_content"
                 android:id="@+id/txt_productName"
                 android:textSize="18dp"
                 android:textColor="@color/black"/>
+
+            <TextView
+                android:layout_marginLeft="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/txt_saleEndDate"
+                android:textSize="18dp"
+                android:textColor="@color/red"/>
+
 
         </LinearLayout>
 

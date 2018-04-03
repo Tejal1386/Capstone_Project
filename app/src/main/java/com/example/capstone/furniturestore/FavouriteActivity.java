@@ -127,8 +127,6 @@ public class FavouriteActivity extends AppCompatActivity {
                     listProductID.add(fav_product.getProduct_ID());
 
 
-
-
                   i++;
                 }
 
@@ -162,16 +160,9 @@ public class FavouriteActivity extends AppCompatActivity {
 
                              k++;
                          }
-
                      }
-
                      j++;
                 }
-
-
-
-
-
 
                 fav_adapter = new FavouriteAdapter(productList,FavouriteActivity.this);
 
@@ -185,8 +176,6 @@ public class FavouriteActivity extends AppCompatActivity {
                // favourite_RecyclerView.setLayoutManager(layoutManager);
                 favourite_RecyclerView.setAdapter(fav_adapter);
 
-
-
             }
 
             @Override
@@ -194,8 +183,6 @@ public class FavouriteActivity extends AppCompatActivity {
 
             }
         });
-
-
 
     }
 

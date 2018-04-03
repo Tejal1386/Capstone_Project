@@ -48,7 +48,6 @@ public class ProductListActivity extends AppCompatActivity {
 
         productDatabase =  FirebaseDatabase.getInstance().getReference("Products");
 
-
         Intent i = getIntent();
         CategoryName   = i.getExtras().getString("CategoryName");
         CategoryID = i.getExtras().getString("CategoryID");
@@ -69,7 +68,6 @@ public class ProductListActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
 
                 onBackPressed(); // Implemented by activity
             }
@@ -93,31 +91,9 @@ public class ProductListActivity extends AppCompatActivity {
         product_RecyclerView.setNestedScrollingEnabled(false);
         layoutManager = new LinearLayoutManager(getBaseContext());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-
         product_RecyclerView.setLayoutManager(new GridLayoutManager(this, 2));
 
-
-
-       /* productDatabase.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                Integer i = 0;
-                for(DataSnapshot productSnapshot : dataSnapshot.getChildren())
-                {
-                    Product products = productSnapshot.getValue(Product.class);
-                    String x =  products.getProductName();
-
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });*/
-
         load_Products();
-
 
     }
 
@@ -132,7 +108,11 @@ public class ProductListActivity extends AppCompatActivity {
                 viewHolder.product_Sale_Price.setText("$"+String.valueOf( model.getProductSalePrice()));
                 viewHolder.product_Price.setText("$"+String.valueOf(model.getProductPrice()));
                 viewHolder.product_Price.setPaintFlags(viewHolder.product_Price.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-                viewHolder.product_saleLimit.setText("Up to " + model.getProductSaleLimit() + " off");
+
+                if( String.valueOf(model.getProductSaleLimit()) != "0") {
+                    viewHolder.product_saleLimit.setVisibility(View.VISIBLE);
+                    viewHolder.product_saleLimit.setText(" " + model.getProductSaleLimit() + " off");
+                }
 
                 Double price = model.getProductSalePrice();
                 if (price>=75.0){
@@ -141,7 +121,6 @@ public class ProductListActivity extends AppCompatActivity {
                 else {
                     viewHolder.product_Shipping.setText(" ");
                 }
-
 
                 viewHolder.setClickListener(new ProductViewHolder.ItemClickListener() {
                     @Override
@@ -153,19 +132,12 @@ public class ProductListActivity extends AppCompatActivity {
                 });
             }
         };
-
-
-
-        product_RecyclerView.setAdapter(adapter);
+       product_RecyclerView.setAdapter(adapter);
 
     }
 
-
-
-
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.search_item_menu, menu);
-
         return true;
     }
 

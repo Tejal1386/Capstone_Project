@@ -27,7 +27,9 @@
         <activity android:name=".CategoryActivity" />
         <activity android:name=".ProductDetailActivity" />
         <activity android:name=".AddToFavouriteActivity" />
-        <activity android:name=".FavouriteActivity"></activity>
+        <activity android:name=".FavouriteActivity" />
+        <activity android:name=".ProductInSaleActivity" />
+        <activity android:name=".ProductInformationActivity"></activity>
     </application>
 
 </manifest>

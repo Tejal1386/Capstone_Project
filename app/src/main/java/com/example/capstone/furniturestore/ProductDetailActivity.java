@@ -1,6 +1,8 @@
 package com.example.capstone.furniturestore;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -8,8 +10,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.example.capstone.furniturestore.Models.Favourite;
 import com.example.capstone.furniturestore.Models.Product;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -24,7 +28,7 @@ public class ProductDetailActivity extends AppCompatActivity {
     private DatabaseReference productDatabase;
     Toolbar toolbar;
     FloatingActionButton fb_ShoppingBasket;
-    TextView txtProductName,txtProductMenufacturer, txtProductSalePrice, txtProductPrice, txtProductShipping;
+    TextView txtProductName,txtProductMenufacturer, txtProductSalePrice, txtProductPrice, txtProductShipping ,txtProductInformation, txtShipping;
     ImageView imgProduct;
     String ProductID;
     Button btnAddToCart, btnAddToFavourite;
@@ -32,6 +36,7 @@ public class ProductDetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product_detail);
+
         productDatabase =  FirebaseDatabase.getInstance().getReference("Products");
 
         imgProduct = (ImageView) findViewById(R.id.imageproduct);
@@ -98,6 +103,17 @@ public class ProductDetailActivity extends AppCompatActivity {
         });
 
 
+        txtProductInformation = (TextView) findViewById(R.id.txt_Information);
+        txtProductInformation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ProductDetailActivity.this,ProductInformationActivity.class);
+                intent.putExtra("ProductID", ProductID);
+                startActivity(intent);
+            }
+        });
+
+
 
         productDatabase.addValueEventListener(new ValueEventListener() {
             @Override
@@ -132,8 +148,6 @@ public class ProductDetailActivity extends AppCompatActivity {
 
             }
         });
-
-
 
     }
 

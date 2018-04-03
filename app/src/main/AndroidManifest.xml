@@ -31,6 +31,6 @@
         <activity android:name=".FavouriteActivity" />
         <activity android:name=".SearchListActivity" />
         <activity android:name=".Cart"></activity>
-    </application>
+       </application>
 
 </manifest>

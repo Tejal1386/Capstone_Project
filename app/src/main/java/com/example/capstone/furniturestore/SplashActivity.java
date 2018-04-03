@@ -25,7 +25,7 @@ public class SplashActivity extends AppCompatActivity {
         imgSplash.startAnimation(myanim);
         txtSplash.startAnimation(myanim);
 
-      Thread thread = new Thread(){
+        Thread thread = new Thread(){
             public void run()
             {
                 try {

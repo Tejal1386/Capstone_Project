@@ -30,7 +30,7 @@ public class AddToFavouriteActivity extends AppCompatActivity {
         mDatabase = FirebaseDatabase.getInstance().getReference("Favourites");
 
         sharedPreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
-      //  Username = (sharedPreferences.getString(Name, ""));
+        //  Username = (sharedPreferences.getString(Name, ""));
         UserID = (sharedPreferences.getString(Userid, ""));
 
 
@@ -41,17 +41,17 @@ public class AddToFavouriteActivity extends AppCompatActivity {
         add_favourite();
     }
 
-     public void add_favourite(){
-         String ID = mDatabase.push().getKey();
+    public void add_favourite(){
+        String ID = mDatabase.push().getKey();
 
-         if (UserID != "") {
-             String title = "my Fav";
-             String description = "description";
-             Favourite favourite = new Favourite(UserID, ProductID, ID, title, description);
-             mDatabase.child(ID).setValue(favourite);
-         //    intent = new Intent(AddToFavouriteActivity.this, ProductDetailActivity.class);
-             startActivity(intent);
-         }
+        if (UserID != "") {
+            String title = "my Fav";
+            String description = "description";
+            Favourite favourite = new Favourite(UserID, ProductID, ID, title, description);
+            mDatabase.child(ID).setValue(favourite);
+            //    intent = new Intent(AddToFavouriteActivity.this, ProductDetailActivity.class);
+            startActivity(intent);
+        }
 
-     }
+    }
 }

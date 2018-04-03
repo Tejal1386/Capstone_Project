@@ -125,7 +125,7 @@ public class StoreActivity extends AppCompatActivity {
                         intent = new Intent(StoreActivity.this,FavouriteActivity.class);
                         startActivity(intent);
 
-                       // Toast.makeText(StoreActivity.this,"My Favourite",Toast.LENGTH_LONG).show();
+                        // Toast.makeText(StoreActivity.this,"My Favourite",Toast.LENGTH_LONG).show();
                         break;
                     case R.id.action_myAccount:
                         intent = new Intent(StoreActivity.this,UserAccountActivity.class);
@@ -158,14 +158,16 @@ public class StoreActivity extends AppCompatActivity {
 
 
 
-       // load_search();
+        // load_search();
     }
+
+
 
     public void load_search(){
 
         list = new String[]{"Clipcodes", "Android Tutorials", "Youtube Clipcodes Tutorials", "SearchView Clicodes", "Android Clipcodes", "Tutorials Clipcodes"};
 
-      //  materialSearchView = (MaterialSearchView)findViewById(R.id.searchView);
+        //  materialSearchView = (MaterialSearchView)findViewById(R.id.searchView);
         materialSearchView.clearFocus();
         materialSearchView.setSuggestions(list);
         materialSearchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
@@ -238,8 +240,8 @@ public class StoreActivity extends AppCompatActivity {
 
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.search_item_menu, menu);
-      //  MenuItem item = menu.findItem(R.id.action_search);
-      //  materialSearchView.setMenuItem(item);
+        //  MenuItem item = menu.findItem(R.id.action_search);
+        //  materialSearchView.setMenuItem(item);
 
         return true;
     }
@@ -250,9 +252,10 @@ public class StoreActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-       if (id == R.id.action_search) {
-            Intent intent = new Intent(getApplicationContext(), SearchListActivity.class);
+        if (id == R.id.action_search) {
+            Intent intent = new Intent(getApplicationContext(), SearchItemActivity.class);
             startActivity(intent);
+
             return true;
         }
 

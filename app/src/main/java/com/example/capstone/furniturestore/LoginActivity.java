@@ -143,7 +143,7 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
 
-           @Override
+            @Override
             public void onCancelled(DatabaseError databaseError) {
 
             }

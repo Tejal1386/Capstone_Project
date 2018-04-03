@@ -1,5 +1,4 @@
 package com.example.capstone.furniturestore;
-
 import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -11,7 +10,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-
 import com.example.capstone.furniturestore.Models.Category;
 import com.example.capstone.furniturestore.ViewHolder.CategoryViewHolder;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
@@ -20,7 +18,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
 
 public class CategoryActivity extends AppCompatActivity {
-
     public RecyclerView category_RecyclerView;
     LinearLayoutManager layoutManager;
     private DatabaseReference categoryDatabase;
@@ -118,6 +115,7 @@ public class CategoryActivity extends AppCompatActivity {
         int id = item.getItemId();
         return super.onOptionsItemSelected(item);
     }
+
 
 
 }

@@ -4,22 +4,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Paint;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 
-import com.example.capstone.furniturestore.Models.Category;
 import com.example.capstone.furniturestore.Models.Favourite;
 import com.example.capstone.furniturestore.Models.Product;
-import com.example.capstone.furniturestore.Models.User;
-import com.example.capstone.furniturestore.ViewHolder.CategoryViewHolder;
 import com.example.capstone.furniturestore.ViewHolder.ProductViewHolder;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.database.DataSnapshot;
@@ -43,8 +37,9 @@ public class FavouriteActivity extends AppCompatActivity {
     public static final String Name = "UserNameKey";
     public static final String Userid = "UseridKey";
     String UserID,UserName;
-   final List<String> listProductID = new ArrayList<String>();
-   String[] list = new String[3];
+    FirebaseRecyclerAdapter<Product, ProductViewHolder> adapter;
+    final List<String> listProductID = new ArrayList<String>();
+    String[] list = new String[3];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,10 +107,10 @@ public class FavouriteActivity extends AppCompatActivity {
                 for(DataSnapshot favouriteSnapshot : dataSnapshot.getChildren())
                 {
                     Favourite fav_product = favouriteSnapshot.getValue(Favourite.class);
-                    listProductID.add(fav_product.getProduct_ID());
+                    //  listProductID.add(fav_product.getProduct_ID());
 
 
-                    FirebaseRecyclerAdapter<Product, ProductViewHolder> adapter = new FirebaseRecyclerAdapter<Product, ProductViewHolder>(Product.class, R.layout.product_layout, ProductViewHolder.class, productDatabase.orderByChild("ProductID").equalTo(listProductID.get(i))) {
+                    adapter = new FirebaseRecyclerAdapter<Product, ProductViewHolder>(Product.class, R.layout.product_layout, ProductViewHolder.class, productDatabase.orderByChild("ProductID").equalTo(fav_product.getProduct_ID())) {
                         @Override
                         protected void populateViewHolder(ProductViewHolder viewHolder, final Product model, int position) {
                             Picasso.with(getBaseContext()).load(model.getProductImage()).into(viewHolder.product_Image);
@@ -145,13 +140,14 @@ public class FavouriteActivity extends AppCompatActivity {
                     };
 
 
-                    favourite_RecyclerView.setAdapter(adapter);
 
 
 
 
                     i++;
                 }
+                favourite_RecyclerView.setAdapter(adapter);
+
             }
 
             @Override
@@ -167,5 +163,4 @@ public class FavouriteActivity extends AppCompatActivity {
 
 
     }
-
 }

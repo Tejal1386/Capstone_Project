@@ -151,8 +151,7 @@ public class ProductListActivity extends AppCompatActivity {
                     @Override
                     public void onClickItem(int pos) {
                         Intent intent = new Intent(ProductListActivity.this, ProductDetailActivity.class);
-                       Log.v(TAG,model.getProductID());
-                         intent.putExtra("ProductID", model.getProductID());
+                        intent.putExtra("ProductID", model.getProductID());
                         startActivity(intent);
                     }
                 });
@@ -160,24 +159,6 @@ public class ProductListActivity extends AppCompatActivity {
         };
 
 
-
-                /*FirebaseRecyclerAdapter<Category, CategoryViewHolder>(Category.class, R.layout.category_layout,ProductViewHolder.class,productDatabase) {
-            @Override
-            protected void populateViewHolder(CategoryViewHolder viewHolder, final Category model, int position) {
-                viewHolder.Category_Name.setText(model.getCategoryName());
-                Picasso.with(getBaseContext()).load(model.getCategoryImage()).into(viewHolder.Category_Image);
-                Category clickitem = model;
-
-                viewHolder.setClickListener(new CategoryViewHolder.ItemClickListener() {
-                    @Override
-                    public void onClickItem(int pos) {
-                        Intent intent = new Intent(ProductListActivity.this, ProductDetailActivity.class);
-                       // intent.putExtra("CategoryID", model.getCategoryID());
-                        startActivity(intent);
-                    }
-                });
-            }
-        };*/
 
         product_RecyclerView.setAdapter(adapter);
 

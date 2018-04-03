@@ -49,7 +49,7 @@ public class SearchListAdapter extends RecyclerView.Adapter<SearchListAdapter.My
         public MyViewHolder(View itemView) {
             super(itemView);
 
-            product_Name = (TextView) itemView.findViewById(R.id.textViewProductName);
+            product_Name = (TextView) itemView.findViewById(R.id.txtCategoryName);
         }
     }
 }

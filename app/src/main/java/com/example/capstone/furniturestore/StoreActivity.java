@@ -1,6 +1,9 @@
 package com.example.capstone.furniturestore;
 
 import android.content.Intent;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -13,22 +16,37 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.capstone.furniturestore.Adapter.ViewPagerAdapter;
 import com.example.capstone.furniturestore.Models.Department;
+import com.example.capstone.furniturestore.Models.Product;
 import com.example.capstone.furniturestore.ViewHolder.DepartmentViewHolder;
+import com.example.capstone.furniturestore.ViewHolder.ProductViewHolder;
+import com.mancj.materialsearchbar.MaterialSearchBar;
+import com.miguelcatalan.materialsearchview.MaterialSearchView;
 import com.squareup.picasso.Picasso;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
 public class StoreActivity extends AppCompatActivity {
 
     FirebaseDatabase database;
-    private DatabaseReference deptDatabase;
+    private DatabaseReference deptDatabase,prodDatabase;
+
+    //search functionality
+
+    FirebaseRecyclerAdapter<Product, ProductViewHolder> searchAdapter;
+    List<String> suggestList = new ArrayList<>();
+    MaterialSearchBar materialSearchBar;
+    MaterialSearchView materialSearchView;
+    String[] list;
 
     Toolbar toolbar;
     ViewPager view_Pager;
@@ -37,21 +55,27 @@ public class StoreActivity extends AppCompatActivity {
     TextView textView;
     public RecyclerView department_RecyclerView;
     LinearLayoutManager layoutManager;
+    FloatingActionButton fb_ShoppingBasket;
+
+    Intent intent;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_store);
 
+        //Firebase Database
         deptDatabase = FirebaseDatabase.getInstance().getReference("Department");
+        prodDatabase = FirebaseDatabase.getInstance().getReference("Products");
 
-
+        //Auto Pager
         view_Pager = (ViewPager) findViewById(R.id.viewPager);
-
         ViewPagerAdapter viewpageradapter = new ViewPagerAdapter(this);
         view_Pager.setAdapter(viewpageradapter);
         setupAutoPager();
 
+        //ToolBar
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setTitleTextColor(1);
@@ -72,23 +96,93 @@ public class StoreActivity extends AppCompatActivity {
             }
         });
 
+        //floating button
+        fb_ShoppingBasket = (FloatingActionButton) findViewById(R.id.fb_ShoppingBasket);
+
+        fb_ShoppingBasket.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(StoreActivity.this, ShoppingBasketActivity.class);
+                startActivity(intent);
+            }
+        });
+
+
+        //Tagline taxBox
         textView = (TextView) findViewById(R.id.textviewmarquee);
         textView.setEllipsize(TextUtils.TruncateAt.MARQUEE);
         textView.setSelected(true);
         textView.setSingleLine();
 
-         //Recycler View
+        //Bottom navigation
+        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
 
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()){
+                    case R.id.action_myFavoutite:
+                        intent = new Intent(StoreActivity.this,FavouriteActivity.class);
+                        startActivity(intent);
+
+                       // Toast.makeText(StoreActivity.this,"My Favourite",Toast.LENGTH_LONG).show();
+                        break;
+                    case R.id.action_myAccount:
+                        intent = new Intent(StoreActivity.this,UserAccountActivity.class);
+                        startActivity(intent);
+
+
+                        Toast.makeText(StoreActivity.this,"My Account",Toast.LENGTH_LONG).show();
+                        break;
+                    case R.id.action_myOrders:
+                        Toast.makeText(StoreActivity.this,"My Orders",Toast.LENGTH_LONG).show();
+                        break;
+
+                }
+                return true;
+            }
+        });
+
+
+        //Recycler View
         department_RecyclerView = (RecyclerView)findViewById(R.id.recycle_dept);
         department_RecyclerView.setHasFixedSize(true);
         department_RecyclerView.setNestedScrollingEnabled(false);
-
         layoutManager = new LinearLayoutManager(getBaseContext());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-
         department_RecyclerView.setLayoutManager(new GridLayoutManager(this, 2));
 
+        //Load Department
         load_Department();
+
+
+
+
+       // load_search();
+    }
+
+    public void load_search(){
+
+        list = new String[]{"Clipcodes", "Android Tutorials", "Youtube Clipcodes Tutorials", "SearchView Clicodes", "Android Clipcodes", "Tutorials Clipcodes"};
+
+      //  materialSearchView = (MaterialSearchView)findViewById(R.id.searchView);
+        materialSearchView.clearFocus();
+        materialSearchView.setSuggestions(list);
+        materialSearchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                //Here Create your filtering
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                //You can make change realtime if you typing here
+                //See my tutorials for filtering with ListView
+                return false;
+            }
+        });
+
 
     }
 
@@ -144,6 +238,8 @@ public class StoreActivity extends AppCompatActivity {
 
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.search_item_menu, menu);
+      //  MenuItem item = menu.findItem(R.id.action_search);
+      //  materialSearchView.setMenuItem(item);
 
         return true;
     }
@@ -154,8 +250,8 @@ public class StoreActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if (id == R.id.action_search) {
-            Intent intent = new Intent(getApplicationContext(), SearchItemActivity.class);
+       if (id == R.id.action_search) {
+            Intent intent = new Intent(getApplicationContext(), SearchListActivity.class);
             startActivity(intent);
             return true;
         }

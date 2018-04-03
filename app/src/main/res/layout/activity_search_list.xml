@@ -5,17 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.example.capstone.furniturestore.SearchItemActivity">
+    tools:context="com.example.capstone.furniturestore.SearchListActivity">
 
     <include layout="@layout/searchtoolbar"></include>
-
-
-
-    <ListView
-        android:id="@+id/productListView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"></ListView>
-
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycle_search"

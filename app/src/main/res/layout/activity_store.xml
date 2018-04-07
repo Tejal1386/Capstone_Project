@@ -9,6 +9,13 @@
 
     <include layout="@layout/toolbar"></include>
 
+   <!-- <ListView
+        android:visibility="gone"
+        android:id="@+id/productListView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"></ListView>-->
+
+
     <!-- <com.miguelcatalan.materialsearchview.MaterialSearchView
          android:id="@+id/searchView"
          android:layout_height="wrap_content"

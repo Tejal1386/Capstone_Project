@@ -20,6 +20,20 @@ public class Product {
     private String ProductManufacturer;
     private String ProductOffer;
     private String ProductCatID;
+    private String ProductSaleEndDate;
+
+
+    public Product(String productID, String productName, String productImage, double productPrice, double productSalePrice)
+    {
+        this.setProductID(productID);
+        this.setProductName(productName);
+        this.setProductImage(productImage);
+        this.setProductPrice(productPrice);
+
+
+
+    }
+
     private int ProductSaleLimit;
     private String number;
 
@@ -33,7 +47,7 @@ public class Product {
 
     }
 
- /*   public Product(String productID, String productName, String productImage, double productPrice, double productSalePrice, String productQunt, String productBrand, String productColor, String productDept, String productStyle, String productManufacturer, String productOffer, String productCatID) {
+  public Product(String productID, String productName, String productImage, double productPrice, double productSalePrice, String productQunt, String productBrand, String productColor, String productDept, String productStyle, String productManufacturer, String productOffer, String productCatID,int productSaleLimit,String productSaleEndDate) {
         ProductID = productID;
         ProductName = productName;
         ProductImage = productImage;
@@ -44,15 +58,21 @@ public class Product {
         ProductColor = productColor;
         ProductDept = productDept;
         ProductStyle = productStyle;
-
+        ProductSaleLimit = productSaleLimit;
         ProductManufacturer = productManufacturer;
         ProductOffer = productOffer;
         ProductCatID = productCatID;
+        ProductSaleEndDate = productSaleEndDate;
     }
-*/
 
-    public void setProductSalePrice(double productSalePrice) {
-        ProductSalePrice = productSalePrice;
+
+
+    public String getProductSaleEndDate() {
+        return ProductSaleEndDate;
+    }
+
+    public void setProductSaleEndDate(String productSaleEndDate) {
+        ProductSaleEndDate = productSaleEndDate;
     }
 
     public int getProductSaleLimit() {
@@ -68,7 +88,7 @@ public class Product {
     }
 
     public void setProductID(String productID) {
-
+        ProductID = productID;
     }
 
     public String getProductName() {
@@ -107,10 +127,10 @@ public class Product {
         return ProductSalePrice;
     }
 
-    public void setProductSale_Price(double productSalePrice) {
+    public void setProductSalePrice(double productSalePrice) {
         ProductSalePrice = productSalePrice;
-
     }
+
 
     public String getProductQunt() {
         return ProductQunt;

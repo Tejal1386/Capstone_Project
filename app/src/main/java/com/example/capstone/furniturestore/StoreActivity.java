@@ -67,7 +67,7 @@ public class StoreActivity extends AppCompatActivity {
 
         //Firebase Database
         deptDatabase = FirebaseDatabase.getInstance().getReference("Department");
-        prodDatabase = FirebaseDatabase.getInstance().getReference("Products");
+       // prodDatabase = FirebaseDatabase.getInstance().getReference("Products");
 
         //Auto Pager
         view_Pager = (ViewPager) findViewById(R.id.viewPager);
@@ -134,8 +134,11 @@ public class StoreActivity extends AppCompatActivity {
 
                         Toast.makeText(StoreActivity.this,"My Account",Toast.LENGTH_LONG).show();
                         break;
-                    case R.id.action_myOrders:
-                        Toast.makeText(StoreActivity.this,"My Orders",Toast.LENGTH_LONG).show();
+                    case R.id.action_sale:
+
+                        intent = new Intent(StoreActivity.this,ProductInSaleActivity.class);
+                        startActivity(intent);
+
                         break;
 
                 }
@@ -148,8 +151,6 @@ public class StoreActivity extends AppCompatActivity {
         department_RecyclerView = (RecyclerView)findViewById(R.id.recycle_dept);
         department_RecyclerView.setHasFixedSize(true);
         department_RecyclerView.setNestedScrollingEnabled(false);
-        layoutManager = new LinearLayoutManager(getBaseContext());
-        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         department_RecyclerView.setLayoutManager(new GridLayoutManager(this, 2));
 
         //Load Department
@@ -163,7 +164,7 @@ public class StoreActivity extends AppCompatActivity {
 
 
 
-    public void load_search(){
+   /* public void load_search(){
 
         list = new String[]{"Clipcodes", "Android Tutorials", "Youtube Clipcodes Tutorials", "SearchView Clicodes", "Android Clipcodes", "Tutorials Clipcodes"};
 
@@ -186,7 +187,7 @@ public class StoreActivity extends AppCompatActivity {
         });
 
 
-    }
+    }*/
 
     public  void load_Department(){
 

@@ -19,9 +19,9 @@
     </item>
 
     <item
-        android:id="@+id/action_myOrders"
+        android:id="@+id/action_sale"
         android:enabled="true"
-        android:title="My Orders"
+        android:title="Sale"
         app:showAsAction="ifRoom"
         android:icon="@drawable/ic_action_myfavourite">
     </item>

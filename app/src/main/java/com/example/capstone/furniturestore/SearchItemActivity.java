@@ -10,8 +10,10 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.example.capstone.furniturestore.Models.Category;
+import com.firebase.ui.database.FirebaseListAdapter;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -48,8 +50,7 @@ public class SearchItemActivity extends AppCompatActivity {
         toolbar.setTitleTextColor(1);
         getSupportActionBar().setTitle(" supreme Furniture");
 
-        // add back arrow to toolbar
-      /*  if (getSupportActionBar() != null){
+        if (getSupportActionBar() != null){
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
@@ -57,14 +58,18 @@ public class SearchItemActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-             onBackPressed(); // Implemented by activity
-            }
-        }); */
 
+
+                onBackPressed(); // Implemented by activity
+            }
+        });
 
         searchView = (MaterialSearchView) findViewById(R.id.search_view);
         searchView.closeSearch();
+        searchView.setFocusable(true);
         searchView.setVoiceSearch(true);
+
+
 
 
         prodDatabase.addValueEventListener(new ValueEventListener() {
@@ -96,9 +101,16 @@ public class SearchItemActivity extends AppCompatActivity {
         }
 
         searchView.setSuggestions(list);
-
-
         listview = (ListView) findViewById(R.id.productListView);
+
+        /*listview = (ListView) findViewById(R.id.productListView);
+        FirebaseListAdapter <String> adapter = new FirebaseListAdapter<String>(this,String.class,android.R.layout.simple_list_item_1,prodDatabase) {
+            @Override
+            protected void populateView(View v, String model, int position) {
+                TextView textView = (TextView) findViewById(android.R.id.text1);
+                textView.setText(model);
+            }
+        };*/
         final ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1,listProductName);
 
         listview.setAdapter(adapter);
@@ -111,7 +123,7 @@ public class SearchItemActivity extends AppCompatActivity {
 
             @Override
             public void onSearchViewClosed() {
-                listview = (ListView) findViewById(R.id.productListView);
+
                 ArrayAdapter adapter = new ArrayAdapter(SearchItemActivity.this, android.R.layout.simple_list_item_1,listProductName);
                 //adapter.add(listProductID);
                 listview.setAdapter(adapter);
@@ -173,6 +185,7 @@ public class SearchItemActivity extends AppCompatActivity {
     public void onBackPressed() {
         if (searchView.isSearchOpen()) {
             searchView.closeSearch();
+
 
         } else {
             super.onBackPressed();

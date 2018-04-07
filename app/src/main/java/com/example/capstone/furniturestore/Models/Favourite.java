@@ -9,17 +9,17 @@ public class Favourite {
     private String Product_ID;
     private String Favorite_ID;
     private String Favorite_title;
-    private String Favorite_Discription;
+
 
     public Favourite() {
     }
 
-    public Favourite(String user_ID, String product_ID, String favorite_ID, String favorite_title, String favorite_Discription) {
+    public Favourite(String user_ID, String product_ID, String favorite_ID, String favorite_title ) {
         User_ID = user_ID;
         Product_ID = product_ID;
         Favorite_ID = favorite_ID;
         Favorite_title = favorite_title;
-        Favorite_Discription = favorite_Discription;
+
     }
 
     public String getUser_ID() {
@@ -54,11 +54,5 @@ public class Favourite {
         Favorite_title = favorite_title;
     }
 
-    public String getFavorite_Discription() {
-        return Favorite_Discription;
-    }
 
-    public void setFavorite_Discription(String favorite_Discription) {
-        Favorite_Discription = favorite_Discription;
-    }
 }

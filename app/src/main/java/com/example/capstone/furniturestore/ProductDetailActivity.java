@@ -34,7 +34,7 @@ public class ProductDetailActivity extends AppCompatActivity {
     private DatabaseReference productDatabase;
     Toolbar toolbar;
     CounterFab fb_ShoppingBasket;
-    TextView txtProductName,txtProductMenufacturer, txtProductSalePrice, txtProductPrice, txtProductShipping;
+    TextView txtProductName,txtProductMenufacturer, txtProductSalePrice, txtProductPrice, txtProductShipping ,txtProductInformation, txtShipping;
     ImageView imgProduct;
     String ProductID;
     Button btnAddToCart, btnAddToFavourite;
@@ -54,7 +54,7 @@ public class ProductDetailActivity extends AppCompatActivity {
         txtProductShipping = (TextView) findViewById(R.id.txtproductshipping);
         Intent i = getIntent();
         ProductID = i.getExtras().getString("ProductID");
-//new Database(ProductDetailActivity.this).cleanCart();
+
         //toolBar settings
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -128,6 +128,17 @@ current_product.setProductPrice(current_product.getProductPrice());
                 Intent intent = new Intent(ProductDetailActivity.this, Cart.class);
                 startActivity(intent);
 
+            }
+        });
+
+
+        txtProductInformation = (TextView) findViewById(R.id.txt_Information);
+        txtProductInformation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ProductDetailActivity.this,ProductInformationActivity.class);
+                intent.putExtra("ProductID", ProductID);
+                startActivity(intent);
             }
         });
 

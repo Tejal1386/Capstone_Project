@@ -19,7 +19,8 @@ public class ProductViewHolder extends RecyclerView.ViewHolder implements View.O
     public TextView product_Sale_Price;
     public TextView product_Price;
     public TextView product_Shipping;
-
+    public TextView product_saleLimit;
+    public TextView product_saleEndDate;
 
     private ItemClickListener mListener;
 
@@ -38,7 +39,8 @@ public class ProductViewHolder extends RecyclerView.ViewHolder implements View.O
         product_Sale_Price = (TextView) itemView.findViewById(R.id.txt_productSalePrice);
         product_Price = (TextView) itemView.findViewById(R.id.txt_productPrice);
         product_Shipping = (TextView) itemView.findViewById(R.id.txt_productshipping);
-
+        product_saleLimit = (TextView) itemView.findViewById(R.id.txtSaleTag);
+        product_saleEndDate = (TextView) itemView.findViewById(R.id.txt_saleEndDate);
     }
 
     public void setClickListener(ItemClickListener listener) {

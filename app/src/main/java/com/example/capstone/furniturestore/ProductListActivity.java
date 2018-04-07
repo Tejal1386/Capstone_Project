@@ -126,6 +126,10 @@ public class ProductListActivity extends AppCompatActivity {
 
     }
 
+
+
+
+
     public  void load_Products(){
 
         FirebaseRecyclerAdapter<Product,ProductViewHolder> adapter = new FirebaseRecyclerAdapter<Product, ProductViewHolder>(Product.class,R.layout.product_layout,ProductViewHolder.class,productDatabase.orderByChild("ProductCategoryID").equalTo(CategoryID)) {
@@ -138,6 +142,11 @@ public class ProductListActivity extends AppCompatActivity {
                 viewHolder.product_Price.setText("$"+String.valueOf(model.getProductPrice()));
                 viewHolder.product_Price.setPaintFlags(viewHolder.product_Price.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
 
+                if( String.valueOf(model.getProductSaleLimit()) != "0") {
+                    viewHolder.product_saleLimit.setVisibility(View.VISIBLE);
+                    viewHolder.product_saleLimit.setText(" " + model.getProductSaleLimit() + " off");
+                }
+
                 Double price = model.getProductSalePrice();
                 if (price>=75.0){
                     viewHolder.product_Shipping.setText("Free Shipping");
@@ -145,7 +154,6 @@ public class ProductListActivity extends AppCompatActivity {
                 else {
                     viewHolder.product_Shipping.setText(" ");
                 }
-
 
                 viewHolder.setClickListener(new ProductViewHolder.ItemClickListener() {
                     @Override
@@ -157,19 +165,12 @@ public class ProductListActivity extends AppCompatActivity {
                 });
             }
         };
-
-
-
-        product_RecyclerView.setAdapter(adapter);
+       product_RecyclerView.setAdapter(adapter);
 
     }
 
-
-
-
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.search_item_menu, menu);
-
         return true;
     }
 

@@ -46,8 +46,7 @@ public class AddToFavouriteActivity extends AppCompatActivity {
 
         if (UserID != "") {
             String title = "my Fav";
-            String description = "description";
-            Favourite favourite = new Favourite(UserID, ProductID, ID, title, description);
+            Favourite favourite = new Favourite(UserID, ProductID, ID, title);
             mDatabase.child(ID).setValue(favourite);
             //    intent = new Intent(AddToFavouriteActivity.this, ProductDetailActivity.class);
             startActivity(intent);

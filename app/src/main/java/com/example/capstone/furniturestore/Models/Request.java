@@ -13,9 +13,10 @@ public class Request {
     private String total;
     private List<Product> products ;
 
-    public Request(String phone, String name, String address, String total, List<Product> products) {
-        this.phone = phone;
+    public Request(String name, String phone, String address, String total, List<Product> products) {
+
         this.name = name;
+        this.phone = phone;
         this.address = address;
         this.total = total;
         this.products = products;

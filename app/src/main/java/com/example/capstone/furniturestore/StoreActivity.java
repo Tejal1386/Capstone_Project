@@ -238,13 +238,13 @@ public class StoreActivity extends AppCompatActivity {
         }, 500, 3000);
     }
 
-    public boolean onCreateOptionsMenu(Menu menu) {
+    /*public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.search_item_menu, menu);
         //  MenuItem item = menu.findItem(R.id.action_search);
         //  materialSearchView.setMenuItem(item);
 
         return true;
-    }
+    }*/
 
 
 
@@ -252,12 +252,12 @@ public class StoreActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if (id == R.id.action_search) {
+       /* if (id == R.id.action_search) {
             Intent intent = new Intent(getApplicationContext(), SearchItemActivity.class);
             startActivity(intent);
 
             return true;
-        }
+        }*/
 
         return super.onOptionsItemSelected(item);
     }

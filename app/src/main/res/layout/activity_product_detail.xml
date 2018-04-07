@@ -74,13 +74,13 @@
             android:textSize="18dp"
             android:textColor="@color/black"/>
 
-        <com.cepheuen.elegantnumberbutton.view.ElegantNumberButton
+      <!--  <com.cepheuen.elegantnumberbutton.view.ElegantNumberButton
             android:layout_width="100dp"
             android:layout_height="30dp"
             android:id="@+id/number_button"
             android:gravity="start"
             ></com.cepheuen.elegantnumberbutton.view.ElegantNumberButton>
-
+-->
 
 
         <Button

@@ -18,7 +18,6 @@ import android.widget.Toast;
 import com.example.capstone.furniturestore.Database.Database;
 import com.example.capstone.furniturestore.Models.Product;
 import com.example.capstone.furniturestore.Models.Request;
-import com.example.capstone.furniturestore.Models.User;
 import com.example.capstone.furniturestore.ViewHolder.CartAdapter;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -39,7 +38,7 @@ public class Cart extends AppCompatActivity {
     FirebaseDatabase database;
     DatabaseReference requests;
 
-    TextView txtTotalPrice;
+  public   TextView txtTotalPrice;
     TextView txtname;
   Button btnplace;
   TextView city;
@@ -68,7 +67,12 @@ public class Cart extends AppCompatActivity {
 btnplace.setOnClickListener(new View.OnClickListener() {
     @Override
     public void onClick(View v) {
-showAlertDialog();
+        List<Product> orders = new Database(getApplicationContext()).getCarts();
+        if(orders.size()==0){
+            Toast.makeText(getApplicationContext(),"First add item in cart",Toast.LENGTH_SHORT).show();
+        }else {
+            showAlertDialog();
+        }
     }
 });
 
@@ -150,11 +154,11 @@ showAlertDialog();
         float total = 0;
 
         for(Product order:cart) {
-             total+=(Float.parseFloat(String.valueOf(order.getProductPricenew())))*(Integer.parseInt(order.getProductQunt()));
+             total+=(Float.parseFloat(String.valueOf(order.getProductPricenew())));//*(Integer.parseInt(order.getProtductQunt()));
             //  Locale locale = new Locale("en","US");
             //  NumberFormat fmt = NumberFormat.getCurrencyInstance(locale);
 
-           Log.e("===value", order.getProductQunt());
+          // Log.e("===value", order.getProductQunt());
             Log.e("==value", String.valueOf(order.getProductPricenew()));
             Log.e("===2nd value", order.getProductName());
             txtTotalPrice.setText(total+"");//order.getProductName());

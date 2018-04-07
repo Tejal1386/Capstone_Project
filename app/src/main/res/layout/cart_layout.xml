@@ -58,14 +58,21 @@
 
         </LinearLayout>
 
-        <ImageView
+    <ImageView
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:background="@color/colorPrimary"
 
-            android:id="@+id/cart_item_count"
+            android:id="@+id/delete_item"
             android:layout_marginRight="16dp"
             android:tint="@color/colorAccent"/>
+        <com.cepheuen.elegantnumberbutton.view.ElegantNumberButton
+            android:layout_width="50dp"
+            android:layout_height="30dp"
+            android:id="@+id/btn_quantity"
+            android:gravity="start"
+            ></com.cepheuen.elegantnumberbutton.view.ElegantNumberButton>
+
 
     </LinearLayout>
 

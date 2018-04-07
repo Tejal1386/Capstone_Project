@@ -25,6 +25,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ProductDetailActivity extends AppCompatActivity {
 
     private static final String TAG = "ProductActivity";
@@ -63,7 +66,7 @@ public class ProductDetailActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
-        numberButton = (ElegantNumberButton)findViewById(R.id.number_button);
+     //   numberButton = (ElegantNumberButton)findViewById(R.id.number_button);
 
 
         btnAddToCart = (Button) findViewById(R.id.btn_AddToCart);
@@ -71,15 +74,29 @@ public class ProductDetailActivity extends AppCompatActivity {
         btnAddToCart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                current_product.setProductQunt(numberButton.getNumber());
+            //    current_product.setProductQunt(numberButton.getNumber());
 
+                List<Product> tem=new ArrayList<>();
+                tem.addAll(new Database(getApplicationContext()).getCarts());
+                boolean isAlready=false;
+                for(Product product:tem){
+                    if(current_product.getProductID().equalsIgnoreCase(product.getProductID())){
+                        isAlready=true;
+                    }
+
+                }
                 Log.e("==value", String.valueOf(current_product.getProductPrice()));
+                if(isAlready){
+                    Toast.makeText(ProductDetailActivity.this,"product is already in cart",Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
                 new Database(ProductDetailActivity.this).addToCart((current_product));
 current_product.setProductImage(current_product.getProductImage());
 current_product.setProductPrice(current_product.getProductPrice());
 
                 Toast.makeText(ProductDetailActivity.this,"Added",Toast.LENGTH_SHORT).show();
-            }
+            }}
         });
 
 

@@ -168,8 +168,8 @@ public class SearchListActivity extends AppCompatActivity {
     }
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.search_item_menu, menu);
-        MenuItem item = menu.findItem(R.id.action_search);
-        searchView.setMenuItem(item);
+      //  MenuItem item = menu.findItem(R.id.action_search);
+       // searchView.setMenuItem(item);
         return true;
     }
 

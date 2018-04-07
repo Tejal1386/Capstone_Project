@@ -12,7 +12,7 @@ public class Product {
     private double ProductPrice;
     private String ProductPricenew;
     private double ProductSalePrice;
-    private String ProductQunt;
+    private String ProductQunt="0";
     private String ProductBrand;
     private String ProductColor;
     private String ProductDept;
@@ -20,6 +20,7 @@ public class Product {
     private String ProductManufacturer;
     private String ProductOffer;
     private String ProductCatID;
+    private int ProductSaleLimit;
     private String number;
 
     public Product(String productId, String productName,  String productPrice,String productQuantity, String productOffer,String productImage) {
@@ -50,6 +51,17 @@ public class Product {
     }
 */
 
+    public void setProductSalePrice(double productSalePrice) {
+        ProductSalePrice = productSalePrice;
+    }
+
+    public int getProductSaleLimit() {
+        return ProductSaleLimit;
+    }
+
+    public void setProductSaleLimit(int productSaleLimit) {
+        ProductSaleLimit = productSaleLimit;
+    }
 
     public String getProductID() {
         return ProductID;

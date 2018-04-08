@@ -13,10 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="8dp"
-        android:background="@color/bgRow"
-
-
-        >
+        android:background="@color/bgRow">
 
         <ImageView
             android:id="@+id/delete_icon"
@@ -102,10 +99,10 @@
                     android:layout_marginRight="16dp"
                     android:tint="@color/colorAccent"/>-->
         <com.cepheuen.elegantnumberbutton.view.ElegantNumberButton
-            android:layout_width="60dp"
+            android:layout_width="80dp"
             android:layout_height="30dp"
             android:id="@+id/btn_quantity"
-            app:textSize="8sp"
+            app:textSize="6sp"
             app:backGroundColor="@color/colorAccent"
             app:initialNumber="1"
             app:finalNumber="20"

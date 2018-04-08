@@ -47,9 +47,6 @@
                     android:layout_height="wrap_content"
                     android:textSize="20sp"/>
 
-
-
-
             </LinearLayout>
 
             <Button
@@ -64,19 +61,6 @@
 
         </RelativeLayout>
 
-
-
-
     </android.support.v7.widget.CardView>
-
-
-
-
-
-
-
-
-
-
 
 </RelativeLayout>

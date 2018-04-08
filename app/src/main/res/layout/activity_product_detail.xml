@@ -49,7 +49,7 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/txtproductSalePrice"
                     android:textSize="22dp"
-                    android:textColor="@color/red"/>
+                    android:textColor="@color/bgRow"/>
 
                 <TextView
                     android:layout_marginTop="5dp"

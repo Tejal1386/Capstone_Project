@@ -100,6 +100,12 @@ public class Database extends SQLiteAssetHelper{
         String query ="DELETE FROM OrderDetail WHERE ProductID = '"+ order.getProductID()+"'";
         db.execSQL(query);
     }
+    public void removeFromCart(String productId) {
+        SQLiteDatabase db = getReadableDatabase();
+        String query ="DELETE FROM OrderDetail WHERE ProductID = '%s' ";
+        db.execSQL(query);
+    }
+
 }
 
 

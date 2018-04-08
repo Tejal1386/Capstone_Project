@@ -38,8 +38,8 @@ public class ProductInSaleActivity extends AppCompatActivity {
         //Toolbar setting
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        toolbar.setTitleTextColor(1);
-        getSupportActionBar().setTitle(" Products");
+      //  toolbar.setTitleTextColor(1);
+        getSupportActionBar().setTitle(" Sales");
 
         // add back arrow to toolbar
         if (getSupportActionBar() != null){
@@ -62,7 +62,7 @@ public class ProductInSaleActivity extends AppCompatActivity {
         layoutManager = new LinearLayoutManager(getBaseContext());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
 
-        sale_RecyclerView.setLayoutManager(new GridLayoutManager(this, 1));
+        sale_RecyclerView.setLayoutManager(new GridLayoutManager(this, 2));
 
         load_ProductsInSale();
 
@@ -79,7 +79,7 @@ public class ProductInSaleActivity extends AppCompatActivity {
 
                     viewHolder.product_saleLimit.setText(" " + model.getProductSaleLimit() + " % off");
 
-                    viewHolder.product_saleEndDate.setText(model.getProductSaleEndDate());
+                    viewHolder.product_saleEndDate.setText( "Ends " + model.getProductSaleEndDate());
 
                 viewHolder.setClickListener(new ProductViewHolder.ItemClickListener() {
                     @Override

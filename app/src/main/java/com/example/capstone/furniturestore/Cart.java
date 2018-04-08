@@ -58,6 +58,7 @@ public class Cart extends AppCompatActivity {
 
 
         recyclerView = (RecyclerView) findViewById(R.id.listCart);
+        recyclerView.setNestedScrollingEnabled(false);
 
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);
@@ -65,7 +66,7 @@ public class Cart extends AppCompatActivity {
 
         txtTotalPrice = (TextView)findViewById(R.id.total);
         btnplace = (Button) findViewById(R.id.btn_placeorder);
-btnplace.setOnClickListener(new View.OnClickListener() {
+        btnplace.setOnClickListener(new View.OnClickListener() {
     @Override
     public void onClick(View v) {
 showAlertDialog();
@@ -73,8 +74,10 @@ showAlertDialog();
 });
 
 
+
+
         loadListOrder();}
-    private void showAlertDialog() {
+        private void showAlertDialog() {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(Cart.this);
         alertDialog.setTitle("One more step");
         alertDialog.setMessage("Enter your address: ");

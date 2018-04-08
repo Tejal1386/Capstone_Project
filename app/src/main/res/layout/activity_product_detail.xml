@@ -79,8 +79,14 @@
             ></com.cepheuen.elegantnumberbutton.view.ElegantNumberButton>
 
 
+            <Button
+                android:text="Show View"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/btn_View"/>
 
-        <Button
+
+            <Button
             android:text="Add To Cart"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

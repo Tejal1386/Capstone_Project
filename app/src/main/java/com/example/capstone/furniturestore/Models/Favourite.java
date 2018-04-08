@@ -14,8 +14,8 @@ public class Favourite {
     public Favourite() {
     }
 
-    public Favourite(String user_ID, String product_ID, String favorite_ID, String favorite_title ) {
-        User_ID = user_ID;
+    public Favourite( String product_ID, String favorite_ID, String favorite_title ) {
+       // User_ID = user_ID;
         Product_ID = product_ID;
         Favorite_ID = favorite_ID;
         Favorite_title = favorite_title;

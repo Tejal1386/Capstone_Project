@@ -67,16 +67,16 @@ public class SearchListActivity extends AppCompatActivity {
 
         category_RecyclerView = (RecyclerView) findViewById(R.id.recycle_search);
         category_RecyclerView.setHasFixedSize(true);
-     //   category_RecyclerView.setNestedScrollingEnabled(false);
-        layoutManager = new LinearLayoutManager(getBaseContext());
-       layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        category_RecyclerView.setNestedScrollingEnabled(false);
+      //  layoutManager = new LinearLayoutManager(getBaseContext());
+      // layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
 
         category_RecyclerView.setLayoutManager(new GridLayoutManager(this, 1));
 
 
-        searchView = (MaterialSearchView) findViewById(R.id.search_view);
+       /* searchView = (MaterialSearchView) findViewById(R.id.search_view);
         searchView.closeSearch();
-
+*/
         searchView.setVoiceSearch(true);
 
 

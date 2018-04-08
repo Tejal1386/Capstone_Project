@@ -3,7 +3,9 @@ package com.example.capstone.furniturestore;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -12,17 +14,25 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.capstone.furniturestore.Adapter.SearchListAdapter;
 import com.example.capstone.furniturestore.Adapter.ViewPagerAdapter;
+import com.example.capstone.furniturestore.Models.Category;
 import com.example.capstone.furniturestore.Models.Department;
 import com.example.capstone.furniturestore.Models.Product;
 import com.example.capstone.furniturestore.ViewHolder.DepartmentViewHolder;
 import com.example.capstone.furniturestore.ViewHolder.ProductViewHolder;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
 import com.mancj.materialsearchbar.MaterialSearchBar;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 import com.squareup.picasso.Picasso;
@@ -38,25 +48,26 @@ import java.util.TimerTask;
 public class StoreActivity extends AppCompatActivity {
 
     FirebaseDatabase database;
-    private DatabaseReference deptDatabase,prodDatabase;
+    private DatabaseReference deptDatabase,saleDatabase,CategoryDatabase;
 
     //search functionality
 
-    FirebaseRecyclerAdapter<Product, ProductViewHolder> searchAdapter;
-    List<String> suggestList = new ArrayList<>();
-    MaterialSearchBar materialSearchBar;
-    MaterialSearchView materialSearchView;
-    String[] list;
+    RecyclerView searchRecycler;
+    ArrayList<Category> suggestList = new ArrayList<>();
+    ArrayList<String> searchString = new ArrayList<>();
 
+    SearchListAdapter searchListAdapter;
+    MaterialSearchView materialSearchView;
+    
     Toolbar toolbar;
     ViewPager view_Pager;
     Timer timer;
     private int currentPage = 0;
     TextView textView;
-    public RecyclerView department_RecyclerView;
+    public RecyclerView department_RecyclerView, ProductInSale_RecyclerView;
     LinearLayoutManager layoutManager;
     FloatingActionButton fb_ShoppingBasket;
-
+    LinearLayout searchList;
     Intent intent;
 
 
@@ -67,7 +78,10 @@ public class StoreActivity extends AppCompatActivity {
 
         //Firebase Database
         deptDatabase = FirebaseDatabase.getInstance().getReference("Department");
-       // prodDatabase = FirebaseDatabase.getInstance().getReference("Products");
+        saleDatabase = FirebaseDatabase.getInstance().getReference("Products");
+        CategoryDatabase = FirebaseDatabase.getInstance().getReference("Category");
+
+        // prodDatabase = FirebaseDatabase.getInstance().getReference("Products");
 
         //Auto Pager
         view_Pager = (ViewPager) findViewById(R.id.viewPager);
@@ -76,9 +90,9 @@ public class StoreActivity extends AppCompatActivity {
         setupAutoPager();
 
         //ToolBar
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.searchtoolbar);
         setSupportActionBar(toolbar);
-        toolbar.setTitleTextColor(1);
+
         getSupportActionBar().setTitle("supreme furniture");
 
         // add back arrow to toolbar
@@ -95,6 +109,8 @@ public class StoreActivity extends AppCompatActivity {
                 onBackPressed(); // Implemented by activity
             }
         });
+
+
 
         //floating button
         fb_ShoppingBasket = (FloatingActionButton) findViewById(R.id.fb_ShoppingBasket);
@@ -116,6 +132,9 @@ public class StoreActivity extends AppCompatActivity {
 
         //Bottom navigation
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
+
+        CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) bottomNavigationView.getLayoutParams();
+        layoutParams.setBehavior(new BottomNavigationViewBehavior());
 
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -147,49 +166,45 @@ public class StoreActivity extends AppCompatActivity {
         });
 
 
-        //Recycler View
-        department_RecyclerView = (RecyclerView)findViewById(R.id.recycle_dept);
-        department_RecyclerView.setHasFixedSize(true);
-        department_RecyclerView.setNestedScrollingEnabled(false);
-        department_RecyclerView.setLayoutManager(new GridLayoutManager(this, 2));
 
         //Load Department
         load_Department();
 
 
+        load_productInSaleItems();
 
-
-        // load_search();
-    }
-
-
-
-   /* public void load_search(){
-
-        list = new String[]{"Clipcodes", "Android Tutorials", "Youtube Clipcodes Tutorials", "SearchView Clicodes", "Android Clipcodes", "Tutorials Clipcodes"};
-
-        //  materialSearchView = (MaterialSearchView)findViewById(R.id.searchView);
-        materialSearchView.clearFocus();
-        materialSearchView.setSuggestions(list);
-        materialSearchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
+        CategoryDatabase.addValueEventListener(new ValueEventListener() {
             @Override
-            public boolean onQueryTextSubmit(String query) {
-                //Here Create your filtering
-                return false;
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                int i = 0;
+                for(DataSnapshot categorySnapshot : dataSnapshot.getChildren()) {
+                    Category category = categorySnapshot.getValue(Category.class);
+                    suggestList.add(category);
+                    searchString.add(category.getCategoryName());
+                    i++;
+                }
+
             }
 
             @Override
-            public boolean onQueryTextChange(String newText) {
-                //You can make change realtime if you typing here
-                //See my tutorials for filtering with ListView
-                return false;
+            public void onCancelled(DatabaseError databaseError) {
+
             }
         });
 
 
-    }*/
+        load_SearchItems();
+
+    }
+
 
     public  void load_Department(){
+
+        //Recycler View
+        department_RecyclerView = (RecyclerView)findViewById(R.id.recycle_dept);
+        department_RecyclerView.setHasFixedSize(true);
+        department_RecyclerView.setNestedScrollingEnabled(false);
+        department_RecyclerView.setLayoutManager(new GridLayoutManager(this, 2));
 
         FirebaseRecyclerAdapter<Department,DepartmentViewHolder> adapter = new FirebaseRecyclerAdapter<Department, DepartmentViewHolder>(Department.class,R.layout.department_layout,DepartmentViewHolder.class,deptDatabase) {
             @Override
@@ -212,7 +227,115 @@ public class StoreActivity extends AppCompatActivity {
 
     }
 
+    public void load_productInSaleItems() {
+        //Recycler View
+        ProductInSale_RecyclerView = (RecyclerView)findViewById(R.id.recycle_sale);
+        ProductInSale_RecyclerView.setHasFixedSize(true);
+        ProductInSale_RecyclerView.setNestedScrollingEnabled(false);
+        ProductInSale_RecyclerView.setLayoutManager(new GridLayoutManager(this, 2));
 
+
+
+        FirebaseRecyclerAdapter<Product, ProductViewHolder> adapter = new FirebaseRecyclerAdapter<Product, ProductViewHolder>(Product.class,R.layout.product_sale_layout,ProductViewHolder.class,saleDatabase.orderByChild("ProductSale").equalTo("True").limitToFirst(2)) {
+            @Override
+            protected void populateViewHolder(ProductViewHolder viewHolder, final Product model, int position) {
+                Picasso.with(getBaseContext()).load(model.getProductImage()).into(viewHolder.product_Image);
+                viewHolder.product_Name.setText(model.getProductName());
+
+
+                viewHolder.product_saleLimit.setText(" " + model.getProductSaleLimit() + " % off");
+
+                viewHolder.product_saleEndDate.setText("Ends "+model.getProductSaleEndDate());
+
+                viewHolder.setClickListener(new ProductViewHolder.ItemClickListener() {
+                    @Override
+                    public void onClickItem(int pos) {
+                        Intent intent = new Intent(StoreActivity.this, ProductDetailActivity.class);
+                        intent.putExtra("ProductID", model.getProductID());
+                        startActivity(intent);
+                    }
+                });
+            }
+        };
+
+        ProductInSale_RecyclerView.setAdapter(adapter);
+
+    }
+
+    public void load_SearchItems(){
+        materialSearchView = (MaterialSearchView) findViewById(R.id.search_view);
+        materialSearchView.setVoiceSearch(true);
+       // materialSearchView.setSuggestions();
+        searchList = (LinearLayout) findViewById(R.id.search_listlayout);
+
+        materialSearchView.setOnSearchViewListener(new MaterialSearchView.SearchViewListener() {
+            @Override
+            public void onSearchViewShown() {
+                    searchList.setVisibility(View.VISIBLE);
+
+
+                   if(searchList.getVisibility() == View.VISIBLE){
+                       searchListAdapter = new SearchListAdapter(suggestList,StoreActivity.this);
+
+                       searchRecycler = (RecyclerView) findViewById(R.id.recycler_search_List);
+                       searchRecycler.setHasFixedSize(true);
+                       searchRecycler.setNestedScrollingEnabled(false);
+
+                       layoutManager = new LinearLayoutManager(getBaseContext());
+                       searchRecycler.setLayoutManager(new GridLayoutManager(StoreActivity.this, 1));
+
+                       searchRecycler.setAdapter(searchListAdapter);
+                   }
+            }
+
+            @Override
+            public void onSearchViewClosed() {
+                searchList.setVisibility(View.INVISIBLE);
+                searchList.setVisibility(View.GONE);
+
+            }
+        });
+
+
+
+        materialSearchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                if(newText != null && !newText.isEmpty()){
+                    List<Category> lstfound = new ArrayList<Category>();
+                    for(String item:searchString){
+                        if(item.contains(newText))
+                            searchString.add(item);
+                    }
+
+
+                }
+                else {
+
+
+
+                }
+                return true;
+            }
+        });
+
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        if (materialSearchView.isSearchOpen()) {
+            materialSearchView.closeSearch();
+
+        } else {
+            super.onBackPressed();
+        }
+    }
 
     private void setupAutoPager()
     {
@@ -241,26 +364,54 @@ public class StoreActivity extends AppCompatActivity {
 
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.search_item_menu, menu);
-        //  MenuItem item = menu.findItem(R.id.action_search);
-        //  materialSearchView.setMenuItem(item);
-
+          MenuItem item = menu.findItem(R.id.action_search);
+          materialSearchView.setMenuItem(item);
         return true;
     }
 
 
+    //Bottom Navigation Bar
+    public class BottomNavigationViewBehavior extends CoordinatorLayout.Behavior<BottomNavigationView> {
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
+        private int height;
 
-        if (id == R.id.action_search) {
-            Intent intent = new Intent(getApplicationContext(), SearchItemActivity.class);
-            startActivity(intent);
-
-            return true;
+        @Override
+        public boolean onLayoutChild(CoordinatorLayout parent, BottomNavigationView child, int layoutDirection) {
+            height = child.getHeight();
+            return super.onLayoutChild(parent, child, layoutDirection);
         }
 
-        return super.onOptionsItemSelected(item);
+        @Override
+        public boolean onStartNestedScroll(@NonNull CoordinatorLayout coordinatorLayout,
+                                           BottomNavigationView child, @NonNull
+                                                   View directTargetChild, @NonNull View target,
+                                           int axes, int type)
+        {
+            return axes == ViewCompat.SCROLL_AXIS_VERTICAL;
+        }
+
+        @Override
+        public void onNestedScroll(@NonNull CoordinatorLayout coordinatorLayout, @NonNull BottomNavigationView child,
+                                   @NonNull View target, int dxConsumed, int dyConsumed,
+                                   int dxUnconsumed, int dyUnconsumed,
+                                   @ViewCompat.NestedScrollType int type)
+        {
+            if (dyConsumed > 0) {
+                slideDown(child);
+            } else if (dyConsumed < 0) {
+                slideUp(child);
+            }
+        }
+
+        private void slideUp(BottomNavigationView child) {
+            child.clearAnimation();
+            child.animate().translationY(0).setDuration(200);
+        }
+
+        private void slideDown(BottomNavigationView child) {
+            child.clearAnimation();
+            child.animate().translationY(height).setDuration(200);
+        }
     }
 
 

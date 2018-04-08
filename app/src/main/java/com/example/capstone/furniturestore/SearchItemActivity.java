@@ -64,7 +64,7 @@ public class SearchItemActivity extends AppCompatActivity {
             }
         });
 
-        searchView = (MaterialSearchView) findViewById(R.id.search_view);
+       searchView = (MaterialSearchView) findViewById(R.id.search_view);
         searchView.closeSearch();
         searchView.setFocusable(true);
         searchView.setVoiceSearch(true);

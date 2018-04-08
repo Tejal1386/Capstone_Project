@@ -10,10 +10,7 @@ public class Product {
     private String ProductName;
     private String ProductImage;
     private double ProductPrice;
-<<<<<<< HEAD
-=======
     private String ProductPricenew;
->>>>>>> ff3554e66ed50144d851683ea491c4a2eca8c72e
     private double ProductSalePrice;
     private String ProductQunt;
     private String ProductBrand;
@@ -25,6 +22,9 @@ public class Product {
     private String ProductCatID;
     private String ProductSaleEndDate;
     private int ProductSaleLimit;
+
+    public Product() {
+    }
 
     public Product(String productID, String productName, String productImage, double productPrice, double productSalePrice)
     {
@@ -201,6 +201,5 @@ public class Product {
         return number;
     }
 
-    public Product() {
-    }
+
 }

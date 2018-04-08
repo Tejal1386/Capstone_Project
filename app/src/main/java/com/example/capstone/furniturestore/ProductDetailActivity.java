@@ -1,15 +1,22 @@
 package com.example.capstone.furniturestore;
 
+import android.app.Dialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -17,6 +24,7 @@ import android.widget.Toast;
 import com.andremion.counterfab.CounterFab;
 import com.cepheuen.elegantnumberbutton.view.ElegantNumberButton;
 import com.example.capstone.furniturestore.Database.Database;
+import com.example.capstone.furniturestore.Models.Favourite;
 import com.example.capstone.furniturestore.Models.Product;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -33,15 +41,33 @@ public class ProductDetailActivity extends AppCompatActivity {
     CounterFab fb_ShoppingBasket;
     TextView txtProductName,txtProductMenufacturer, txtProductSalePrice, txtProductPrice, txtProductShipping ,txtProductInformation, txtShipping;
     ImageView imgProduct;
-    String ProductID;
-    Button btnAddToCart, btnAddToFavourite;
+
+    Button btnAddToCart, btnAddToFavourite, btnView;
     ElegantNumberButton numberButton;
     Product current_product;
+
+    private DatabaseReference mDatabase;
+    SharedPreferences sharedPreferences;
+    public static final String MyPREFERENCES = "User" ;
+    public static final String Name = "UserNameKey";
+    public static final String Userid = "UseridKey";
+
+
+    String  ProductID = "", UserID="";
+    Intent intent;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product_detail);
         productDatabase =  FirebaseDatabase.getInstance().getReference("Products");
+
+        mDatabase = FirebaseDatabase.getInstance().getReference("Favourites");
+
+        sharedPreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+
+        UserID = (sharedPreferences.getString(Userid, ""));
 
         imgProduct = (ImageView) findViewById(R.id.imageproduct);
         txtProductName = (TextView) findViewById(R.id.txtproductName);
@@ -55,7 +81,7 @@ public class ProductDetailActivity extends AppCompatActivity {
         //toolBar settings
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        toolbar.setTitleTextColor(1);
+    //    toolbar.setTitleTextColor(1);
         getSupportActionBar().setTitle(" Products");
 
         // add back arrow to toolbar
@@ -75,8 +101,8 @@ public class ProductDetailActivity extends AppCompatActivity {
 
                 Log.e("==value", String.valueOf(current_product.getProductPrice()));
                 new Database(ProductDetailActivity.this).addToCart((current_product));
-current_product.setProductImage(current_product.getProductImage());
-current_product.setProductPrice(current_product.getProductPrice());
+                current_product.setProductImage(current_product.getProductImage());
+                current_product.setProductPrice(current_product.getProductPrice());
 
                 Toast.makeText(ProductDetailActivity.this,"Added",Toast.LENGTH_SHORT).show();
             }
@@ -88,9 +114,101 @@ current_product.setProductPrice(current_product.getProductPrice());
         btnAddToFavourite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(ProductDetailActivity.this, AddToFavouriteActivity.class);
-                intent.putExtra("ProductID", ProductID);
-                startActivity(intent);
+
+
+                if(UserID.equals(null) || UserID ==  ""){
+                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                            ProductDetailActivity.this);
+
+                    // set title
+                    alertDialogBuilder.setTitle("LogIn First");
+
+                    // set dialog message
+                    alertDialogBuilder
+                            .setMessage("LogIn First to see your Account!")
+                            .setCancelable(false)
+
+                            .setPositiveButton("LogIn", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int id) {
+                                   Intent i = new Intent(ProductDetailActivity.this,LoginActivity.class);
+                                    startActivity(i);
+                                }
+                            });
+
+
+
+                    // create alert dialog
+                    AlertDialog alertDialog = alertDialogBuilder.create();
+
+                    // show it
+                    alertDialog.show();
+                }
+                else {
+
+
+                    // get prompts.xml view
+                    LayoutInflater li = LayoutInflater.from(ProductDetailActivity.this);
+                    View promptsView = li.inflate(R.layout.add_to_favourite, null);
+
+                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                            ProductDetailActivity.this);
+
+                    // set prompts.xml to alertdialog builder
+                    alertDialogBuilder.setView(promptsView);
+
+                    final EditText userInput = (EditText) promptsView
+                            .findViewById(R.id.editText_title);
+
+                    // set dialog message
+                    alertDialogBuilder
+                            .setCancelable(false)
+                            .setPositiveButton("Add",
+                                    new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int id) {
+
+
+                                            String ID = mDatabase.push().getKey();
+
+                                            if (UserID != "") {
+                                                String title = userInput.getText().toString();
+                                                Favourite favourite = new Favourite(ProductID, ID, title);
+                                                mDatabase.child(UserID).child(ID).setValue(favourite);
+
+                                            }
+
+
+                                        }
+                                    })
+                            .setNegativeButton("Cancel",
+                                    new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int id) {
+                                            dialog.cancel();
+                                        }
+                                    });
+
+                    // create alert dialog
+                    AlertDialog alertDialog = alertDialogBuilder.create();
+
+                    // show it
+                    alertDialog.show();
+                }
+
+
+            }
+        });
+
+
+
+        //ARCore Integration button
+        btnView = (Button)findViewById(R.id.btn_View);
+
+        btnView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+            //    Intent intent = new Intent(ProductDetailActivity.this, AddToFavouriteActivity.class);
+              //  intent.putExtra("ProductID", ProductID);
+                //startActivity(intent);
             }
         });
 

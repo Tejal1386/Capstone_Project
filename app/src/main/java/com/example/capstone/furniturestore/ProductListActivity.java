@@ -10,13 +10,18 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.capstone.furniturestore.Models.Category;
 import com.example.capstone.furniturestore.Models.Product;
+import com.example.capstone.furniturestore.ViewHolder.CategoryViewHolder;
 import com.example.capstone.furniturestore.ViewHolder.ProductViewHolder;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.database.DataSnapshot;
@@ -48,11 +53,12 @@ public class ProductListActivity extends AppCompatActivity {
 
         productDatabase =  FirebaseDatabase.getInstance().getReference("Products");
 
+
         Intent i = getIntent();
-        CategoryName   = i.getExtras().getString("CategoryName");
-        CategoryID = i.getExtras().getString("CategoryID");
-        txtCategoryName = (TextView) findViewById(R.id.txt_categoryName);
-        txtCategoryName.setText(CategoryName);
+       CategoryName   = i.getExtras().getString("CategoryName");
+       CategoryID = i.getExtras().getString("CategoryID");
+       txtCategoryName = (TextView) findViewById(R.id.txt_categoryName);
+       txtCategoryName.setText(CategoryName);
         //toolBar settings
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -68,6 +74,7 @@ public class ProductListActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
 
                 onBackPressed(); // Implemented by activity
             }
@@ -91,11 +98,37 @@ public class ProductListActivity extends AppCompatActivity {
         product_RecyclerView.setNestedScrollingEnabled(false);
         layoutManager = new LinearLayoutManager(getBaseContext());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+
         product_RecyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+
+
+
+        productDatabase.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Integer i = 0;
+                for(DataSnapshot productSnapshot : dataSnapshot.getChildren())
+                {
+                    Product products = productSnapshot.getValue(Product.class);
+                    String x =  products.getProductName();
+
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
         load_Products();
 
+
     }
+
+
+
+
 
     public  void load_Products(){
 

@@ -58,7 +58,7 @@ public class StoreActivity extends AppCompatActivity {
 
     SearchListAdapter searchListAdapter;
     MaterialSearchView materialSearchView;
-    
+
     Toolbar toolbar;
     ViewPager view_Pager;
     Timer timer;

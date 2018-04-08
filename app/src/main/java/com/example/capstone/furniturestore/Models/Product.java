@@ -12,7 +12,7 @@ public class Product {
     private double ProductPrice;
     private String ProductPricenew;
     private double ProductSalePrice;
-    private String ProductQunt;
+    private String ProductQunt="0";
     private String ProductBrand;
     private String ProductColor;
     private String ProductDept;
@@ -21,7 +21,7 @@ public class Product {
     private String ProductOffer;
     private String ProductCatID;
     private String ProductSaleEndDate;
-    private int ProductSaleLimit;
+
 
     public Product() {
     }
@@ -32,11 +32,12 @@ public class Product {
         this.setProductName(productName);
         this.setProductImage(productImage);
         this.setProductPrice(productPrice);
-        this.setProductSalePrice(productSalePrice);
+
 
 
     }
 
+    private int ProductSaleLimit;
     private String number;
 
     public Product(String productId, String productName,  String productPrice,String productQuantity, String productOffer,String productImage) {
@@ -66,6 +67,8 @@ public class Product {
         ProductCatID = productCatID;
         ProductSaleEndDate = productSaleEndDate;
     }
+
+
 
     public String getProductSaleEndDate() {
         return ProductSaleEndDate;

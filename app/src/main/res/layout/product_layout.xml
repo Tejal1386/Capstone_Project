@@ -21,7 +21,7 @@
                 android:paddingLeft="5dp"
                 android:visibility="gone"
                 android:id="@+id/txtSaleTag"
-                android:background="@color/red"
+                android:background="@color/bgRow"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
@@ -61,7 +61,7 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/txt_productSalePrice"
                     android:textSize="22dp"
-                    android:textColor="@color/red"/>
+                    android:textColor="@color/bgRow"/>
 
                 <TextView
                     style="@style/ProductLayoutMargin"

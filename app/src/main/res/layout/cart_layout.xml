@@ -70,7 +70,7 @@
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
                 android:textAllCaps="true"
-                android:text="Product 01"
+
                 android:id="@+id/cart_item_name"
                 android:layout_marginLeft="10dp"
                 android:gravity="center_vertical|start"
@@ -82,7 +82,7 @@
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
                 android:textAllCaps="true"
-                android:text="sofa"
+
                 android:id="@+id/cart_item_price"
                 android:layout_marginLeft="10dp"
                 android:gravity="center_vertical|start"

@@ -94,18 +94,23 @@ public class Database extends SQLiteAssetHelper{
         String query = "UPDATE OrderDetail SET ProductQunt = '"+ quant+"' WHERE ProductID = '"+ order.getProductID()+"'";
    db.execSQL(query);
     }
-    public void DeleteRecord(Product order)
+ /*   public void DeleteRecord(Product order)
     {
         SQLiteDatabase db = getReadableDatabase();
         String query ="DELETE FROM OrderDetail WHERE ProductID = '"+ order.getProductID()+"'";
         db.execSQL(query);
-    }
-    public void removeFromCart(String productId) {
+    }*/
+  /*  public void removeFromCart(String productId, Product order) {
         SQLiteDatabase db = getReadableDatabase();
-        String query ="DELETE FROM OrderDetail WHERE ProductID = '%s' ";
+        String query ="DELETE FROM OrderDetail WHERE ProductID = '%s' "+ order.getProductID()+"'";
+        db.execSQL(query);
+    }*/
+
+    public void removeFromCart(String productID) {
+        SQLiteDatabase db = getReadableDatabase();
+        String query =String.format("DELETE FROM OrderDetail WHERE ProductID = '%s' ", productID);
         db.execSQL(query);
     }
-
 }
 
 

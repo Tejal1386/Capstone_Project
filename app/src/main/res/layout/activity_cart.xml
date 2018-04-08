@@ -40,7 +40,7 @@
                     android:layout_margin="-10dp"
                     android:textSize="20sp"/>
                 <TextView
-                    android:text="$10,000"
+                    android:text="$0"
                     android:id="@+id/total"
                     android:layout_margin="-10dp"
                     android:layout_width="wrap_content"

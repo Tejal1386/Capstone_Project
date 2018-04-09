@@ -18,6 +18,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -49,7 +50,7 @@ public class ProductDetailActivity extends AppCompatActivity {
     ElegantNumberButton numberButton;
     Product current_product;
 
-    private DatabaseReference mDatabase;
+    private DatabaseReference favouriteDatabase;
     SharedPreferences sharedPreferences;
     public static final String MyPREFERENCES = "User" ;
     public static final String Name = "UserNameKey";
@@ -66,7 +67,7 @@ public class ProductDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_product_detail);
         productDatabase =  FirebaseDatabase.getInstance().getReference("Products");
 
-        mDatabase = FirebaseDatabase.getInstance().getReference("Favourites");
+        favouriteDatabase = FirebaseDatabase.getInstance().getReference("Favourites");
 
         sharedPreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
 
@@ -93,6 +94,15 @@ public class ProductDetailActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
      //   numberButton = (ElegantNumberButton)findViewById(R.id.number_button);
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+                onBackPressed(); // Implemented by activity
+            }
+        });
 
 
         btnAddToCart = (Button) findViewById(R.id.btn_AddToCart);
@@ -133,84 +143,7 @@ public class ProductDetailActivity extends AppCompatActivity {
             public void onClick(View v) {
 
 
-                if(UserID.equals(null) || UserID ==  ""){
-                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
-                            ProductDetailActivity.this);
-
-                    // set title
-                    alertDialogBuilder.setTitle("LogIn First");
-
-                    // set dialog message
-                    alertDialogBuilder
-                            .setMessage("LogIn First to see your Account!")
-                            .setCancelable(false)
-
-                            .setPositiveButton("LogIn", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int id) {
-                                   Intent i = new Intent(ProductDetailActivity.this,LoginActivity.class);
-                                    startActivity(i);
-                                }
-                            });
-
-
-
-                    // create alert dialog
-                    AlertDialog alertDialog = alertDialogBuilder.create();
-
-                    // show it
-                    alertDialog.show();
-                }
-                else {
-
-
-                    // get prompts.xml view
-                    LayoutInflater li = LayoutInflater.from(ProductDetailActivity.this);
-                    View promptsView = li.inflate(R.layout.add_to_favourite, null);
-
-                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
-                            ProductDetailActivity.this);
-
-                    // set prompts.xml to alertdialog builder
-                    alertDialogBuilder.setView(promptsView);
-
-                    final EditText userInput = (EditText) promptsView
-                            .findViewById(R.id.editText_title);
-
-                    // set dialog message
-                    alertDialogBuilder
-                            .setCancelable(false)
-                            .setPositiveButton("Add",
-                                    new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int id) {
-
-
-                                            String ID = mDatabase.push().getKey();
-
-                                            if (UserID != "") {
-                                                String title = userInput.getText().toString();
-                                                Favourite favourite = new Favourite(ProductID, ID, title);
-                                                mDatabase.child(UserID).child(ID).setValue(favourite);
-
-                                            }
-
-
-                                        }
-                                    })
-                            .setNegativeButton("Cancel",
-                                    new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int id) {
-                                            dialog.cancel();
-                                        }
-                                    });
-
-                    // create alert dialog
-                    AlertDialog alertDialog = alertDialogBuilder.create();
-
-                    // show it
-                    alertDialog.show();
-                }
-
+                ShowAlert();
 
             }
         });
@@ -229,6 +162,8 @@ public class ProductDetailActivity extends AppCompatActivity {
             }
         });
 
+
+
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -238,7 +173,7 @@ public class ProductDetailActivity extends AppCompatActivity {
             }
         });
 
-     fb_ShoppingBasket = (CounterFab) findViewById(R.id.fb_ShoppingBasket);
+         fb_ShoppingBasket = (CounterFab) findViewById(R.id.fb_ShoppingBasket);
 
         fb_ShoppingBasket.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -250,19 +185,44 @@ public class ProductDetailActivity extends AppCompatActivity {
         });
 
 
-        txtProductInformation = (TextView) findViewById(R.id.txt_Information);
-        txtProductInformation.setOnClickListener(new View.OnClickListener() {
+        RelativeLayout layout_info = (RelativeLayout) findViewById(R.id.layout_info);
+        layout_info.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(ProductDetailActivity.this,ProductInformationActivity.class);
                 intent.putExtra("ProductID", ProductID);
+                intent.putExtra("PageName","ProductInfo");
                 startActivity(intent);
             }
         });
 
+        RelativeLayout layout_specification = (RelativeLayout) findViewById(R.id.layout_specification);
+        layout_specification.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ProductDetailActivity.this,ProductInformationActivity.class);
+                intent.putExtra("ProductID", ProductID);
+                intent.putExtra("PageName","Productspecification");
+                startActivity(intent);
+            }
+        });
+
+        RelativeLayout layout_shipping = (RelativeLayout) findViewById(R.id.layout_shipping);
+        layout_shipping.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ProductDetailActivity.this,ProductInformationActivity.class);
+                intent.putExtra("ProductID", ProductID);
+                intent.putExtra("PageName","ProductShipping");
+                startActivity(intent);
+            }
+        });
+
+
+
         fb_ShoppingBasket.setCount(new Database(this).getCountCart());
 
-        productDatabase.addValueEventListener(new ValueEventListener() {
+        productDatabase.orderByChild("ProductID").equalTo(ProductID).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Integer i = 0;
@@ -271,7 +231,6 @@ public class ProductDetailActivity extends AppCompatActivity {
                     Product products = productSnapshot.getValue(Product.class);
                     String prod_id = products.getProductID();
 
-                    if(prod_id.equals(ProductID)){
                         current_product=products;
                         Picasso.with(getBaseContext()).load(products.getProductImage()).into(imgProduct);
                         txtProductName.setText(products.getProductName());
@@ -284,8 +243,6 @@ public class ProductDetailActivity extends AppCompatActivity {
                         else {
                             txtProductShipping.setText("");
                         }
-
-                    }
 
                     i++;
                 }
@@ -304,6 +261,82 @@ public class ProductDetailActivity extends AppCompatActivity {
 
         super.onResume();
         fb_ShoppingBasket.setCount(new Database(this).getCountCart());
+    }
+
+
+    public void ShowAlert(){
+        if(UserID.equals(null) || UserID ==  ""){
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                    ProductDetailActivity.this);
+
+            // set title
+            alertDialogBuilder.setTitle("LogIn First");
+
+            // set dialog message
+            alertDialogBuilder
+                    .setMessage("LogIn First to see your Account!")
+                    .setCancelable(false)
+
+                    .setPositiveButton("LogIn", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int id) {
+                            Intent i = new Intent(ProductDetailActivity.this,LoginActivity.class);
+                            startActivity(i);
+                        }
+                    });
+
+            // create alert dialog
+            AlertDialog alertDialog = alertDialogBuilder.create();
+
+            // show it
+            alertDialog.show();
+        }
+        else {
+
+            // get prompts.xml view
+            LayoutInflater li = LayoutInflater.from(ProductDetailActivity.this);
+            View promptsView = li.inflate(R.layout.add_to_favourite, null);
+
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                    ProductDetailActivity.this);
+
+            // set prompts.xml to alertdialog builder
+            alertDialogBuilder.setView(promptsView);
+
+            final EditText userInput = (EditText) promptsView
+                    .findViewById(R.id.editText_title);
+
+            // set dialog message
+            alertDialogBuilder
+                    .setCancelable(false)
+                    .setPositiveButton("Add",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+
+                                    String ID = favouriteDatabase.push().getKey();
+
+                                    if (UserID != "") {
+                                        String title = userInput.getText().toString();
+                                        Favourite favourite = new Favourite(ProductID, ID, title);
+                                        favouriteDatabase.child(UserID).child(ID).setValue(favourite);
+
+                                    }
+                                }
+                            })
+                    .setNegativeButton("Cancel",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.cancel();
+                                }
+                            });
+
+            // create alert dialog
+            AlertDialog alertDialog = alertDialogBuilder.create();
+
+            // show it
+            alertDialog.show();
+        }
+
     }
 
 }

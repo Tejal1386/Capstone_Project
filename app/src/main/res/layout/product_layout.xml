@@ -61,7 +61,7 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/txt_productSalePrice"
                     android:textSize="22dp"
-                    android:textColor="@color/bgRow"/>
+                    android:textColor="@color/red"/>
 
                 <TextView
                     style="@style/ProductLayoutMargin"

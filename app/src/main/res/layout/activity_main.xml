@@ -40,45 +40,45 @@
 
 
 
-            <Button
-                android:id="@+id/btnSignUp"
-                android:background="@color/appTheme"
-                android:textColor="@color/white"
-                android:layout_weight="1"
-                android:layout_margin="8dp"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="Register" />
+        <Button
+            android:id="@+id/btnSignUp"
+            android:background="@color/appTheme"
+            android:textColor="@color/white"
+            android:layout_weight="1"
+            android:layout_margin="8dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Register" />
+        <Button
+            android:background="@color/white"
+            android:textColor="@color/appTheme"
 
-            <Button
-               android:background="@color/white"
-                android:textColor="@color/appTheme"
-                android:id="@+id/btnLogin"
-                android:layout_weight="1"
-                android:layout_margin="8dp"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="LOG IN" />
+            android:id="@+id/btnLogin"
+            android:layout_weight="1"
+            android:layout_margin="8dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="LOG IN" />
 
-        </LinearLayout>
+    </LinearLayout>
 
-        <LinearLayout
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="25dp">
+
+        <TextView
+            android:id="@+id/txtlinkGuest"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="25dp">
+            android:textColor="@color/appTheme"
+            android:text="Continue as Guest "
+            android:textSize="20dp"
+            android:onClick="onCLick"
+            android:linksClickable="true"
+            tools:ignore="OnClick" />
 
-            <TextView
-                android:id="@+id/txtlinkGuest"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/appTheme"
-                android:text="Continue as Guest "
-                android:textSize="20dp"
-                android:onClick="onCLick"
-                android:linksClickable="true"
-                tools:ignore="OnClick" />
-
-        </LinearLayout>
+    </LinearLayout>
 
 </LinearLayout>

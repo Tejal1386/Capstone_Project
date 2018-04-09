@@ -10,8 +10,9 @@ public class Product {
     private String ProductName;
     private String ProductImage;
     private double ProductPrice;
+    private String ProductPricenew;
     private double ProductSalePrice;
-    private String ProductQunt;
+    private String ProductQunt="0";
     private String ProductBrand;
     private String ProductColor;
     private String ProductDept;
@@ -19,11 +20,37 @@ public class Product {
     private String ProductManufacturer;
     private String ProductOffer;
     private String ProductCatID;
+    private String ProductSaleEndDate;
+
 
     public Product() {
     }
 
-    public Product(String productID, String productName, String productImage, double productPrice, double productSalePrice, String productQunt, String productBrand, String productColor, String productDept, String productStyle, String productManufacturer, String productOffer, String productCatID) {
+    public Product(String productID, String productName, String productImage, double productPrice, double productSalePrice)
+    {
+        this.setProductID(productID);
+        this.setProductName(productName);
+        this.setProductImage(productImage);
+        this.setProductPrice(productPrice);
+
+
+
+    }
+
+    private int ProductSaleLimit;
+    private String number;
+
+    public Product(String productId, String productName,  String productPrice,String productQuantity, String productOffer,String productImage) {
+        ProductID = productId;
+        ProductName = productName;
+        ProductPricenew = productPrice;
+        ProductQunt = productQuantity;
+        ProductOffer = productOffer;
+        ProductImage =productImage;
+
+    }
+
+  public Product(String productID, String productName, String productImage, double productPrice, double productSalePrice, String productQunt, String productBrand, String productColor, String productDept, String productStyle, String productManufacturer, String productOffer, String productCatID,int productSaleLimit,String productSaleEndDate) {
         ProductID = productID;
         ProductName = productName;
         ProductImage = productImage;
@@ -34,10 +61,29 @@ public class Product {
         ProductColor = productColor;
         ProductDept = productDept;
         ProductStyle = productStyle;
-
+        ProductSaleLimit = productSaleLimit;
         ProductManufacturer = productManufacturer;
         ProductOffer = productOffer;
         ProductCatID = productCatID;
+        ProductSaleEndDate = productSaleEndDate;
+    }
+
+
+
+    public String getProductSaleEndDate() {
+        return ProductSaleEndDate;
+    }
+
+    public void setProductSaleEndDate(String productSaleEndDate) {
+        ProductSaleEndDate = productSaleEndDate;
+    }
+
+    public int getProductSaleLimit() {
+        return ProductSaleLimit;
+    }
+
+    public void setProductSaleLimit(int productSaleLimit) {
+        ProductSaleLimit = productSaleLimit;
     }
 
     public String getProductID() {
@@ -68,6 +114,14 @@ public class Product {
         return ProductPrice;
     }
 
+    public String getProductPricenew() {
+        return ProductPricenew;
+    }
+
+    public void setProductPricenew(String productPricenew) {
+        ProductPricenew = productPricenew;
+    }
+
     public void setProductPrice(double productPrice) {
         ProductPrice = productPrice;
     }
@@ -76,10 +130,10 @@ public class Product {
         return ProductSalePrice;
     }
 
-    public void setProductSale_Price(double productSalePrice) {
+    public void setProductSalePrice(double productSalePrice) {
         ProductSalePrice = productSalePrice;
-
     }
+
 
     public String getProductQunt() {
         return ProductQunt;
@@ -145,4 +199,10 @@ public class Product {
     public void setProductCatID(String productCatID) {
         ProductCatID = productCatID;
     }
+
+    public String getnumber() {
+        return number;
+    }
+
+
 }

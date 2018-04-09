@@ -5,7 +5,7 @@
     <item
         android:id="@+id/action_myFavoutite"
         android:enabled="true"
-        android:title="My Favourite"
+        android:title="Favourite"
         app:showAsAction="ifRoom"
         android:icon="@drawable/ic_action_favourite">
     </item>
@@ -13,16 +13,16 @@
     <item
         android:id="@+id/action_myAccount"
         android:enabled="true"
-        android:title="My Account"
+        android:title="Account"
         app:showAsAction="ifRoom"
-        android:icon="@drawable/ic_action_account">
+        android:icon="@drawable/account">
     </item>
 
     <item
-        android:id="@+id/action_myOrders"
+        android:id="@+id/action_sale"
         android:enabled="true"
-        android:title="My Orders"
+        android:title="Sales"
         app:showAsAction="ifRoom"
-        android:icon="@drawable/ic_action_myfavourite">
+        android:icon="@drawable/sales">
     </item>
 </menu>

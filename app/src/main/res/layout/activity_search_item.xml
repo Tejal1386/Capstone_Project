@@ -17,4 +17,17 @@
         android:layout_height="wrap_content"></ListView>
 
 
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycle_search"
+        android:layout_width="match_parent"
+
+        android:layout_height="match_parent"
+        android:clickable="true"
+        android:clipToPadding="false"
+        android:horizontalSpacing="30dp"
+        android:verticalSpacing="20dp">
+
+    </android.support.v7.widget.RecyclerView>
+
+
 </LinearLayout>

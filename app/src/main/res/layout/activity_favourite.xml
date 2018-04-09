@@ -9,6 +9,35 @@
 
     <include layout="@layout/toolbar"></include>
 
+
+    <RelativeLayout
+       android:layout_margin="5dp"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:textColor="@color/appTheme"
+            android:layout_marginBottom="10dp"
+            android:textSize="18dp"
+            android:id="@+id/txt_favouriteItem"
+            android:text="Item"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:id="@+id/btn_Editfavourite"
+            style="@style/Button_Style"
+            android:layout_width="wrap_content"
+
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentTop="true"
+            android:layout_gravity="right"
+            android:text="Edit" />
+    </RelativeLayout>
+
     <android.support.v4.widget.NestedScrollView
         android:fillViewport="true"
         android:layout_width="match_parent"
@@ -19,10 +48,9 @@
             android:layout_height="wrap_content">
 
 
-
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/recycle_Favourite"
-                    android:layout_width="match_parent"
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recycle_Favourite"
+                android:layout_width="match_parent"
 
                     android:layout_height="match_parent"
                     android:clickable="true"
@@ -30,7 +58,7 @@
                     android:horizontalSpacing="30dp"
                     android:verticalSpacing="30dp">
 
-                </android.support.v7.widget.RecyclerView>
+            </android.support.v7.widget.RecyclerView>
 
 
 

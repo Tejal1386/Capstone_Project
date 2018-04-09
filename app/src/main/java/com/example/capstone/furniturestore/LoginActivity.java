@@ -1,12 +1,15 @@
 package com.example.capstone.furniturestore;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -48,7 +51,7 @@ public class LoginActivity extends AppCompatActivity {
         //toolBar settings
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        toolbar.setTitleTextColor(1);
+       // toolbar.setTitleTextColor(1);
         getSupportActionBar().setTitle(" LogIn");
 
         // add back arrow to toolbar
@@ -70,7 +73,7 @@ public class LoginActivity extends AppCompatActivity {
 
         editText_username = (EditText)  findViewById(R.id.editTxt_UserName);
         editText_password = (EditText) findViewById(R.id.editTxt_Password);
-        btn_login = (Button) findViewById(R.id.btn_Login);
+        btn_login = (Button) findViewById(R.id.btnLogin);
         txtlink_SignUp = (TextView) findViewById(R.id.txtlinkSignUp);
 
         txtlink_SignUp.setOnClickListener(new View.OnClickListener() {
@@ -97,56 +100,72 @@ public class LoginActivity extends AppCompatActivity {
 
 
 
-        mDatabase.addValueEventListener(new ValueEventListener() {
+        mDatabase.orderByChild("userName").equalTo(userName).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                checkUser = 0;
-                checkPassword = 0;
-                for(DataSnapshot userSnapshot : dataSnapshot.getChildren())
-                {
-                    SharedPreferences.Editor editor = sharedPreferences.edit();
 
-                    User user = userSnapshot.getValue(User.class);
+                if(dataSnapshot.exists()) {
 
-                    String username = user.getUserName();
-                    String password = user.getPassword();
+                    for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
 
-                    if (username.equals(userName)) {
-                        checkUser++;
-                        if(password.equals(passWord)) {
-                            editor.putString(Userid,user.getUserId());
-                            editor.putString(Name, username);
-                            editor.apply();
-                            checkPassword++;
+                        if (userSnapshot.hasChildren()) {
 
-                            //break;
+                            User user = userSnapshot.getValue(User.class);
+
+                            if (passWord.equals(user.getPassword())) {
+
+                                editor.putString(Userid, user.getUserId());
+                                editor.putString(Name, user.getUserName());
+                                editor.apply();
+
+                                intent = new Intent(LoginActivity.this, StoreActivity.class);
+                                startActivity(intent);
+                            } else {
+                                ShowAlert("Wrong Password");
+                            }
                         }
-
-                    }
-
-                }
-
-                if(checkUser>0) {
-                    if(checkPassword>0) {
-                        intent = new Intent(LoginActivity.this, StoreActivity.class);
-                        startActivity(intent);
-                    }
-                    else {
-                        Toast.makeText(LoginActivity.this,"Wrong Password",Toast.LENGTH_LONG).show();;
-
                     }
                 }
                 else {
-                    Toast.makeText(LoginActivity.this,"UserName dose not exists",Toast.LENGTH_LONG).show();;
 
+                    ShowAlert("User is not Exist");
                 }
             }
 
-           @Override
+            @Override
             public void onCancelled(DatabaseError databaseError) {
 
             }
         });
 
+
+
+    }
+
+    public void ShowAlert(String msg){
+        final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                LoginActivity.this);
+
+
+        // set title
+      //  alertDialogBuilder.setTitle("Wrong Username or Password");
+
+        // set dialog message
+        alertDialogBuilder
+                .setMessage(msg)
+                .setCancelable(false)
+
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int id) {
+                    }
+                });
+
+        // create alert dialog
+        AlertDialog alertDialog = alertDialogBuilder.create();
+
+        // show it
+        alertDialog.show();
     }
 }

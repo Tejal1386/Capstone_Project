@@ -62,7 +62,7 @@ public class ProductListActivity extends AppCompatActivity {
         //toolBar settings
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        toolbar.setTitleTextColor(1);
+      //  toolbar.setTitleTextColor(1);
         getSupportActionBar().setTitle(" Products");
 
         // add back arrow to toolbar
@@ -126,6 +126,10 @@ public class ProductListActivity extends AppCompatActivity {
 
     }
 
+
+
+
+
     public  void load_Products(){
 
         FirebaseRecyclerAdapter<Product,ProductViewHolder> adapter = new FirebaseRecyclerAdapter<Product, ProductViewHolder>(Product.class,R.layout.product_layout,ProductViewHolder.class,productDatabase.orderByChild("ProductCategoryID").equalTo(CategoryID)) {
@@ -138,6 +142,11 @@ public class ProductListActivity extends AppCompatActivity {
                 viewHolder.product_Price.setText("$"+String.valueOf(model.getProductPrice()));
                 viewHolder.product_Price.setPaintFlags(viewHolder.product_Price.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
 
+                if( model.getProductSaleLimit() > 0) {
+                    viewHolder.product_saleLimit.setVisibility(View.VISIBLE);
+                    viewHolder.product_saleLimit.setText(" " + model.getProductSaleLimit() + " off");
+                }
+
                 Double price = model.getProductSalePrice();
                 if (price>=75.0){
                     viewHolder.product_Shipping.setText("Free Shipping");
@@ -146,31 +155,22 @@ public class ProductListActivity extends AppCompatActivity {
                     viewHolder.product_Shipping.setText(" ");
                 }
 
-
                 viewHolder.setClickListener(new ProductViewHolder.ItemClickListener() {
                     @Override
                     public void onClickItem(int pos) {
                         Intent intent = new Intent(ProductListActivity.this, ProductDetailActivity.class);
-                       Log.v(TAG,model.getProductID());
-                         intent.putExtra("ProductID", model.getProductID());
+                        intent.putExtra("ProductID", model.getProductID());
                         startActivity(intent);
                     }
                 });
             }
         };
-
-
-
-        product_RecyclerView.setAdapter(adapter);
+       product_RecyclerView.setAdapter(adapter);
 
     }
 
-
-
-
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.search_item_menu, menu);
-
         return true;
     }
 

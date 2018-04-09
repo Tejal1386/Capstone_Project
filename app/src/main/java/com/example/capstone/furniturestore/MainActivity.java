@@ -52,11 +52,13 @@ public class MainActivity extends AppCompatActivity {
         txtlinkGuest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 intent = new Intent(MainActivity.this,StoreActivity.class);
                 startActivity(intent);
             }
         });
     }
+
 
 
 

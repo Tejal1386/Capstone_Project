@@ -1,6 +1,9 @@
 package com.example.capstone.furniturestore;
 
 import android.content.Intent;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -13,6 +16,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.capstone.furniturestore.Adapter.ViewPagerAdapter;
 import com.example.capstone.furniturestore.Models.Department;
@@ -37,6 +41,9 @@ public class StoreActivity extends AppCompatActivity {
     TextView textView;
     public RecyclerView department_RecyclerView;
     LinearLayoutManager layoutManager;
+    FloatingActionButton fb_ShoppingBasket;
+
+    Intent intent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +65,7 @@ public class StoreActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("supreme furniture");
 
         // add back arrow to toolbar
-        if (getSupportActionBar() != null){
+        if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
@@ -77,9 +84,53 @@ public class StoreActivity extends AppCompatActivity {
         textView.setSelected(true);
         textView.setSingleLine();
 
-         //Recycler View
+        //Bottom navigation
 
-        department_RecyclerView = (RecyclerView)findViewById(R.id.recycle_dept);
+        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
+
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.action_myFavoutite:
+                        intent = new Intent(StoreActivity.this, FavouriteActivity.class);
+                        startActivity(intent);
+
+                        // Toast.makeText(StoreActivity.this,"My Favourite",Toast.LENGTH_LONG).show();
+                        break;
+                    case R.id.action_myAccount:
+                        intent = new Intent(StoreActivity.this, UserAccountActivity.class);
+                        startActivity(intent);
+
+
+                        Toast.makeText(StoreActivity.this, "My Account", Toast.LENGTH_LONG).show();
+                        break;
+                    case R.id.action_myOrders:
+                        Toast.makeText(StoreActivity.this, "My Orders", Toast.LENGTH_LONG).show();
+                        break;
+
+                }
+                return true;
+            }
+        });
+
+        //floating button
+
+        fb_ShoppingBasket = (FloatingActionButton) findViewById(R.id.fb_ShoppingBasket);
+
+        fb_ShoppingBasket.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(StoreActivity.this, ShoppingBasketActivity.class);
+                startActivity(intent);
+
+            }
+        });
+
+
+        //Recycler View
+
+        department_RecyclerView = (RecyclerView) findViewById(R.id.recycle_dept);
         department_RecyclerView.setHasFixedSize(true);
         department_RecyclerView.setNestedScrollingEnabled(false);
 
@@ -92,9 +143,10 @@ public class StoreActivity extends AppCompatActivity {
 
     }
 
-    public  void load_Department(){
+    public void load_Department() {
 
-        FirebaseRecyclerAdapter<Department,DepartmentViewHolder> adapter = new FirebaseRecyclerAdapter<Department, DepartmentViewHolder>(Department.class,R.layout.department_layout,DepartmentViewHolder.class,deptDatabase) {
+        FirebaseRecyclerAdapter<Department, DepartmentViewHolder> adapter = new FirebaseRecyclerAdapter<Department, DepartmentViewHolder>
+                (Department.class, R.layout.department_layout, DepartmentViewHolder.class, deptDatabase) {
             @Override
             protected void populateViewHolder(DepartmentViewHolder viewHolder, final Department model, int position) {
                 viewHolder.department_Name.setText(model.getDepartmentName());
@@ -103,8 +155,8 @@ public class StoreActivity extends AppCompatActivity {
                 viewHolder.setClickListener(new DepartmentViewHolder.ItemClickListener() {
                     @Override
                     public void onClickItem(int pos) {
-                        Intent intent = new Intent(StoreActivity.this,CategoryActivity.class);
-                        intent.putExtra("DeptID",model.getDepartmentID());
+                        Intent intent = new Intent(StoreActivity.this, CategoryActivity.class);
+                        intent.putExtra("DeptID", model.getDepartmentID());
                         startActivity(intent);
                     }
                 });
@@ -116,23 +168,21 @@ public class StoreActivity extends AppCompatActivity {
     }
 
 
-
-    private void setupAutoPager()
-    {
+    private void setupAutoPager() {
         view_Pager.setCurrentItem(0);
 
         // Timer for auto sliding
-        timer  = new Timer();
+        timer = new Timer();
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        if(currentPage<=5){
+                        if (currentPage <= 5) {
                             view_Pager.setCurrentItem(currentPage);
                             currentPage++;
-                        }else{
+                        } else {
                             currentPage = 0;
                             view_Pager.setCurrentItem(currentPage);
                         }
@@ -147,7 +197,6 @@ public class StoreActivity extends AppCompatActivity {
 
         return true;
     }
-
 
 
     @Override

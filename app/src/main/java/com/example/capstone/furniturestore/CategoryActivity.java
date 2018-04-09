@@ -1,9 +1,7 @@
 package com.example.capstone.furniturestore;
 
-import android.content.Context;
 import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -13,26 +11,13 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ListView;
-import android.widget.TextView;
 
-import com.example.capstone.furniturestore.Class.Products;
 import com.example.capstone.furniturestore.Models.Category;
-import com.example.capstone.furniturestore.Models.Department;
 import com.example.capstone.furniturestore.ViewHolder.CategoryViewHolder;
-import com.example.capstone.furniturestore.ViewHolder.DepartmentViewHolder;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-import com.miguelcatalan.materialsearchview.MaterialSearchView;
 import com.squareup.picasso.Picasso;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Timer;
 
 public class CategoryActivity extends AppCompatActivity {
 
@@ -112,7 +97,7 @@ public class CategoryActivity extends AppCompatActivity {
                     @Override
                     public void onClickItem(int pos) {
                         Intent intent = new Intent(CategoryActivity.this, ProductListActivity.class);
-                         intent.putExtra("CategoryID", model.getCategoryID());
+                        intent.putExtra("CategoryID", model.getCategoryID());
                         intent.putExtra("CategoryName", model.getCategoryName());
 
                         startActivity(intent);
@@ -124,8 +109,6 @@ public class CategoryActivity extends AppCompatActivity {
         category_RecyclerView.setAdapter(adapter);
 
     }
-
-
 
 
     public boolean onCreateOptionsMenu(Menu menu) {

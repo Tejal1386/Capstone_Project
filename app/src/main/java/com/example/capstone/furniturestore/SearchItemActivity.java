@@ -9,7 +9,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import com.example.capstone.furniturestore.Class.Products;
+import com.example.capstone.furniturestore.Models.Product;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -74,8 +74,8 @@ public class SearchItemActivity extends AppCompatActivity {
                 Integer i = 0;
                 for(DataSnapshot productSnapshot : dataSnapshot.getChildren())
                 {
-                    Products products = productSnapshot.getValue(Products.class);
-                    listProductName.add(products.getProductName());
+                    Product product = productSnapshot.getValue(Product.class);
+                    listProductName.add(product.getProductName());
 
                     i++;
                 }
@@ -87,15 +87,9 @@ public class SearchItemActivity extends AppCompatActivity {
             }
         });
 
-
-
-
-
-
         listview = (ListView) findViewById(R.id.productListView);
         ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1,listProductName);
         listview.setAdapter(adapter);
-
 
         searchView.setOnSearchViewListener(new MaterialSearchView.SearchViewListener() {
             @Override
@@ -109,12 +103,8 @@ public class SearchItemActivity extends AppCompatActivity {
                 ArrayAdapter adapter = new ArrayAdapter(SearchItemActivity.this, android.R.layout.simple_list_item_1,listProductName);
                 listview.setAdapter(adapter);
 
-
-
             }
         });
-
-
 
         searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
             @Override
@@ -165,7 +155,6 @@ public class SearchItemActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
        getMenuInflater().inflate(R.menu.search_item_menu, menu);
         MenuItem item = menu.findItem(R.id.action_search);
-      //  item.getActionView().requestFocus();
         searchView.setMenuItem(item);
         return true;
     }

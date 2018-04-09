@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -9,104 +9,137 @@
 
     <include layout="@layout/toolbar"></include>
 
-<android.support.v4.widget.NestedScrollView
-    android:fillViewport="true"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <LinearLayout
-        android:orientation="vertical"
+    <com.miguelcatalan.materialsearchview.MaterialSearchView
+        android:id="@+id/search_view"
+        android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        style="@style/MaterialSearchViewStyle"
+        android:layout_alignParentTop="true"
+        android:hint="enter product"
+        />
 
+    <android.support.v4.widget.NestedScrollView
+        android:fillViewport="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/toolbar"
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center">
-            <TextView
-
-                android:marqueeRepeatLimit="marquee_forever"
-                android:scrollHorizontally="true"
-                android:focusable="true"
-                android:focusableInTouchMode="true"
-                android:textColor="@color/colorPrimary"
-                android:text="FREE SHIPPING Over CAD $75"
-                android:layout_marginStart="2dp"
-                android:textStyle="bold"
-                android:textSize="18sp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/textviewmarquee"
-                android:singleLine="true"
-                />
-
-        </LinearLayout>
-
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <android.support.v4.view.ViewPager
-                android:id="@+id/viewPager"
-                android:layout_width="match_parent"
-                android:layout_height="230dp"
-                />
 
-        </LinearLayout>
-
-
-        <LinearLayout
-            android:gravity="center"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp">
-
-            <TextView
-                android:textColor="@color/colorPrimary"
-                android:text="Shop by Department"
-
-                android:textStyle="bold"
-                android:textSize="26sp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-        </LinearLayout>
-
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_margin="10dp"
-            >
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/recycle_dept"
-                android:layout_width="match_parent"
-
-                android:layout_height="match_parent"
-                android:clickable="true"
-                android:clipToPadding="false"
-                android:horizontalSpacing="30dp"
-                android:verticalSpacing="30dp">
-
-            </android.support.v7.widget.RecyclerView>
-
-            <android.support.design.widget.FloatingActionButton
-                android:id="@+id/fab"
-                android:backgroundTint="@color/appTheme"
-                app:rippleColor="@color/appTheme"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="end|bottom"
-                android:src="@drawable/ic_shopping_basket"
-                android:layout_margin="16dp" />
+                android:gravity="center">
+                <TextView
+
+                    android:marqueeRepeatLimit="marquee_forever"
+                    android:scrollHorizontally="true"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:textColor="@color/colorPrimary"
+                    android:text="FREE SHIPPING Over CAD $75"
+                    android:layout_marginStart="2dp"
+                    android:textStyle="bold"
+                    android:textSize="18sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/textviewmarquee"
+                    android:singleLine="true"
+                    />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <android.support.v4.view.ViewPager
+                    android:id="@+id/viewPager"
+                    android:layout_width="match_parent"
+                    android:layout_height="230dp"
+                    />
+
+            </LinearLayout>
 
 
-        </FrameLayout>
+            <LinearLayout
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp">
 
 
 
-    </LinearLayout>
+                <TextView
+                    android:textColor="@color/colorPrimary"
+                    android:text="Shop by Department"
 
-</android.support.v4.widget.NestedScrollView>
+                    android:textStyle="bold"
+                    android:textSize="26sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
 
-</LinearLayout>
+            </LinearLayout>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="10dp"
+                >
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recycle_dept"
+                    android:layout_width="match_parent"
+
+                    android:layout_height="match_parent"
+                    android:clickable="true"
+                    android:clipToPadding="false"
+                    android:horizontalSpacing="30dp"
+                    android:verticalSpacing="30dp">
+
+                </android.support.v7.widget.RecyclerView>
+
+                <android.support.design.widget.FloatingActionButton
+                    android:id="@+id/fb_ShoppingBasket"
+                    android:backgroundTint="@color/appTheme"
+                    app:rippleColor="@color/appTheme"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end|bottom"
+                    android:src="@drawable/ic_action_cart"
+                    android:layout_margin="16dp" />
+
+
+            </FrameLayout>
+
+
+
+        </LinearLayout>
+
+    </android.support.v4.widget.NestedScrollView>
+
+
+<RelativeLayout
+    android:layout_alignParentBottom="true"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <android.support.design.widget.BottomNavigationView
+        android:layout_gravity="bottom"
+        android:id="@+id/bottom_navigation"
+        app:itemBackground="@color/white"
+        app:itemIconTint="@color/colorPrimary"
+        app:itemTextColor="@color/black"
+        app:menu="@menu/bottom_navigation_menu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+</RelativeLayout>
+
+
+
+</RelativeLayout>

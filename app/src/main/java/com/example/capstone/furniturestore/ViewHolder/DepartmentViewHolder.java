@@ -20,7 +20,7 @@ import java.util.ArrayList;
 
 public class DepartmentViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-   public ImageView department_Image;
+    public ImageView department_Image;
     public TextView department_Name;
 
     private ItemClickListener mListener;
@@ -44,6 +44,6 @@ public class DepartmentViewHolder extends RecyclerView.ViewHolder implements Vie
     @Override
     public void onClick(View v) {
 
-      mListener.onClickItem(getLayoutPosition());
+        mListener.onClickItem(getLayoutPosition());
     }
 }

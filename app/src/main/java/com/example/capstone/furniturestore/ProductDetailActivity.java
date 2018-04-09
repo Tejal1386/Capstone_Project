@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -29,6 +30,7 @@ public class ProductDetailActivity extends AppCompatActivity {
     TextView txtProductName,txtProductMenufacturer, txtProductSalePrice, txtProductPrice, txtProductShipping;
     ImageView imgProduct;
     String ProductID;
+    Button btnAddToCart, btnAddToFavourite;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,6 +57,28 @@ public class ProductDetailActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
+
+
+        btnAddToCart = (Button) findViewById(R.id.btn_AddToCart);
+
+        btnAddToCart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+
+        btnAddToFavourite = (Button) findViewById(R.id.btn_favoiurite);
+
+        btnAddToFavourite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ProductDetailActivity.this, AddToFavouriteActivity.class);
+                intent.putExtra("ProductID", ProductID);
+                startActivity(intent);
+            }
+        });
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -88,9 +112,7 @@ public class ProductDetailActivity extends AppCompatActivity {
                     String prod_id = products.getProductID();
 
                     if(prod_id.equals(ProductID)){
-                        Log.v(TAG,"----------------------------------------"+ products.getProductName()+"----------------------------------------");
                         Picasso.with(getBaseContext()).load(products.getProductImage()).into(imgProduct);
-
                         txtProductName.setText(products.getProductName());
                         txtProductMenufacturer.setText(products.getProductManufacturer());
                         txtProductPrice.setText(String.valueOf(products.getProductPrice()));

@@ -26,7 +26,11 @@
         <activity android:name=".SearchItemActivity" />
         <activity android:name=".CategoryActivity" />
         <activity android:name=".TestSearchActivity" />
-        <activity android:name=".ProductDetailActivity"></activity>
+        <activity android:name=".ProductDetailActivity" />
+        <activity android:name=".AddToFavouriteActivity" />
+        <activity android:name=".FavouriteActivity" />
+        <activity android:name=".AccountInformation" />
+        <activity android:name=".AddAddressActivity"></activity>
     </application>
 
 </manifest>

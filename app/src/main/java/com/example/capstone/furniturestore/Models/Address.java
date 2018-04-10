@@ -6,7 +6,7 @@ package com.example.capstone.furniturestore.Models;
 
 public class Address {
 
-    //private String UserID;
+    private String UserID;
     private String uaddress;
     private String ufullname;
     private String ucity;

@@ -17,7 +17,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.capstone.furniturestore.Adapter.AddressAdapter;
+import com.example.capstone.furniturestore.Adapter.FavouriteAdapter;
 import com.example.capstone.furniturestore.Models.Address;
+import com.example.capstone.furniturestore.Models.Favourite;
+import com.example.capstone.furniturestore.Models.Product;
 import com.example.capstone.furniturestore.Models.User;
 import com.example.capstone.furniturestore.ViewHolder.AddressViewHolder;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
@@ -54,7 +57,8 @@ public class AddAddressActivity extends AppCompatActivity {
     AddressAdapter add_adapter;
 
     final List<String> listaddressID = new ArrayList<String>();
-    ArrayList<Address> addressList;
+    ArrayList<Address> addressList = new ArrayList<Address>();
+
 
 
     SharedPreferences sharedPreferences;
@@ -108,6 +112,7 @@ public class AddAddressActivity extends AppCompatActivity {
         tvFullName = (TextView) findViewById(R.id.tvFullName);
         tvAddress = (TextView) findViewById(R.id.tvAddress);
         txt_AddAddress = (TextView) findViewById(R.id.txt_addaddress);
+
         txt_AddAddress.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -173,6 +178,10 @@ public class AddAddressActivity extends AppCompatActivity {
 
                                 addressDatabase.child(UserID).child("address").push().setValue(userAddressData);
 
+                                setContentView(R.layout.activity_add_address);
+
+
+
                                 Toast.makeText(AddAddressActivity.this, "Address added successfully", Toast.LENGTH_SHORT).show();
                             } else {
 
@@ -190,15 +199,8 @@ public class AddAddressActivity extends AppCompatActivity {
         });
 
 
-        //recyclerview to show address
-        Address_RecyclerView = (RecyclerView) findViewById(R.id.address_recycler);
-        Address_RecyclerView.setHasFixedSize(true);
-        Address_RecyclerView.setNestedScrollingEnabled(false);
 
-
-        Address_RecyclerView.setLayoutManager(new GridLayoutManager(this, 1));
-
-      //  load_address();
+        load_address();
 
     }
 
@@ -208,15 +210,18 @@ public class AddAddressActivity extends AppCompatActivity {
 
 
 
-        addressDB.addValueEventListener(new ValueEventListener() {
+       addressDB.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
-                    addressList = new ArrayList<Address>();
-                for(DataSnapshot productSnapshot : dataSnapshot.getChildren()) {
+                addressList.clear();
+
+
+
+                for(DataSnapshot addressSnapshot : dataSnapshot.getChildren()) {
 
                     int k=0;
-                    Address newaddress = productSnapshot.getValue(Address.class);
+                    Address newaddress = addressSnapshot.getValue(Address.class);
 
                     if(UserID != null){
 
@@ -227,14 +232,15 @@ public class AddAddressActivity extends AppCompatActivity {
 
                 }
 
+
                 add_adapter = new AddressAdapter(addressList,AddAddressActivity.this);
 
-                Address_RecyclerView = (RecyclerView) findViewById(R.id.recycle_Favourite);
+                Address_RecyclerView = (RecyclerView) findViewById(R.id.recycler_address);
                 Address_RecyclerView.setHasFixedSize(true);
                 Address_RecyclerView.setNestedScrollingEnabled(false);
 
                 layoutManager = new LinearLayoutManager(getBaseContext());
-                Address_RecyclerView.setLayoutManager(new GridLayoutManager(AddAddressActivity.this, 2));
+                Address_RecyclerView.setLayoutManager(new GridLayoutManager(AddAddressActivity.this, 1));
 
                 // favourite_RecyclerView.setLayoutManager(layoutManager);
                 Address_RecyclerView.setAdapter(add_adapter);
@@ -252,22 +258,10 @@ public class AddAddressActivity extends AppCompatActivity {
 
 
 
-        /*
-        FirebaseRecyclerAdapter<Address, AddressViewHolder> adapter = new FirebaseRecyclerAdapter<Address, AddressViewHolder>
-                (Address.class, R.layout.address_layout, AddressViewHolder.class, addressDB) {
 
-            @Override
-            protected void populateViewHolder(AddressViewHolder viewHolder, Address model, int position) {
 
-                viewHolder.tvFullName.setText(model.getUfullname());
-                viewHolder.tvAddress.setText(model.getUaddress());
 
-            }
 
-        };
-
-        Address_RecyclerView.setAdapter(adapter);
-        */
 
     }
 

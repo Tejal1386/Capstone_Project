@@ -27,7 +27,10 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressV
     ArrayList<Address> arrayListaddress = new ArrayList<Address>();
 
     public AddressAdapter(ArrayList<Address> arrayListaddress, Context ctx) {
+
+        this.arrayListaddress.clear();
         this.arrayListaddress = (ArrayList<Address>) arrayListaddress;
+        notifyDataSetChanged();
         this.ctx = ctx;
     }
 

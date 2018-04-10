@@ -121,14 +121,13 @@ public class FavouriteActivity extends AppCompatActivity {
 
     }
 
-    public  void load_Favourite(){
+    public  void load_Favourite() {
 
         favouriteDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Integer i = 0;
-                for(DataSnapshot favouriteSnapshot : dataSnapshot.getChildren())
-                {
+                for (DataSnapshot favouriteSnapshot : dataSnapshot.getChildren()) {
                     Favourite fav_product = favouriteSnapshot.getValue(Favourite.class);
                     String id = fav_product.getProduct_ID();
 
@@ -136,32 +135,32 @@ public class FavouriteActivity extends AppCompatActivity {
                     favouriteList.add(fav_product.getFavorite_ID());
 
                     productDatabase.orderByChild("ProductID").equalTo(id).addListenerForSingleValueEvent(new ValueEventListener() {
-                       @Override
-                       public void onDataChange(DataSnapshot dataSnapshot) {
-                           for(DataSnapshot productSnapshot : dataSnapshot.getChildren()) {
-                               Product product = productSnapshot.getValue(Product.class);
-                               Log.v("ProductID", "---------------------------"+ product.getProductID() +"---------------------------");
-                               productList.add(product);
-                               counter++;
-                           }
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            for (DataSnapshot productSnapshot : dataSnapshot.getChildren()) {
+                                Product product = productSnapshot.getValue(Product.class);
+                                productList.add(product);
+                                counter++;
+                            }
 
-                           txtcountitem.setText(counter + " Item");
+                            txtcountitem.setText(counter + " Item");
 
-                           fav_adapter = new FavouriteAdapter(productList,FavouriteActivity.this) ;
-                           favourite_RecyclerView = (RecyclerView) findViewById(R.id.recycle_Favourite);
-                           favourite_RecyclerView.setHasFixedSize(true);
-                           favourite_RecyclerView.setNestedScrollingEnabled(false);
-                           layoutManager = new LinearLayoutManager(getBaseContext());
-                           favourite_RecyclerView.setLayoutManager(new GridLayoutManager(FavouriteActivity.this, 2));
-                           favourite_RecyclerView.setAdapter(fav_adapter);
-                       }
-                       @Override
-                       public void onCancelled(DatabaseError databaseError) {
+                            fav_adapter = new FavouriteAdapter(productList, FavouriteActivity.this);
+                            favourite_RecyclerView = (RecyclerView) findViewById(R.id.recycle_Favourite);
+                            favourite_RecyclerView.setHasFixedSize(true);
+                            favourite_RecyclerView.setNestedScrollingEnabled(false);
+                            layoutManager = new LinearLayoutManager(getBaseContext());
+                            favourite_RecyclerView.setLayoutManager(new GridLayoutManager(FavouriteActivity.this, 2));
+                            favourite_RecyclerView.setAdapter(fav_adapter);
+                        }
 
-                       }
-                   });
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
 
-                  i++;
+                        }
+                    });
+
+                    i++;
                 }
             }
 
@@ -171,80 +170,7 @@ public class FavouriteActivity extends AppCompatActivity {
             }
         });
 
-
-
-       /* productDatabase.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-
-                int j = 0, k=0;
-                for(DataSnapshot productSnapshot : dataSnapshot.getChildren()) {
-
-                    Product product = productSnapshot.getValue(Product.class);
-                     String pid = product.getProductID();
-
-                     for(int x=0; x < listProductID.size(); x++){
-
-                         String p_id = listProductID.get(x);
-                         if(pid.equals(p_id))
-                         {
-                             productList.add(product);
-                             counter++;
-                             k++;
-                         }
-                     }
-                     j++;
-                }
-
-                txtcountitem.setText(counter + " Item");
-
-                fav_adapter = new FavouriteAdapter(productList,FavouriteActivity.this) ;
-                favourite_RecyclerView = (RecyclerView) findViewById(R.id.recycle_Favourite);
-                favourite_RecyclerView.setHasFixedSize(true);
-                favourite_RecyclerView.setNestedScrollingEnabled(false);
-                layoutManager = new LinearLayoutManager(getBaseContext());
-                favourite_RecyclerView.setLayoutManager(new GridLayoutManager(FavouriteActivity.this, 2));
-                favourite_RecyclerView.setAdapter(fav_adapter);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });*/
-
     }
 
-   /* adapter = new FirebaseRecyclerAdapter<Product, ProductViewHolder>(Product.class, R.layout.product_layout, ProductViewHolder.class, productDatabase.orderByChild("ProductID").equalTo(fav_product.getProduct_ID()) ) {
-
-        @Override
-        protected void populateViewHolder(ProductViewHolder viewHolder, final Product model, int position) {
-            Picasso.with(getBaseContext()).load(model.getProductImage()).into(viewHolder.product_Image);
-            viewHolder.product_Name.setText(model.getProductName());
-            viewHolder.product_Manufacturer.setText(model.getProductManufacturer());
-            viewHolder.product_Sale_Price.setText("$" + String.valueOf(model.getProductSalePrice()));
-            viewHolder.product_Price.setText("$" + String.valueOf(model.getProductPrice()));
-            viewHolder.product_Price.setPaintFlags(viewHolder.product_Price.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-            viewHolder.product_saleLimit.setText("Up to " + model.getProductSaleLimit() + " % off");
-
-            Double price = model.getProductSalePrice();
-            if (price >= 75.0) {
-                viewHolder.product_Shipping.setText("Free Shipping");
-            } else {
-                viewHolder.product_Shipping.setText(" ");
-            }
-
-
-            viewHolder.setClickListener(new ProductViewHolder.ItemClickListener() {
-                @Override
-                public void onClickItem(int pos) {
-                    Intent intent = new Intent(FavouriteActivity.this, ProductDetailActivity.class);
-                    intent.putExtra("ProductID", model.getProductID());
-                    startActivity(intent);
-                }
-            });
-        }
-    };
-*/
 
 }

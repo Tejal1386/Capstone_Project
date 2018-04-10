@@ -27,10 +27,9 @@
         <activity android:name=".CategoryActivity" />
         <activity android:name=".TestSearchActivity" />
         <activity android:name=".ProductDetailActivity" />
-        <activity android:name=".AddToFavouriteActivity" />
         <activity android:name=".FavouriteActivity" />
         <activity android:name=".AccountInformation" />
-        <activity android:name=".AddAddressActivity">
+        <activity android:name=".AddAddressActivity"/>
         <activity android:name=".ProductInSaleActivity" />
         <activity android:name=".ProductInformationActivity" />
         <activity android:name=".SearchListActivity" />

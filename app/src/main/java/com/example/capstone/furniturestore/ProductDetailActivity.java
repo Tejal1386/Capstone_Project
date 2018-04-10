@@ -226,30 +226,30 @@ public class ProductDetailActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Integer i = 0;
-                for(DataSnapshot productSnapshot : dataSnapshot.getChildren())
-                {
+                for (DataSnapshot productSnapshot : dataSnapshot.getChildren()) {
                     Product products = productSnapshot.getValue(Product.class);
                     String prod_id = products.getProductID();
 
-                        current_product=products;
-                        Picasso.with(getBaseContext()).load(products.getProductImage()).into(imgProduct);
+                    current_product = products;
+                    Picasso.with(getBaseContext()).load(products.getProductImage()).into(imgProduct);
 
-                        txtProductName.setText(products.getProductName());
-                        txtProductMenufacturer.setText(products.getProductManufacturer());
-                        txtProductPrice.setText(String.valueOf(products.getProductPrice()));
-                        txtProductSalePrice.setText(String.valueOf(products.getProductSalePrice()));
-                        if(products.getProductSalePrice() > 75.0) {
-                            txtProductShipping.setText("Free Shipping");
-                        }
-                        else {
-                            txtProductShipping.setText("");
-                        }
-
+                    txtProductName.setText(products.getProductName());
+                    txtProductMenufacturer.setText(products.getProductManufacturer());
+                    txtProductPrice.setText(String.valueOf(products.getProductPrice()));
+                    txtProductSalePrice.setText(String.valueOf(products.getProductSalePrice()));
+                    if (products.getProductSalePrice() > 75.0) {
+                        txtProductShipping.setText("Free Shipping");
+                    } else {
+                        txtProductShipping.setText("");
                     }
+
+
+
 
                     i++;
                 }
             }
+
 
             @Override
             public void onCancelled(DatabaseError databaseError) {

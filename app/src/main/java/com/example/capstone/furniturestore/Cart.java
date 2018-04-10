@@ -1,6 +1,8 @@
 package com.example.capstone.furniturestore;
 
+import android.app.Activity;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
@@ -21,18 +23,29 @@ import android.widget.Toast;
 import com.example.capstone.furniturestore.Database.Database;
 import com.example.capstone.furniturestore.Helper.RecyclerItemTouchHelper;
 import com.example.capstone.furniturestore.Interface.RecyclerItemTouchHelperListener;
+import com.example.capstone.furniturestore.Models.Config;
 import com.example.capstone.furniturestore.Models.Product;
 import com.example.capstone.furniturestore.Models.Request;
 import com.example.capstone.furniturestore.ViewHolder.CartAdapter;
 import com.example.capstone.furniturestore.ViewHolder.CartViewHolder;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.paypal.android.sdk.payments.PayPalConfiguration;
+import com.paypal.android.sdk.payments.PayPalPayment;
+import com.paypal.android.sdk.payments.PayPalService;
+import com.paypal.android.sdk.payments.PaymentActivity;
+import com.paypal.android.sdk.payments.PaymentConfirmation;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Cart extends AppCompatActivity implements RecyclerItemTouchHelperListener {
     private static final String TAG = "data";
+    private static final int PAYPAL_REQUEST_CODE = 7171;
     RecyclerView recyclerView;
     RecyclerView.LayoutManager layoutManager;
     RelativeLayout rootLayout;
@@ -50,6 +63,12 @@ public class Cart extends AppCompatActivity implements RecyclerItemTouchHelperLi
 
     List<Product> cart = new ArrayList<>();
     CartAdapter adapter ;
+    //Paypal payment
+
+    static PayPalConfiguration config = new PayPalConfiguration()
+            .environment(PayPalConfiguration.ENVIRONMENT_SANDBOX)
+            .clientId(Config.PAYPAL_CLIENT_ID);
+    String name,phone,address;
 
 
 
@@ -57,6 +76,15 @@ public class Cart extends AppCompatActivity implements RecyclerItemTouchHelperLi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cart);
+
+
+        //initpaypal
+        Intent intent = new Intent(this, PayPalService.class);
+        intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION,config);
+        startService(intent);
+
+
+
         database = FirebaseDatabase.getInstance();
         requests=database.getReference("Requests");
 
@@ -98,8 +126,8 @@ public class Cart extends AppCompatActivity implements RecyclerItemTouchHelperLi
         loadListOrder();}
         private void showAlertDialog() {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(Cart.this);
-        alertDialog.setTitle("One more step");
-        alertDialog.setMessage("Enter your address: ");
+        alertDialog.setTitle("One more step!");
+        alertDialog.setMessage("Enter your address:");
 
         LinearLayout.LayoutParams lp =new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
@@ -117,12 +145,14 @@ public class Cart extends AppCompatActivity implements RecyclerItemTouchHelperLi
         final EditText edtphone= new EditText(Cart.this);
         final EditText edtAddress =new EditText(Cart.this);
 
-        edtphone.setLayoutParams(lp);
+
         edtname.setLayoutParams(lp);
+        edtphone.setLayoutParams(lp);
         edtAddress.setLayoutParams(lp);
 
-        edtphone.setHint("Enter Phone");
+
         edtname.setHint("Enter Name");
+        edtphone.setHint("Enter Phone");
         edtAddress.setHint("Enter Address");
 
         linearLayout.addView(edtname);
@@ -136,19 +166,28 @@ public class Cart extends AppCompatActivity implements RecyclerItemTouchHelperLi
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
 
-                Request request = new Request(
-                        edtname.getText().toString(),
-                        edtphone.getText().toString(),
-                        edtAddress.getText().toString(),
-                        txtTotalPrice.getText().toString(),
-                        cart  );
-                //submit to firebase
-                requests.child(String.valueOf(System.currentTimeMillis()))
-                        .setValue(request);
-                //delete cart
-                new Database(getBaseContext()).cleanCart();
-                Toast.makeText(Cart.this,"Thank you , order placed", Toast.LENGTH_SHORT).show();
-                finish();
+                //Show Paypal to payment
+
+                //first , get Address and Comment from Alert Dialog
+
+                name = edtname.getText().toString();
+                phone = edtphone.getText().toString();
+                address = edtAddress.getText().toString();
+
+                String formatAmount = txtTotalPrice.getText().toString()
+                        .replace("$","")
+                        .replace(",","");
+
+
+                PayPalPayment payPalPayment = new PayPalPayment(new BigDecimal(formatAmount),
+                        "CAD",
+                        "AndroEat app Order",
+                        PayPalPayment.PAYMENT_INTENT_SALE);
+                Intent intent = new Intent(getApplicationContext(), PaymentActivity.class);
+                intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION,config);
+                intent.putExtra(PaymentActivity.EXTRA_PAYMENT,payPalPayment);
+                startActivityForResult(intent,PAYPAL_REQUEST_CODE);
+
             }
         });
 
@@ -159,9 +198,60 @@ public class Cart extends AppCompatActivity implements RecyclerItemTouchHelperLi
             }
         });
 
-
         alertDialog.show();
     }
+
+    //Press Ctrl+O
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == PAYPAL_REQUEST_CODE)
+        {
+            if(resultCode == RESULT_OK)
+            {
+                PaymentConfirmation confirmation = data.getParcelableExtra(PaymentActivity.EXTRA_RESULT_CONFIRMATION);
+                if(confirmation != null)
+                {
+                    try{
+                        String paymentDetail = confirmation.toJSONObject().toString(4);
+                        JSONObject jsonObject = new JSONObject(paymentDetail);
+
+
+
+                        //Create new Request
+                        Request request = new Request(
+                                name,
+                                phone,
+                                address,
+                                jsonObject.getJSONObject("response").getString("state"), // State from JSON
+                                "0", // status
+                                txtTotalPrice.getText().toString(),
+                                cart
+                        );
+
+                        //Submit to Firebase
+                        //We will using System.CurrentMilli to key
+                        requests.child(String.valueOf(System.currentTimeMillis()))
+                                .setValue(request);
+                        //delete cart
+                        new Database(getBaseContext()).cleanCart();
+                        Toast.makeText(Cart.this,"Thank you , order placed", Toast.LENGTH_SHORT).show();
+                        finish();
+
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+            else if(resultCode == Activity.RESULT_CANCELED)
+                Toast.makeText(this, "Payment cancel", Toast.LENGTH_SHORT).show();
+            else if(resultCode == PaymentActivity.RESULT_EXTRAS_INVALID)
+                Toast.makeText(this, "Invalid payment", Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
     private void loadListOrder() {
         cart.clear();
         cart = new Database(this).getCarts();
@@ -193,34 +283,43 @@ public class Cart extends AppCompatActivity implements RecyclerItemTouchHelperLi
             String name = ((CartAdapter)recyclerView.getAdapter()).getItem(viewHolder.getAdapterPosition()).getProductName();
 final Product  deleteItem = ((CartAdapter)recyclerView.getAdapter()).getItem(viewHolder.getAdapterPosition());
 
-            final int deleteIndex = viewHolder.getAdapterPosition();
+           final int deleteIndex = viewHolder.getAdapterPosition();
 
              adapter.removeItem(deleteIndex);
              new Database(getBaseContext()).removeFromCart(deleteItem.getProductID());
 
 
-            float total = 0;
+            float total = 0;/*
             List<Product> orders = new Database(getBaseContext()).getCarts();
-            for(Product item :orders)
+            for(Product item :orders){
                 total +=(Float.parseFloat(item.getProductPricenew()))*(Integer.parseInt(item.getProductQunt()));
             txtTotalPrice.setText("$"+total+"");
-
+*/
+//}
             //make snackbar
             Snackbar snackbar = Snackbar.make(rootLayout,name + "removed from cart !" ,Snackbar.LENGTH_LONG);
             snackbar.setAction("UNDO", new View.OnClickListener() {
     @Override
     public void onClick(View v) {
+        new Database(getBaseContext()).addToCart(deleteItem);
+
+
+        Log.e("price22", String.valueOf(deleteItem.getProductPricenew()));
+        deleteItem.setProductPrice(Double.parseDouble(deleteItem.getProductPricenew()));
+        Log.e("price", String.valueOf(deleteItem.getProductPrice()));
               adapter.restoreItem(deleteItem,deleteIndex);
-              new Database(getBaseContext()).addToCart(deleteItem);
+
 //update txttotal
 //calculate total price
-            float total = 0;
-           List<Product> orders = new Database(getBaseContext()).getCarts();
-           for(Product item :orders)
-            total +=(Float.parseFloat(item.getProductPricenew()))*(Integer.parseInt(item.getProductQunt()));
-            txtTotalPrice.setText("$"+total+"");
+
+       /* float totl = 0;
+        List<Product> orders = new Database(getBaseContext()).getCarts();
+        for(Product item :orders){
+            totl +=(Float.parseFloat(item.getProductPricenew()))*(Integer.parseInt(item.getProductQunt()));
+        txtTotalPrice.setText("$"+totl+"");
 
 
+}*/
 
     }
 });

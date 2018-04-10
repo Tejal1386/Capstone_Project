@@ -36,7 +36,7 @@ import com.example.capstone.furniturestore.ViewHolder.ProductViewHolder;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
-import com.mancj.materialsearchbar.MaterialSearchBar;
+
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 import com.squareup.picasso.Picasso;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
@@ -210,6 +210,10 @@ public class StoreActivity extends AppCompatActivity {
         department_RecyclerView = (RecyclerView)findViewById(R.id.recycle_dept);
         department_RecyclerView.setHasFixedSize(true);
         department_RecyclerView.setNestedScrollingEnabled(false);
+
+        layoutManager = new LinearLayoutManager(getBaseContext());
+        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+
         department_RecyclerView.setLayoutManager(new GridLayoutManager(this, 2));
 
         FirebaseRecyclerAdapter<Department,DepartmentViewHolder> adapter = new FirebaseRecyclerAdapter<Department, DepartmentViewHolder>(Department.class,R.layout.department_layout,DepartmentViewHolder.class,deptDatabase) {

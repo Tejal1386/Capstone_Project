@@ -12,7 +12,7 @@ public class Product {
     private double ProductPrice;
     private String ProductPricenew;
     private double ProductSalePrice;
-    private String ProductQunt="0";
+    private String ProductQunt="1";
     private String ProductBrand;
     private String ProductColor;
     private String ProductDept;

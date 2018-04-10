@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
+import android.util.Log;
 
 import com.example.capstone.furniturestore.Models.Product;
 import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
@@ -50,6 +51,8 @@ public class Database extends SQLiteAssetHelper{
 
     public void addToCart(Product order )
     {
+       /* Log.e("price", String.valueOf(order.getProductPrice()));
+        Log.e("price22", String.valueOf(order.getProductPricenew()));*/
         SQLiteDatabase db = getReadableDatabase();
         String query = String.format("INSERT INTO OrderDetail(ProductID,ProductName,ProductPrice,ProductQunt,ProductOffer,ProductImage)VALUES('%s' , '%s' ,  '%s' ,  '%s' , '%s', '%s');",
                 order.getProductID() ,

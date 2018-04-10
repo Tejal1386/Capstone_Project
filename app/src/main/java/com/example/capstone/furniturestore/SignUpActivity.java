@@ -30,7 +30,7 @@ public class SignUpActivity extends AppCompatActivity {
         //toolBar settings
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        toolbar.setTitleTextColor(1);
+     //   toolbar.setTitleTextColor(1);
         getSupportActionBar().setTitle(" SignUp");
 
         // add back arrow to toolbar
@@ -66,9 +66,10 @@ public class SignUpActivity extends AppCompatActivity {
         String ID = mDatabase.push().getKey();
         String userName = editText_username.getText().toString();
         String password = editText_password.getText().toString();
+        //String address = "";
 
         if(!TextUtils.isEmpty(userName)) {
-            User user = new User(ID, userName, password);
+            User user = new User(ID, userName, password, null);
 
             mDatabase.child(ID).setValue(user);
             intent = new Intent(SignUpActivity.this,LoginActivity.class);

@@ -79,8 +79,14 @@
             ></com.cepheuen.elegantnumberbutton.view.ElegantNumberButton>
 -->
 
+            <Button
+                android:text="Show View"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/btn_View"/>
 
-        <Button
+
+            <Button
             android:text="Add To Cart"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -108,7 +114,9 @@
                 android:orientation="vertical">
 
                 <RelativeLayout
+                    android:id="@+id/layout_info"
                     android:layout_width="match_parent"
+                    android:clickable="true"
                     android:layout_height="40dp"
                     android:paddingLeft="20dp"
                     android:paddingRight="20dp"
@@ -133,6 +141,8 @@
                 </RelativeLayout>
 
                 <RelativeLayout
+                    android:id="@+id/layout_specification"
+                    android:clickable="true"
                     android:layout_marginTop="10dp"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
@@ -159,6 +169,8 @@
                 </RelativeLayout>
 
                 <RelativeLayout
+                    android:id="@+id/layout_shipping"
+                    android:clickable="true"
                     android:layout_marginTop="10dp"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"

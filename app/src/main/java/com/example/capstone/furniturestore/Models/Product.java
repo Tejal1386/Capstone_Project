@@ -23,6 +23,9 @@ public class Product {
     private String ProductSaleEndDate;
 
 
+    public Product() {
+    }
+
     public Product(String productID, String productName, String productImage, double productPrice, double productSalePrice)
     {
         this.setProductID(productID);
@@ -201,6 +204,5 @@ public class Product {
         return number;
     }
 
-    public Product() {
-    }
+
 }

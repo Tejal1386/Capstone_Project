@@ -6,7 +6,7 @@
     android:layout_height="wrap_content">
 
     <android.support.v7.widget.CardView
-        android:layout_margin="5dp"
+       style="@style/CardLayoutMargin"
         android:background="@color/white"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -20,6 +20,7 @@
             <TextView
                 android:textColor="@color/white"
                 android:padding="5dp"
+                android:textSize="18dp"
                 android:id="@+id/txtSaleTag"
                 android:background="@color/bgRow"
                 android:layout_width="wrap_content"
@@ -32,13 +33,14 @@
                 android:id="@+id/image_product"/>
 
             <TextView
-                android:layout_marginLeft="5dp"
-                android:layout_marginTop="5dp"
+                style="@style/productNameStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/txt_productName"
-                android:textSize="18dp"
-                android:textColor="@color/black"/>
+
+                android:maxLines="2"
+                android:singleLine="false"
+               />
 
             <TextView
                 android:layout_marginLeft="5dp"

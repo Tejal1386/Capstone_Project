@@ -62,7 +62,7 @@ public class ProductListActivity extends AppCompatActivity {
         //toolBar settings
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        toolbar.setTitleTextColor(1);
+      //  toolbar.setTitleTextColor(1);
         getSupportActionBar().setTitle(" Products");
 
         // add back arrow to toolbar
@@ -142,7 +142,7 @@ public class ProductListActivity extends AppCompatActivity {
                 viewHolder.product_Price.setText("$"+String.valueOf(model.getProductPrice()));
                 viewHolder.product_Price.setPaintFlags(viewHolder.product_Price.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
 
-                if( String.valueOf(model.getProductSaleLimit()) != "0") {
+                if( model.getProductSaleLimit() > 0) {
                     viewHolder.product_saleLimit.setVisibility(View.VISIBLE);
                     viewHolder.product_saleLimit.setText(" " + model.getProductSaleLimit() + " off");
                 }

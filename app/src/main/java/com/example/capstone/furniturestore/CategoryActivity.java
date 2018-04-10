@@ -36,7 +36,7 @@ public class CategoryActivity extends AppCompatActivity {
         //toolBar settings
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        toolbar.setTitleTextColor(1);
+       // toolbar.setTitleTextColor(1);
         getSupportActionBar().setTitle(" Category");
 
         // add back arrow to toolbar

@@ -38,7 +38,6 @@ public class Database extends SQLiteAssetHelper{
             do{
                 result.add(new Product(c.getString(c.getColumnIndex("ProductID")),
                         c.getString(c.getColumnIndex("ProductName")),
-
                         c.getString(c.getColumnIndex("ProductPrice")),
                         c.getString(c.getColumnIndex("ProductQunt")),
                         c.getString(c.getColumnIndex("ProductOffer")),
@@ -53,9 +52,8 @@ public class Database extends SQLiteAssetHelper{
     {
         SQLiteDatabase db = getReadableDatabase();
         String query = String.format("INSERT INTO OrderDetail(ProductID,ProductName,ProductPrice,ProductQunt,ProductOffer,ProductImage)VALUES('%s' , '%s' ,  '%s' ,  '%s' , '%s', '%s');",
-               order.getProductID() ,
+                order.getProductID() ,
                 order.getProductName(),
-
                 order.getProductPrice(),
                 order.getProductQunt(),
                 order.getProductOffer(),

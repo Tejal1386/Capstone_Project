@@ -12,7 +12,7 @@ import android.widget.TextView;
 public class MainActivity extends AppCompatActivity {
 
     Toolbar toolbar;
-    private Button btnLogin, btnSignup;
+    private Button butnLogin, btnSignup;
     private TextView txtlinkGuest;
 
     Intent intent;
@@ -28,12 +28,12 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setTitle(" supreme Furniture");*/
 
 
-        btnLogin = (Button) findViewById(R.id.btnLogin);
+        butnLogin = (Button) findViewById(R.id.btnLogin);
         btnSignup = (Button) findViewById(R.id.btnSignUp);
         txtlinkGuest = (TextView) findViewById(R.id.txtlinkGuest);
 
 
-        btnLogin.setOnClickListener(new View.OnClickListener() {
+        butnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 intent = new Intent(MainActivity.this,LoginActivity.class);

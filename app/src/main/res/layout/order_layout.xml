@@ -52,30 +52,41 @@
                 android:gravity="center_vertical|start"
                 />
 
-
-
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:textAllCaps="true"
+                android:text = "Name"
+                android:id="@+id/order_name"
+                android:layout_marginLeft="10dp"
+                android:gravity="center_vertical|start"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:textAllCaps="true"
+                android:text = "5678"
+                android:id="@+id/order_phone"
+                android:layout_marginLeft="10dp"
+                android:gravity="center_vertical|start"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:textAllCaps="true"
+                android:text = "Address"
+                android:id="@+id/order_address"
+                android:layout_marginLeft="10dp"
+                android:gravity="center_vertical|start"
+                />
 
         </LinearLayout>
 
-        <!--    <ImageView
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:background="@color/colorPrimary"
 
-                    android:id="@+id/delete_item"
-                    android:layout_marginRight="16dp"
-                    android:tint="@color/colorAccent"/>-->
-        <com.cepheuen.elegantnumberbutton.view.ElegantNumberButton
-            android:layout_width="80dp"
-            android:layout_height="30dp"
-            android:id="@+id/btn_quantity"
-            app:textSize="6sp"
-            app:backGroundColor="@color/colorAccent"
-            app:initialNumber="1"
-            app:finalNumber="20"
-            android:layout_margin="10dp"
-            android:gravity="start"
-            ></com.cepheuen.elegantnumberbutton.view.ElegantNumberButton>
+
 
 
     </LinearLayout>

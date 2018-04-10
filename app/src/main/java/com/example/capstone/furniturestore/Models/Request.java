@@ -20,7 +20,7 @@ public class Request {
         this.phone = phone;
         this.address = address;
         this.paymentState = paymentState;
-        this.status = status;
+        this.status = "0";  //default is 0  , 0 :Placed , 1:Shipping , 2 :Shipped
         this.total = total;
         this.products = products;
     }

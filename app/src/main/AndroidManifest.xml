@@ -29,12 +29,13 @@
         <activity android:name=".ProductDetailActivity" />
         <activity android:name=".FavouriteActivity" />
         <activity android:name=".AccountInformation" />
-        <activity android:name=".AddAddressActivity"/>
+        <activity android:name=".AddAddressActivity" />
         <activity android:name=".ProductInSaleActivity" />
         <activity android:name=".ProductInformationActivity" />
         <activity android:name=".SearchListActivity" />
         <activity android:name=".Cart" />
-        <activity android:name=".EditFavouriteActivity"></activity>
+        <activity android:name=".EditFavouriteActivity" />
+        <activity android:name=".OrderStatus"></activity>
     </application>
 
 </manifest>

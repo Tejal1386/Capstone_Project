@@ -26,11 +26,9 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
 
-
 //paypal
 
     implementation 'com.paypal.sdk:paypal-android-sdk:2.15.3'
-
 
     //counterFAB
 

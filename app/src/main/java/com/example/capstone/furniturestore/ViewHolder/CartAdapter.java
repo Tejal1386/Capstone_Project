@@ -1,5 +1,6 @@
 package com.example.capstone.furniturestore.ViewHolder;
 
+import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +16,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
+
 
 /**
  * Created by amandeepsekhon on 2018-03-28.
@@ -72,11 +74,16 @@ holder.btn_quantity.setNumber(listData.get(position).getProductQunt());
               new Database(cart).updateCart(order);
 
 
-float total = 0;
-List<Product> orders = new Database(cart).getCarts();
-for(Product item :orders)
-    total +=(Float.parseFloat(item.getProductPricenew()))*(Integer.parseInt(item.getProductQunt()));
-cart.txtTotalPrice.setText("$"+total+"");
+
+                        float total = 0;
+                      //Do something after 100ms
+                      List<Product> orders = new Database(cart).getCarts();
+                      for(Product item :listData)
+                          total +=(Float.parseFloat(item.getProductPricenew()))*(Integer.parseInt(item.getProductQunt()));
+                      cart.txtTotalPrice.setText("$"+total+"");
+
+
+
 
 
           }

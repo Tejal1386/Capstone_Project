@@ -103,7 +103,7 @@ public class ProductDetailActivity extends AppCompatActivity {
                 onBackPressed(); // Implemented by activity
             }
         });
-
+        //new Database(getBaseContext()).cleanCart();
 
         btnAddToCart = (Button) findViewById(R.id.btn_AddToCart);
 

@@ -289,32 +289,37 @@ final Product  deleteItem = ((CartAdapter)recyclerView.getAdapter()).getItem(vie
              new Database(getBaseContext()).removeFromCart(deleteItem.getProductID());
 
 
-            float total = 0;
+            float total = 0;/*
             List<Product> orders = new Database(getBaseContext()).getCarts();
-            for(Product item :orders)
+            for(Product item :orders){
                 total +=(Float.parseFloat(item.getProductPricenew()))*(Integer.parseInt(item.getProductQunt()));
             txtTotalPrice.setText("$"+total+"");
-
-
+*/
+//}
             //make snackbar
             Snackbar snackbar = Snackbar.make(rootLayout,name + "removed from cart !" ,Snackbar.LENGTH_LONG);
             snackbar.setAction("UNDO", new View.OnClickListener() {
     @Override
     public void onClick(View v) {
+        new Database(getBaseContext()).addToCart(deleteItem);
 
+
+        Log.e("price22", String.valueOf(deleteItem.getProductPricenew()));
+        deleteItem.setProductPrice(Double.parseDouble(deleteItem.getProductPricenew()));
+        Log.e("price", String.valueOf(deleteItem.getProductPrice()));
               adapter.restoreItem(deleteItem,deleteIndex);
-              new Database(getBaseContext()).addToCart(deleteItem);
+
 //update txttotal
 //calculate total price
 
-        float total = 0;
+       /* float totl = 0;
         List<Product> orders = new Database(getBaseContext()).getCarts();
-        for(Product item :orders)
-            total +=(Float.parseFloat(item.getProductPricenew()))*(Integer.parseInt(item.getProductQunt()));
-        txtTotalPrice.setText("$"+total+"");
+        for(Product item :orders){
+            totl +=(Float.parseFloat(item.getProductPricenew()))*(Integer.parseInt(item.getProductQunt()));
+        txtTotalPrice.setText("$"+totl+"");
 
 
-
+}*/
 
     }
 });

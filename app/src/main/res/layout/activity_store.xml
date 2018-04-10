@@ -15,7 +15,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_search_List"
         android:clickable="true"
@@ -30,6 +29,7 @@
 </LinearLayout>
 
     <android.support.design.widget.CoordinatorLayout
+
         android:id="@+id/coordinator_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -37,7 +37,7 @@
         <android.support.v4.widget.NestedScrollView
         android:fillViewport="true"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/toolbar"
+        android:layout_below="@+id/searchtoolbar"
 
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -123,9 +123,6 @@
 
                 </android.support.v7.widget.RecyclerView>
 
-
-
-
             </FrameLayout>
 
 
@@ -133,23 +130,17 @@
 
             <LinearLayout
                 android:orientation="horizontal"
-
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp">
 
-
-
                 <TextView
-
                     android:text="Featured Sale"
                     android:textColor="@color/colorPrimary"
                     android:layout_marginLeft="5dp"
                     android:textSize="26sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
-
-
 
             </LinearLayout>
 
@@ -161,38 +152,28 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/recycle_sale"
                     android:layout_width="match_parent"
-
                     android:layout_height="match_parent"
                     android:clickable="true"
                     android:clipToPadding="false"
                     android:horizontalSpacing="30dp"
                     android:verticalSpacing="30dp">
-
                 </android.support.v7.widget.RecyclerView>
-
-
 
             </FrameLayout>
 
 
             <LinearLayout
                 android:orientation="horizontal"
-
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp">
 
-
-
                <ImageView
                    android:layout_width="match_parent"
                    android:layout_height="wrap_content" />
-
-
 
             </LinearLayout>
 
@@ -219,15 +200,20 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fb_ShoppingBasket"
-            android:backgroundTint="@color/appTheme"
-            app:rippleColor="@color/appTheme"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end|bottom"
-            android:src="@drawable/ic_action_cart"
-            android:layout_margin="16dp" />
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.andremion.counterfab.CounterFab
+                android:id="@+id/fb_ShoppingBasket"
+                android:backgroundTint="@color/appTheme"
+                app:rippleColor="@color/appTheme"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end|bottom"
+                android:src="@drawable/ic_action_cart"
+                android:layout_margin="16dp" />
+        </FrameLayout>
 
 
     </android.support.design.widget.CoordinatorLayout>

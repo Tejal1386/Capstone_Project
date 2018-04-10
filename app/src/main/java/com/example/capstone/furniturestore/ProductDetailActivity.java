@@ -5,6 +5,9 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -14,6 +17,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -27,6 +31,7 @@ import com.cepheuen.elegantnumberbutton.view.ElegantNumberButton;
 import com.example.capstone.furniturestore.Database.Database;
 import com.example.capstone.furniturestore.Models.Favourite;
 import com.example.capstone.furniturestore.Models.Product;
+import com.example.capstone.furniturestore.ViewHolder.BottomNavigationViewHolder;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -183,6 +188,7 @@ public class ProductDetailActivity extends AppCompatActivity {
 
             }
         });
+        fb_ShoppingBasket.setCount(new Database(this).getCountCart());
 
 
         RelativeLayout layout_info = (RelativeLayout) findViewById(R.id.layout_info);
@@ -220,7 +226,33 @@ public class ProductDetailActivity extends AppCompatActivity {
 
 
 
-        fb_ShoppingBasket.setCount(new Database(this).getCountCart());
+        //Bottom navigation
+        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
+
+        CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) bottomNavigationView.getLayoutParams();
+        layoutParams.setBehavior(new BottomNavigationViewHolder());
+
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()){
+                    case R.id.action_myFavoutite:
+                        Intent intent = new Intent(ProductDetailActivity.this, FavouriteActivity.class);
+                        startActivity(intent);
+                        break;
+                    case R.id.action_myAccount:
+                        intent = new Intent(ProductDetailActivity.this,UserAccountActivity.class);
+                        startActivity(intent);
+                        break;
+                    case R.id.action_sale:
+                        intent = new Intent(ProductDetailActivity.this,ProductInSaleActivity.class);
+                        startActivity(intent);
+                        break;
+                }
+                return true;
+            }
+        });
+
 
         productDatabase.orderByChild("ProductID").equalTo(ProductID).addValueEventListener(new ValueEventListener() {
             @Override

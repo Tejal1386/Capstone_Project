@@ -8,8 +8,17 @@
     android:orientation="vertical">
     <include layout="@layout/toolbar"></include>
 
+    <android.support.design.widget.CoordinatorLayout
+
+        android:id="@+id/coordinator_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
     <android.support.v4.widget.NestedScrollView
         android:fillViewport="true"
+        android:layout_margin="5dp"
+
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <LinearLayout
@@ -18,15 +27,13 @@
             android:layout_height="wrap_content">
 
             <LinearLayout
-                android:gravity="center"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp">
+                android:layout_height="wrap_content">
 
                 <TextView
-                    android:textColor="@color/colorPrimary"
+                    android:textColor="@color/black"
                     android:text="Featured Categories"
-
+                    android:id="@+id/txt_departmentName"
                     android:textStyle="bold"
                     android:textSize="20sp"
                     android:layout_width="wrap_content"
@@ -37,9 +44,7 @@
 
             <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="10dp"
-                >
+                android:layout_height="match_parent">
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/recycle_category"
                     android:layout_width="match_parent"
@@ -52,7 +57,7 @@
 
                 </android.support.v7.widget.RecyclerView>
 
-                <android.support.design.widget.FloatingActionButton
+              <!--  <android.support.design.widget.FloatingActionButton
                     android:id="@+id/fb_ShoppingBasket"
                     android:backgroundTint="@color/appTheme"
                     app:rippleColor="@color/appTheme"
@@ -62,7 +67,7 @@
                     android:src="@drawable/ic_action_cart"
                     android:layout_margin="16dp" />
 
-
+-->
             </FrameLayout>
 
 
@@ -70,5 +75,40 @@
 
     </android.support.v4.widget.NestedScrollView>
 
+
+        <FrameLayout
+            android:id="@+id/container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+        <android.support.design.widget.BottomNavigationView
+            android:layout_marginTop="30dp"
+
+            android:layout_gravity="bottom"
+            android:id="@+id/bottom_navigation"
+            app:itemBackground="@color/white"
+            app:itemIconTint="@color/appTheme"
+            app:itemTextColor="@color/appTheme"
+            app:menu="@menu/bottom_navigation_menu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.andremion.counterfab.CounterFab
+
+                android:id="@+id/fb_ShoppingBasket"
+                android:backgroundTint="@color/appTheme"
+                app:rippleColor="@color/appTheme"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end|bottom"
+                android:src="@drawable/ic_action_cart"
+                android:layout_margin="16dp" />
+        </FrameLayout>
+    </android.support.design.widget.CoordinatorLayout>
 
 </LinearLayout>

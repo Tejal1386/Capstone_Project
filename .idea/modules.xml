@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/FurnitureStore.iml" filepath="$PROJECT_DIR$/FurnitureStore.iml" />
+      <module fileurl="file://$PROJECT_DIR$/CapstoneProject.iml" filepath="$PROJECT_DIR$/CapstoneProject.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/arcore_client/arcore_client.iml" filepath="$PROJECT_DIR$/arcore_client/arcore_client.iml" />
       <module fileurl="file://$PROJECT_DIR$/gvr_common/gvr_common.iml" filepath="$PROJECT_DIR$/gvr_common/gvr_common.iml" />

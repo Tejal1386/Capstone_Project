@@ -51,7 +51,7 @@ dependencies {
     //counterFAB
 
     implementation 'com.github.andremion:counterfab:1.0.1'
-
+    compile group: 'org.seleniumhq.selenium', name: 'selenium-java', version: '2.+'
     compile 'com.android.support:appcompat-v7:26.+'
     compile 'com.amulyakhare:com.amulyakhare.textdrawable:1.0.1'
     compile 'com.readystatesoftware.sqliteasset:sqliteassethelper:+'
@@ -72,5 +72,15 @@ dependencies {
     compile 'com.android.support:design:26.1.0'
     testCompile 'junit:junit:4.12'
     testCompile 'org.testng:testng:6.10'
+    compile fileTree(dir: 'lib', include: ['*.jar'])
+    compile 'junit:junit:4.12'
+    compile 'io.appium:java-client:3.3.0'
+    compile 'com.googlecode.json-simple:json-simple:1.1.1'
+
+    compile 'commons-lang:commons-lang:2.6'
+    compile 'com.google.code.gson:gson:2.5'
+    compile 'com.google.http-client:google-http-client:1.21.0'
+    compile 'com.testdroid:testdroid-api:2.9'
+    compile 'com.google.http-client:google-http-client-jackson2:1.21.0'
 }
 apply plugin: 'com.google.gms.google-services'

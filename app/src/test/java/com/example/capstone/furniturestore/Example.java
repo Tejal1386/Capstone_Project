@@ -34,7 +34,7 @@ public class Example {
         capabilities.setCapability(MobileCapabilityType.BROWSER_NAME, BrowserType.CHROME);
         capabilities.setCapability(MobileCapabilityType.PLATFORM, Platform.ANDROID);
         capabilities.setCapability(MobileCapabilityType.PLATFORM_NAME, "Android");
-        capabilities.setCapability(MobileCapabilityType.DEVICE_NAME, "mydevice");
+        capabilities.setCapability(MobileCapabilityType.DEVICE_NAME, "Samsung S8");
         capabilities.setCapability(MobileCapabilityType.VERSION, "5.0.1");
 
         URL url = new URL("http://0.0.0.0:4723/wd/hub");

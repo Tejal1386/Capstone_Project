@@ -29,7 +29,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-
 public class AccountInformation extends AppCompatActivity {
 
     TextView txtedit_password,txtedit_username;

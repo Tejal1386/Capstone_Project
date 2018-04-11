@@ -42,6 +42,9 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.example.capstone.furniturestore.ProductARActivity.INTENT_PRODUCT_KEY;
+
+
 public class ProductDetailActivity extends AppCompatActivity {
 
     private static final String TAG = "ProductActivity";
@@ -161,9 +164,9 @@ public class ProductDetailActivity extends AppCompatActivity {
         btnView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-            //    Intent intent = new Intent(ProductDetailActivity.this, AddToFavouriteActivity.class);
-              //  intent.putExtra("ProductID", ProductID);
-                //startActivity(intent);
+                Intent intent = new Intent(ProductDetailActivity.this, ProductARActivity.class);
+                intent.putExtra(INTENT_PRODUCT_KEY, "Furniture");
+                startActivity(intent);
             }
         });
 

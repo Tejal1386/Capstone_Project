@@ -4,6 +4,9 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/FurnitureStore.iml" filepath="$PROJECT_DIR$/FurnitureStore.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/arcore_client/arcore_client.iml" filepath="$PROJECT_DIR$/arcore_client/arcore_client.iml" />
+      <module fileurl="file://$PROJECT_DIR$/gvr_common/gvr_common.iml" filepath="$PROJECT_DIR$/gvr_common/gvr_common.iml" />
+      <module fileurl="file://$PROJECT_DIR$/viro_core/viro_core.iml" filepath="$PROJECT_DIR$/viro_core/viro_core.iml" />
     </modules>
   </component>
 </project>

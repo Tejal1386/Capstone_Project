@@ -79,6 +79,8 @@
                 android:textColor="@color/black"/>
 
             <Button
+                android:layout_margin="5dp"
+                style="@style/Button_Style"
                 android:text="Show View"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -86,12 +88,16 @@
 
 
             <Button
+                android:layout_margin="5dp"
+                style="@style/Button_Style"
             android:text="Add To Cart"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/btn_AddToCart"/>
 
             <Button
+                android:layout_margin="5dp"
+                style="@style/Button_Style"
                 android:text="Save to Favourite"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

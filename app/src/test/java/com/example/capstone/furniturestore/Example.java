@@ -35,12 +35,11 @@ public class Example {
         capabilities.setCapability(MobileCapabilityType.PLATFORM, Platform.ANDROID);
         capabilities.setCapability(MobileCapabilityType.PLATFORM_NAME, "Android");
         capabilities.setCapability(MobileCapabilityType.DEVICE_NAME, "mydevice");
-        capabilities.setCapability(MobileCapabilityType.VERSION, "6.0.1");
+        capabilities.setCapability(MobileCapabilityType.VERSION, "5.0.1");
 
-        URL url = new URL("http://127.0.0.1:4725/wd/hub");
+        URL url = new URL("http://0.0.0.0:4723/wd/hub");
 
         WebDriver driver = new AndroidDriver(url, capabilities);
-
         driver.get("http://www.facebook.com");
 
         System.out.print("Title:"+ driver.getTitle());

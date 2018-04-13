@@ -48,7 +48,7 @@ public class UserAccountActivity extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setTitleTextColor(1);
-        getSupportActionBar().setTitle("My Account");
+      //  getSupportActionBar().setTitle("My Account");
 
         // add back arrow to toolbar
         if (getSupportActionBar() != null){
@@ -80,7 +80,7 @@ public class UserAccountActivity extends AppCompatActivity {
         relativeLayout_myorders.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                intent  = new Intent(UserAccountActivity.this,ShoppingBasketActivity.class );
+                intent  = new Intent(UserAccountActivity.this,OrderStatus.class );
                 startActivity(intent);
             }
         });

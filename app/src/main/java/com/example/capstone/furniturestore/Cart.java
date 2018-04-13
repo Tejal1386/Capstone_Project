@@ -181,7 +181,7 @@ public class Cart extends AppCompatActivity implements RecyclerItemTouchHelperLi
 
                 PayPalPayment payPalPayment = new PayPalPayment(new BigDecimal(formatAmount),
                         "CAD",
-                        "AndroEat app Order",
+                        "Furniture app Order",
                         PayPalPayment.PAYMENT_INTENT_SALE);
                 Intent intent = new Intent(getApplicationContext(), PaymentActivity.class);
                 intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION,config);

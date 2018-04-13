@@ -7,13 +7,37 @@
     android:orientation="vertical"
     tools:context="com.example.capstone.furniturestore.SignUpActivity">
 
+    <include layout="@layout/toolbar"></include>
+
+    <TextView
+        android:layout_margin="20dp"
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:maxLines="2"
+        android:textColor="@color/black"
+        android:text="Enter Your Phone Number To Create Your Account"/>
+
     <LinearLayout
 
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <include layout="@layout/toolbar"></include>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="30dp"
+            android:paddingRight="30dp">
+
+            <EditText
+                android:id="@+id/editTxt_Fullname"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Full Name*"
+                android:inputType="text" />
+
+        </LinearLayout>
 
 
         <LinearLayout
@@ -26,7 +50,9 @@
                 android:id="@+id/editTxt_UserName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="User Name*" />
+                android:hint="Phone Number*"
+                android:inputType="number"
+                android:maxLength="10" />
 
         </LinearLayout>
 
@@ -41,7 +67,22 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Password*"
-                android:inputType="textPassword" />
+                android:inputType="textWebPassword" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="30dp"
+            android:paddingRight="30dp">
+
+            <EditText
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Confirm Password*"
+                android:inputType="textWebPassword" />
 
         </LinearLayout>
 
@@ -54,6 +95,7 @@
             android:paddingRight="30dp">
 
             <Button
+                style="@style/Button_Style"
                 android:id="@+id/btnRegister"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -69,21 +111,24 @@
 
 
             <TextView
+                android:layout_gravity="center"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAlignment="center"
                 android:textSize="16dp"
+                android:textColor="@color/black"
                 android:text="By signing up you agree to our"
                 />
             <TextView
                 android:id="@+id/btnPrivacyPolicy"
                 android:textAlignment="center"
-
+                android:textStyle="bold"
+                android:layout_gravity="center"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/colorPrimary"
                 android:text=" Privacy Policy and Terms of Use"
-                android:textSize="18dp"
+                android:textSize="16dp"
                 />
 
 

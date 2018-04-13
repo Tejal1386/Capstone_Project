@@ -6,14 +6,26 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="com.example.capstone.furniturestore.LoginActivity">
+
+    <include layout="@layout/toolbar"></include>
+
+
+
+
     <LinearLayout
 
-        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-        <include layout="@layout/toolbar"></include>
-
+        <TextView
+            android:layout_margin="20dp"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxLines="2"
+            android:textColor="@color/black"
+            android:text="Enter Your Phone Number To Log in"/>
 
 
         <LinearLayout
@@ -26,7 +38,9 @@
                 android:id="@+id/editTxt_UserName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="User Name*" />
+                android:hint="Phone number*"
+                android:maxLength="10"
+                android:inputType="number" />
 
         </LinearLayout>
 
@@ -55,6 +69,7 @@
 
             <Button
                 android:id="@+id/btnLogin"
+                style="@style/Button_Style"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="LOG IN" />
@@ -68,33 +83,31 @@
 
 
             <TextView
+                android:textColor="@color/black"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAlignment="center"
-                android:textSize="16dp"
                 android:text="Don't Have Account?"
-                />
+                android:textAlignment="center"
+                android:textSize="16dp" />
+
             <TextView
                 android:id="@+id/txtlinkSignUp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/colorPrimary"
-                android:text=" Sign up "
-                android:textSize="20dp"
-                android:onClick="onCLick"
                 android:linksClickable="true"
-                />
+                android:text=" Sign up "
+                android:textColor="@color/colorPrimary"
+                android:textSize="20dp" />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAlignment="center"
-                android:textSize="16dp"
-
                 android:text=" here"
-                />
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textSize="16dp" />
 
         </LinearLayout>
-
 
 
     </LinearLayout>

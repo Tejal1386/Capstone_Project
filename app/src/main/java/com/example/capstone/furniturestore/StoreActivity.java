@@ -14,11 +14,9 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -253,10 +251,15 @@ public class StoreActivity extends AppCompatActivity {
 
                 viewHolder.setClickListener(new ProductViewHolder.ItemClickListener() {
                     @Override
-                    public void onClickItem(int pos) {
+                    public void onClickItem(View view, int pos, boolean b) {
                         Intent intent = new Intent(StoreActivity.this, ProductDetailActivity.class);
                         intent.putExtra("ProductID", model.getProductID());
                         startActivity(intent);
+                    }
+
+                    @Override
+                    public void onClick(View view, int adapterPosition, boolean b) {
+
                     }
                 });
             }

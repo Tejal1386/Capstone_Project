@@ -3,25 +3,17 @@ package com.example.capstone.furniturestore;
 import android.content.Intent;
 import android.graphics.Paint;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.GridView;
-import android.widget.ListView;
 import android.widget.TextView;
 
-import com.example.capstone.furniturestore.Models.Category;
 import com.example.capstone.furniturestore.Models.Product;
-import com.example.capstone.furniturestore.ViewHolder.CategoryViewHolder;
 import com.example.capstone.furniturestore.ViewHolder.ProductViewHolder;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.database.DataSnapshot;
@@ -30,8 +22,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
-
-import java.util.Timer;
 
 public class ProductListActivity extends AppCompatActivity {
 
@@ -157,10 +147,15 @@ public class ProductListActivity extends AppCompatActivity {
 
                 viewHolder.setClickListener(new ProductViewHolder.ItemClickListener() {
                     @Override
-                    public void onClickItem(int pos) {
+                    public void onClickItem(View view, int pos, boolean b) {
                         Intent intent = new Intent(ProductListActivity.this, ProductDetailActivity.class);
                         intent.putExtra("ProductID", model.getProductID());
                         startActivity(intent);
+                    }
+
+                    @Override
+                    public void onClick(View view, int adapterPosition, boolean b) {
+
                     }
                 });
             }

@@ -50,7 +50,9 @@
         <ImageView
             android:id="@+id/cart_image"
             android:layout_width="100dp"
-            android:layout_height="130dp"
+            android:layout_height="100dp"
+            android:scaleType="fitXY"
+            android:layout_marginTop="30dp"
           />
 
         <LinearLayout
@@ -68,9 +70,11 @@
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
                 android:textAllCaps="true"
-android:textColor="@color/black"
+                android:textColor="@color/black"
                 android:id="@+id/cart_item_name"
                 android:layout_marginLeft="12dp"
+                android:layout_marginTop="45dp"
+                android:text="pro"
                 android:gravity="center_vertical|start"
                 />
 
@@ -108,7 +112,8 @@ android:textColor="@color/black"
             app:backGroundColor="@color/appTheme"
             app:initialNumber="1"
             app:finalNumber="20"
-            android:layout_margin="50dp"
+            android:layout_marginTop="55dp"
+            android:layout_margin="-50dp"
             android:gravity="start"
             ></com.cepheuen.elegantnumberbutton.view.ElegantNumberButton>
 

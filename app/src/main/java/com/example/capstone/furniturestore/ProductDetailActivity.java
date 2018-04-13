@@ -108,34 +108,61 @@ public class ProductDetailActivity extends AppCompatActivity {
         btnAddToCart = (Button) findViewById(R.id.btn_AddToCart);
 
         btnAddToCart.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-            //    current_product.setProductQunt(numberButton.getNumber());
+                                            @Override
+                                            public void onClick(View v) {
+                                                //    current_product.setProductQunt(numberButton.getNumber());
 
-                List<Product> tem=new ArrayList<>();
-                tem.addAll(new Database(getApplicationContext()).getCarts());
-                boolean isAlready=false;
-                for(Product product:tem){
-                    if(current_product.getProductID().equalsIgnoreCase(product.getProductID())){
-                        isAlready=true;
-                    }
+                                                if (UserID.equals(null) || UserID == "") {
+                                                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                                                            ProductDetailActivity.this);
 
-                }
-                Log.e("==value", String.valueOf(current_product.getProductPrice()));
-                if(isAlready){
-                    Toast.makeText(ProductDetailActivity.this,"product is already in cart",Toast.LENGTH_SHORT).show();
-                }
-                else
-                {
-                new Database(ProductDetailActivity.this).addToCart((current_product));
-                current_product.setProductImage(current_product.getProductImage());
-                current_product.setProductPrice(current_product.getProductPrice());
+                                                    // set title
+                                                    alertDialogBuilder.setTitle("LogIn First");
 
-                Toast.makeText(ProductDetailActivity.this,"Added",Toast.LENGTH_SHORT).show();
-            }}
-        });
+                                                    // set dialog message
+                                                    alertDialogBuilder
+                                                            .setMessage("LogIn First to see your Account!")
+                                                            .setCancelable(false)
+
+                                                            .setPositiveButton("LogIn", new DialogInterface.OnClickListener() {
+                                                                @Override
+                                                                public void onClick(DialogInterface dialogInterface, int id) {
+                                                                    Intent i = new Intent(ProductDetailActivity.this, LoginActivity.class);
+                                                                    startActivity(i);
+                                                                }
+                                                            });
+
+                                                    // create alert dialog
+                                                    AlertDialog alertDialog = alertDialogBuilder.create();
+
+                                                    // show it
+                                                    alertDialog.show();
+                                                } else {
+                                                    List<Product> tem = new ArrayList<>();
+                                                    tem.addAll(new Database(getApplicationContext()).getCarts());
+                                                    boolean isAlready = false;
+                                                    for (Product product : tem) {
+                                                        if (current_product.getProductID().equalsIgnoreCase(product.getProductID())) {
+                                                            isAlready = true;
+                                                        }
+
+                                                    }
+                                                    Log.e("==value", String.valueOf(current_product.getProductPrice()));
+                                                    if (isAlready) {
+                                                        Toast.makeText(ProductDetailActivity.this, "product is already in cart", Toast.LENGTH_SHORT).show();
+                                                    } else {
+                                                        new Database(ProductDetailActivity.this).addToCart((current_product));
+                                                        current_product.setProductImage(current_product.getProductImage());
+                                                        current_product.setProductPrice(current_product.getProductPrice());
+
+                                                        Toast.makeText(ProductDetailActivity.this, "Added", Toast.LENGTH_SHORT).show();
+                                                    }
+                                                }
 
 
+                                            };
+
+                                        });
         btnAddToFavourite = (Button) findViewById(R.id.btn_favoiurite);
 
         btnAddToFavourite.setOnClickListener(new View.OnClickListener() {

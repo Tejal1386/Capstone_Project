@@ -53,23 +53,22 @@ public class Cart extends AppCompatActivity implements RecyclerItemTouchHelperLi
     FirebaseDatabase database;
     DatabaseReference requests;
 
-  public   TextView txtTotalPrice;
+    public TextView txtTotalPrice;
     TextView txtname;
-  Button btnplace;
-  TextView city;
-  Number nbr;
-  TextView province;
+    Button btnplace;
+    TextView city;
+    Number nbr;
+    TextView province;
 
 
     List<Product> cart = new ArrayList<>();
-    CartAdapter adapter ;
+    CartAdapter adapter;
     //Paypal payment
 
     static PayPalConfiguration config = new PayPalConfiguration()
             .environment(PayPalConfiguration.ENVIRONMENT_SANDBOX)
             .clientId(Config.PAYPAL_CLIENT_ID);
-    String name,phone,address;
-
+    String name, phone, address;
 
 
     @Override
@@ -80,13 +79,12 @@ public class Cart extends AppCompatActivity implements RecyclerItemTouchHelperLi
 
         //initpaypal
         Intent intent = new Intent(this, PayPalService.class);
-        intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION,config);
+        intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION, config);
         startService(intent);
 
 
-
         database = FirebaseDatabase.getInstance();
-        requests=database.getReference("Requests");
+        requests = database.getReference("Requests");
 
 
         recyclerView = (RecyclerView) findViewById(R.id.listCart);
@@ -95,41 +93,38 @@ public class Cart extends AppCompatActivity implements RecyclerItemTouchHelperLi
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
- rootLayout = (RelativeLayout)findViewById(R.id.rootLayout);
+        rootLayout = (RelativeLayout) findViewById(R.id.rootLayout);
 
         //Swipe to delete
 
-        ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new RecyclerItemTouchHelper(0,ItemTouchHelper.LEFT,this);
+        ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new RecyclerItemTouchHelper(0, ItemTouchHelper.LEFT, this);
         new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(recyclerView);
 
 
-
-
-
-        txtTotalPrice = (TextView)findViewById(R.id.total);
+        txtTotalPrice = (TextView) findViewById(R.id.total);
         btnplace = (Button) findViewById(R.id.btn_placeorder);
         btnplace.setOnClickListener(new View.OnClickListener() {
-    @Override
-    public void onClick(View v) {
-        List<Product> orders = new Database(getApplicationContext()).getCarts();
-        if(orders.size()==0){
-            Toast.makeText(getApplicationContext(),"First add item in cart",Toast.LENGTH_SHORT).show();
-        }else {
-            showAlertDialog();
-        }
+            @Override
+            public void onClick(View v) {
+                List<Product> orders = new Database(getApplicationContext()).getCarts();
+                if (orders.size() == 0) {
+                    Toast.makeText(getApplicationContext(), "First add item in cart", Toast.LENGTH_SHORT).show();
+                } else {
+                    showAlertDialog();
+                }
+            }
+        });
+
+
+        loadListOrder();
     }
-});
 
-
-
-
-        loadListOrder();}
-        private void showAlertDialog() {
+    private void showAlertDialog() {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(Cart.this);
         alertDialog.setTitle("One more step!");
-        alertDialog.setMessage("Enter your address:");
+        alertDialog.setMessage("Enter your Information:");
 
-        LinearLayout.LayoutParams lp =new LinearLayout.LayoutParams(
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.MATCH_PARENT
         );
@@ -142,8 +137,8 @@ public class Cart extends AppCompatActivity implements RecyclerItemTouchHelperLi
         lp.height = LinearLayout.LayoutParams.WRAP_CONTENT;
 
         final EditText edtname = new EditText(Cart.this);
-        final EditText edtphone= new EditText(Cart.this);
-        final EditText edtAddress =new EditText(Cart.this);
+        final EditText edtphone = new EditText(Cart.this);
+        final EditText edtAddress = new EditText(Cart.this);
 
 
         edtname.setLayoutParams(lp);
@@ -165,41 +160,52 @@ public class Cart extends AppCompatActivity implements RecyclerItemTouchHelperLi
         alertDialog.setPositiveButton("YES", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
+                if (edtphone.getText().toString().equals("") || edtAddress.getText().toString().equals("") || edtname.getText().toString().equals("")) {
+                    Toast.makeText(getApplicationContext(), "fill information first", Toast.LENGTH_SHORT).show();
+                } else {
 
-                //Show Paypal to payment
+                    name = edtname.getText().toString();
+                    phone = edtphone.getText().toString();
+                    address = edtAddress.getText().toString();
 
-                //first , get Address and Comment from Alert Dialog
-
-                name = edtname.getText().toString();
-                phone = edtphone.getText().toString();
-                address = edtAddress.getText().toString();
-
-                String formatAmount = txtTotalPrice.getText().toString()
-                        .replace("$","")
-                        .replace(",","");
+                    String formatAmount = txtTotalPrice.getText().toString()
+                            .replace("$", "")
+                            .replace(",", "");
 
 
-                PayPalPayment payPalPayment = new PayPalPayment(new BigDecimal(formatAmount),
-                        "CAD",
-                        "Furniture app Order",
-                        PayPalPayment.PAYMENT_INTENT_SALE);
-                Intent intent = new Intent(getApplicationContext(), PaymentActivity.class);
-                intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION,config);
-                intent.putExtra(PaymentActivity.EXTRA_PAYMENT,payPalPayment);
-                startActivityForResult(intent,PAYPAL_REQUEST_CODE);
+                    PayPalPayment payPalPayment = new PayPalPayment(new BigDecimal(formatAmount),
+                            "CAD",
+                            "Furniture app Order",
+                            PayPalPayment.PAYMENT_INTENT_SALE);
+                    Intent intent = new Intent(getApplicationContext(), PaymentActivity.class);
+                    intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION, config);
+                    intent.putExtra(PaymentActivity.EXTRA_PAYMENT, payPalPayment);
+                    startActivityForResult(intent, PAYPAL_REQUEST_CODE);
 
+                }
+
+        }
+    });
+
+    //Show Paypal to payment
+
+        //first , get Address and Comment from Alert Dialog
+
+
+
+                alertDialog.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                });
+
+                alertDialog.show();
             }
-        });
 
-        alertDialog.setNegativeButton("NO", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                dialogInterface.dismiss();
-            }
-        });
 
-        alertDialog.show();
-    }
+
+
 
     //Press Ctrl+O
 

@@ -1,6 +1,7 @@
 package com.example.capstone.furniturestore;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -11,16 +12,23 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.capstone.furniturestore.Models.User;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class SignUpActivity extends AppCompatActivity {
 
+    //Database reference
     private DatabaseReference mDatabase;
-    private EditText editText_username, editText_password;
+    private EditText editText_userID, editText_password,editText_userFullname;
     private Button btn_register;
     private Intent intent;
+    private Boolean ExistUser =  false;
     Toolbar toolbar;
+    String ID,Username, Password;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,7 +38,7 @@ public class SignUpActivity extends AppCompatActivity {
         //toolBar settings
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-     //   toolbar.setTitleTextColor(1);
+        toolbar.setTitleTextColor(Color.WHITE);
         getSupportActionBar().setTitle(" SignUp");
 
         // add back arrow to toolbar
@@ -42,13 +50,25 @@ public class SignUpActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
                 onBackPressed(); // Implemented by activity
             }
         });
 
-        editText_username = (EditText)  findViewById(R.id.editTxt_UserName);
+        editText_userID = (EditText)  findViewById(R.id.editTxt_UserName);
+        editText_userFullname = (EditText)  findViewById(R.id.editTxt_Fullname);
+        editText_userID.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    String username = editText_userID.getText().toString();
+                    if(username.length() < 10){
+                        editText_userID.setError("atleast 10 digit for Phone number!");
+                    }
+                }
+            }
+        });
+
+
         editText_password = (EditText) findViewById(R.id.editTxt_Password);
         btn_register = (Button) findViewById(R.id.btnRegister);
 
@@ -56,25 +76,44 @@ public class SignUpActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                addUser();
-            }
+                ID = editText_userID.getText().toString() ;
+                Username = editText_userFullname.getText().toString();
+                Password = editText_password.getText().toString();
+
+                mDatabase.orderByChild("userId").equalTo(ID).addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        if(dataSnapshot.exists()) {
+                            ExistUser = true;
+                            Toast.makeText(SignUpActivity.this," UserName already Exists",Toast.LENGTH_LONG).show();;
+
+                        }
+                        else {
+                            //Add user in database
+                            addUser();
+                        }
+                    }
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
+        }
         });
 
     }
     private void addUser()
     {
-        String ID = mDatabase.push().getKey();
-        String userName = editText_username.getText().toString();
-        String password = editText_password.getText().toString();
-        //String address = "";
 
-        if(!TextUtils.isEmpty(userName)) {
-            User user = new User(ID, userName, password, null);
+        if(!TextUtils.isEmpty(ID)) {
 
-            mDatabase.child(ID).setValue(user);
-            intent = new Intent(SignUpActivity.this,LoginActivity.class);
-            startActivity(intent);
-
+            if(ExistUser == false) {
+                User user = new User(ID, Username, Password, null);
+                mDatabase.child(ID).setValue(user);
+                intent = new Intent(SignUpActivity.this, LoginActivity.class);
+                startActivity(intent);
+            }
 
         }else {
             Toast.makeText(this,"You Should enter UserName",Toast.LENGTH_LONG).show();;

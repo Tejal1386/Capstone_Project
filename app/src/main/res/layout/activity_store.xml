@@ -7,24 +7,43 @@
     android:orientation="vertical"
     tools:context="com.example.capstone.furniturestore.StoreActivity">
 
-   <include layout="@layout/searchtoolbar"></include>
+ <!-- <include layout="@layout/searchtoolbar"></include>
+-->
+
+    <FrameLayout
+        android:id="@+id/toolbar_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/searchtoolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/colorPrimaryDark" />
+
+        <com.miguelcatalan.materialsearchview.MaterialSearchView
+            android:id="@+id/search_view"
+            android:searchSuggestAuthority="com.example.MySuggestionProvider"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"/>
+    </FrameLayout>
 
 <LinearLayout
+    android:orientation="vertical"
     android:visibility="gone"
     android:id="@+id/search_listlayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycler_search_List"
-        android:clickable="true"
-        android:clipToPadding="false"
-        android:horizontalSpacing="30dp"
-        android:verticalSpacing="30dp"
+    <ListView
+        android:id="@+id/list_Search"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-    </android.support.v7.widget.RecyclerView>
+    </ListView>
+
+
 
 </LinearLayout>
 
@@ -194,8 +213,8 @@
             android:layout_gravity="bottom"
             android:id="@+id/bottom_navigation"
             app:itemBackground="@color/white"
-            app:itemIconTint="@color/appTheme"
-            app:itemTextColor="@color/appTheme"
+            app:itemIconTint="@color/black"
+            app:itemTextColor="@color/black"
             app:menu="@menu/bottom_navigation_menu"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>

@@ -56,7 +56,6 @@ public class AddAddressActivity extends AppCompatActivity {
 
     AddressAdapter add_adapter;
 
-    final List<String> listaddressID = new ArrayList<String>();
     ArrayList<Address> addressList = new ArrayList<Address>();
 
 
@@ -164,10 +163,13 @@ public class AddAddressActivity extends AppCompatActivity {
                             PostalCode = edit_postalcode.getText().toString();
 
                             addressDatabase = FirebaseDatabase.getInstance().getReference("User");
+                            String ID = addressDatabase.push().getKey();
 
                             if (UserName != null) {
 
                                 Map<String, Object> userAddressData = new HashMap<>();
+                                userAddressData.put("addressId", ID);
+
                                 userAddressData.put("ufullname", FullName);
                                 userAddressData.put("uaddress", Address);
                                 userAddressData.put("ucity", City);
@@ -176,7 +178,7 @@ public class AddAddressActivity extends AppCompatActivity {
                                 userAddressData.put("upostalcode", PostalCode);
 
 
-                                addressDatabase.child(UserID).child("address").push().setValue(userAddressData);
+                                addressDatabase.child(UserID).child("address").child(ID).setValue(userAddressData);
 
                                 setContentView(R.layout.activity_add_address);
 
@@ -252,15 +254,6 @@ public class AddAddressActivity extends AppCompatActivity {
 
             }
         });
-
-
-
-
-
-
-
-
-
 
 
     }

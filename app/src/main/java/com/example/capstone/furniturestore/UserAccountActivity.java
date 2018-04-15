@@ -4,9 +4,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -14,6 +18,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.capstone.furniturestore.ViewHolder.BottomNavigationViewHolder;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class UserAccountActivity extends AppCompatActivity {
@@ -64,6 +69,32 @@ public class UserAccountActivity extends AppCompatActivity {
             }
         });
 
+        //Bottom navigation
+        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
+
+        CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) bottomNavigationView.getLayoutParams();
+        layoutParams.setBehavior(new BottomNavigationViewHolder());
+
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()){
+                    case R.id.action_myFavoutite:
+                        Intent intent = new Intent(UserAccountActivity.this, FavouriteActivity.class);
+                        startActivity(intent);
+                        break;
+                    case R.id.action_myAccount:
+                        intent = new Intent(UserAccountActivity.this,UserAccountActivity.class);
+                        startActivity(intent);
+                        break;
+                    case R.id.action_sale:
+                        intent = new Intent(UserAccountActivity.this,ProductInSaleActivity.class);
+                        startActivity(intent);
+                        break;
+                }
+                return true;
+            }
+        });
 
 
         //displaying name
@@ -80,7 +111,7 @@ public class UserAccountActivity extends AppCompatActivity {
         relativeLayout_myorders.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                intent  = new Intent(UserAccountActivity.this,ShoppingBasketActivity.class );
+                intent  = new Intent(UserAccountActivity.this,OrderStatus.class );
                 startActivity(intent);
             }
         });

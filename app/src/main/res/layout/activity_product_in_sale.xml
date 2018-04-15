@@ -7,7 +7,50 @@
     android:orientation="vertical"
     tools:context="com.example.capstone.furniturestore.ProductInSaleActivity">
 
-    <include layout="@layout/toolbar"></include>
+  <!--  <include layout="@layout/toolbar"></include>
+-->
+
+    <FrameLayout
+        android:id="@+id/toolbar_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/colorPrimaryDark" />
+
+        <com.miguelcatalan.materialsearchview.MaterialSearchView
+            android:id="@+id/search_view"
+            android:searchSuggestAuthority="com.example.MySuggestionProvider"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"/>
+    </FrameLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:visibility="gone"
+        android:id="@+id/search_listlayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ListView
+            android:id="@+id/list_Search"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        </ListView>
+
+    </LinearLayout>
+
+    <android.support.design.widget.CoordinatorLayout
+
+        android:id="@+id/coordinator_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
 
     <android.support.v4.widget.NestedScrollView
         android:fillViewport="true"
@@ -38,4 +81,26 @@
     </android.support.v4.widget.NestedScrollView>
 
 
+
+        <FrameLayout
+            android:id="@+id/container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+        <android.support.design.widget.BottomNavigationView
+            android:layout_marginTop="30dp"
+
+            android:layout_gravity="bottom"
+            android:id="@+id/bottom_navigation"
+            app:itemBackground="@color/white"
+            app:itemIconTint="@color/appTheme"
+            app:itemTextColor="@color/appTheme"
+            app:menu="@menu/bottom_navigation_menu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+
+
+    </android.support.design.widget.CoordinatorLayout>
 </LinearLayout>

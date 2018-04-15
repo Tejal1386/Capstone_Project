@@ -2,27 +2,39 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item
-        android:id="@+id/action_myFavoutite"
+
+  <!--  <item
+        android:id="@+id/action_home"
         android:enabled="true"
-        android:title="Favourite"
-        app:showAsAction="ifRoom"
-        android:icon="@drawable/ic_action_favourite">
-    </item>
+        android:title="Home"
+        app:showAsAction="always"
+        android:icon="@drawable/ic_action_home">
+    </item>-->
 
     <item
         android:id="@+id/action_myAccount"
         android:enabled="true"
         android:title="Account"
-        app:showAsAction="ifRoom"
+        app:showAsAction="always"
         android:icon="@drawable/account">
     </item>
+
+
+    <item
+        android:id="@+id/action_myFavoutite"
+        android:enabled="true"
+        android:title="Favourite"
+        app:showAsAction="always"
+        android:icon="@drawable/ic_action_favourite">
+    </item>
+
+
 
     <item
         android:id="@+id/action_sale"
         android:enabled="true"
         android:title="Sales"
-        app:showAsAction="ifRoom"
+        app:showAsAction="always"
         android:icon="@drawable/sales">
     </item>
 </menu>

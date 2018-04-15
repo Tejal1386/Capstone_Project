@@ -54,11 +54,7 @@ public class Cart extends AppCompatActivity implements RecyclerItemTouchHelperLi
     DatabaseReference requests;
 
   public   TextView txtTotalPrice;
-    TextView txtname;
   Button btnplace;
-  TextView city;
-  Number nbr;
-  TextView province;
 
 
     List<Product> cart = new ArrayList<>();

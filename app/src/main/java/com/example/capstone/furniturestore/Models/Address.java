@@ -6,7 +6,7 @@ package com.example.capstone.furniturestore.Models;
 
 public class Address {
 
-    private String UserID;
+    private String addressId;
     private String uaddress;
     private String ufullname;
     private String ucity;
@@ -19,15 +19,24 @@ public class Address {
 
     }
 
-    public Address(String user_fullname,String user_address,String user_city,String user_state,String user_phone) {
+    public Address(String addressId,String user_fullname,String user_address,String user_city,String user_state,String user_phone) {
 
         //UserID = user_id;
+        this.addressId = addressId;
         ufullname = user_fullname;
         uaddress = user_address;
         ucity = user_city;
         ustate = user_state;
         uphone = user_phone;
         //UserPostalcode = user_postalcode;
+    }
+
+    public String getAddressId() {
+        return addressId;
+    }
+
+    public void setAddressId(String addressId) {
+        this.addressId = addressId;
     }
 
     public String getUaddress() {

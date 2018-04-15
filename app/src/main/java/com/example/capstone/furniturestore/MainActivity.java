@@ -11,21 +11,14 @@ import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
-    Toolbar toolbar;
     private Button butnLogin, btnSignup;
     private TextView txtlinkGuest;
-
     Intent intent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        //toolBar settings
-     /*   toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle(" supreme Furniture");*/
 
 
         butnLogin = (Button) findViewById(R.id.btnLogin);

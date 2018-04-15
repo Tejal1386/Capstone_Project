@@ -33,10 +33,11 @@
         <activity android:name=".MainActivity" />
         <activity android:name=".SignUpActivity" />
         <activity android:name=".StoreActivity" />
-        <activity android:name=".ShoppingBasketActivity" />
         <activity android:name=".UserAccountActivity" />
         <activity android:name=".ProductListActivity" />
         <activity android:name=".SearchItemActivity" />
+        <activity android:name=".AddAddressActivity" />
+
         <activity android:name=".CategoryActivity" />
         <activity android:name=".ProductDetailActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"

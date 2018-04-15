@@ -1,6 +1,11 @@
 package com.example.capstone.furniturestore;
 
+import android.app.SearchManager;
 import android.content.Intent;
+import android.content.SearchRecentSuggestionsProvider;
+import android.graphics.Color;
+import android.provider.SearchRecentSuggestions;
+import android.speech.RecognizerIntent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.CoordinatorLayout;
@@ -18,8 +23,10 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,6 +40,7 @@ import com.example.capstone.furniturestore.Models.Product;
 import com.example.capstone.furniturestore.ViewHolder.BottomNavigationViewHolder;
 import com.example.capstone.furniturestore.ViewHolder.DepartmentViewHolder;
 import com.example.capstone.furniturestore.ViewHolder.ProductViewHolder;
+import com.firebase.ui.database.FirebaseListAdapter;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
@@ -50,27 +58,24 @@ import java.util.TimerTask;
 
 public class StoreActivity extends AppCompatActivity {
 
-    FirebaseDatabase database;
-    private DatabaseReference deptDatabase,saleDatabase,CategoryDatabase;
-
-    //search functionality
-
-    RecyclerView searchRecycler;
-    ArrayList<Category> suggestList = new ArrayList<>();
-    ArrayList<String> searchString = new ArrayList<>();
-
-    SearchListAdapter searchListAdapter;
-    MaterialSearchView materialSearchView;
-
-    Toolbar toolbar;
+    //Database reference
+    private FirebaseDatabase database;
+    private DatabaseReference deptDatabase,saleDatabase,categoryDatabase;
+    //View pager
     ViewPager view_Pager;
     Timer timer;
     private int currentPage = 0;
-    TextView textView;
+    //Material Searchview
+    private SearchListAdapter searchListAdapter;
+    private MaterialSearchView materialSearchView;
+    private LinearLayout searchList;
+    private ArrayList<Category> suggestList = new ArrayList<>();
+
+    Toolbar toolbar;
+    private TextView textView;
     public RecyclerView department_RecyclerView, ProductInSale_RecyclerView;
     LinearLayoutManager layoutManager;
-    CounterFab fb_ShoppingBasket;
-    LinearLayout searchList;
+    private CounterFab fb_ShoppingBasket;
     Intent intent;
 
 
@@ -82,7 +87,7 @@ public class StoreActivity extends AppCompatActivity {
         //Firebase Database
         deptDatabase = FirebaseDatabase.getInstance().getReference("Department");
         saleDatabase = FirebaseDatabase.getInstance().getReference("Products");
-        CategoryDatabase = FirebaseDatabase.getInstance().getReference("Category");
+        categoryDatabase = FirebaseDatabase.getInstance().getReference("Category");
 
         // prodDatabase = FirebaseDatabase.getInstance().getReference("Products");
 
@@ -95,9 +100,8 @@ public class StoreActivity extends AppCompatActivity {
         //ToolBar
         toolbar = (Toolbar) findViewById(R.id.searchtoolbar);
         setSupportActionBar(toolbar);
-
+        toolbar.setTitleTextColor(Color.WHITE);
         getSupportActionBar().setTitle("supreme furniture");
-
         // add back arrow to toolbar
         if (getSupportActionBar() != null){
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -107,12 +111,9 @@ public class StoreActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
                 onBackPressed(); // Implemented by activity
             }
         });
-
 
 
         //floating button
@@ -127,7 +128,6 @@ public class StoreActivity extends AppCompatActivity {
             }
         });
         fb_ShoppingBasket.setCount(new Database(this).getCountCart());
-
 
 
         //Tagline taxBox
@@ -150,14 +150,11 @@ public class StoreActivity extends AppCompatActivity {
                         intent = new Intent(StoreActivity.this,FavouriteActivity.class);
                         startActivity(intent);
 
-                        // Toast.makeText(StoreActivity.this,"My Favourite",Toast.LENGTH_LONG).show();
                         break;
                     case R.id.action_myAccount:
                         intent = new Intent(StoreActivity.this,UserAccountActivity.class);
                         startActivity(intent);
 
-
-                        Toast.makeText(StoreActivity.this,"My Account",Toast.LENGTH_LONG).show();
                         break;
                     case R.id.action_sale:
 
@@ -165,29 +162,26 @@ public class StoreActivity extends AppCompatActivity {
                         startActivity(intent);
 
                         break;
-
                 }
                 return true;
             }
         });
 
-
-
         //Load Department
         load_Department();
 
-
+        //load sales
         load_productInSaleItems();
 
-        CategoryDatabase.addValueEventListener(new ValueEventListener() {
+
+        //Search view
+        categoryDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                int i = 0;
+
                 for(DataSnapshot categorySnapshot : dataSnapshot.getChildren()) {
                     Category category = categorySnapshot.getValue(Category.class);
                     suggestList.add(category);
-                    searchString.add(category.getCategoryName());
-                    i++;
                 }
 
             }
@@ -197,7 +191,6 @@ public class StoreActivity extends AppCompatActivity {
 
             }
         });
-
 
         load_SearchItems();
 
@@ -282,40 +275,45 @@ public class StoreActivity extends AppCompatActivity {
     }
 
     public void load_SearchItems(){
+
         materialSearchView = (MaterialSearchView) findViewById(R.id.search_view);
+        materialSearchView.setEllipsize(true);
         materialSearchView.setVoiceSearch(true);
-       // materialSearchView.setSuggestions();
+
+      //  String[] suggestionlist = new String[searchString.size()];
+       // suggestionlist = searchString.toArray(suggestionlist);
+
+     //   materialSearchView.setSuggestions(getResources().getStringArray(R.array.query_suggestions));
+
+        Intent intent  = getIntent();
+
+        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+            String query = intent.getStringExtra(SearchManager.QUERY);
+            SearchRecentSuggestions suggestions = new SearchRecentSuggestions(this,
+                    MySuggestionProvider.AUTHORITY, MySuggestionProvider.MODE);
+            suggestions.saveRecentQuery(query, null);
+        }
+
         searchList = (LinearLayout) findViewById(R.id.search_listlayout);
+
+        final ListView listView = (ListView) findViewById(R.id.list_Search);
 
         materialSearchView.setOnSearchViewListener(new MaterialSearchView.SearchViewListener() {
             @Override
             public void onSearchViewShown() {
                     searchList.setVisibility(View.VISIBLE);
+                    materialSearchView.setVisibility(View.VISIBLE);
                 // remove back arrow to toolbar
                 if (getSupportActionBar() != null){
                     getSupportActionBar().setDisplayHomeAsUpEnabled(false);
                     getSupportActionBar().setDisplayShowHomeEnabled(false);
                 }
-
-                   if(searchList.getVisibility() == View.VISIBLE){
-                       searchListAdapter = new SearchListAdapter(suggestList,StoreActivity.this);
-
-                       searchRecycler = (RecyclerView) findViewById(R.id.recycler_search_List);
-                       searchRecycler.setHasFixedSize(true);
-                       searchRecycler.setNestedScrollingEnabled(false);
-
-                       layoutManager = new LinearLayoutManager(getBaseContext());
-                       searchRecycler.setLayoutManager(new GridLayoutManager(StoreActivity.this, 1));
-
-                       searchRecycler.setAdapter(searchListAdapter);
-                   }
             }
 
             @Override
             public void onSearchViewClosed() {
-                searchList.setVisibility(View.INVISIBLE);
                 searchList.setVisibility(View.GONE);
-
+                materialSearchView.setVisibility(View.GONE);
                 // add back arrow to toolbar
                 if (getSupportActionBar() != null){
                     getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -324,8 +322,6 @@ public class StoreActivity extends AppCompatActivity {
 
             }
         });
-
-
 
         materialSearchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
             @Override
@@ -336,23 +332,59 @@ public class StoreActivity extends AppCompatActivity {
             @Override
             public boolean onQueryTextChange(String newText) {
                 if(newText != null && !newText.isEmpty()){
-                    List<Category> lstfound = new ArrayList<Category>();
-                    for(String item:searchString){
-                        if(item.contains(newText))
-                            searchString.add(item);
+                    ArrayList<Category> lstfound = new ArrayList<Category>();
+                    for(Category item:suggestList){
+                       // item.getCategoryName().cont
+                        if(item.getCategoryName().contains(newText))
+                            lstfound.add(item);
                     }
 
+                    searchListAdapter = new SearchListAdapter(StoreActivity.this, lstfound);
+                    listView.setAdapter(searchListAdapter);
 
                 }
-                else {
 
-
-
-                }
                 return true;
             }
         });
 
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                Intent intent = new Intent(StoreActivity.this, ProductListActivity.class);
+                intent.putExtra("CategoryID",searchListAdapter.getItem(position).getCategoryID() );
+                intent.putExtra("CategoryName", searchListAdapter.getItem(position).getCategoryName());
+                startActivity(intent);
+            }
+        });
+
+
+    }
+
+    public class MySuggestionProvider extends SearchRecentSuggestionsProvider {
+        public final static String AUTHORITY = "com.example.MySuggestionProvider";
+        public final static int MODE = DATABASE_MODE_QUERIES;
+
+        public MySuggestionProvider() {
+            setupSuggestions(AUTHORITY, MODE);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == MaterialSearchView.REQUEST_VOICE && resultCode == RESULT_OK) {
+            ArrayList<String> matches = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+            if (matches != null && matches.size() > 0) {
+                String searchWrd = matches.get(0);
+                if (!TextUtils.isEmpty(searchWrd)) {
+                    materialSearchView.setQuery(searchWrd, false);
+                }
+            }
+
+            return;
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
 
@@ -364,6 +396,28 @@ public class StoreActivity extends AppCompatActivity {
         } else {
             super.onBackPressed();
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.search_item_menu, menu);
+          MenuItem item = menu.findItem(R.id.action_search);
+          materialSearchView.setMenuItem(item);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()){
+            case R.id.action_search:
+
+
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+
     }
 
     private void setupAutoPager()
@@ -390,13 +444,5 @@ public class StoreActivity extends AppCompatActivity {
             }
         }, 500, 3000);
     }
-
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.search_item_menu, menu);
-          MenuItem item = menu.findItem(R.id.action_search);
-          materialSearchView.setMenuItem(item);
-        return true;
-    }
-
 
 }

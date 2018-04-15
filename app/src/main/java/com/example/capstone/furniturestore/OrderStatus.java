@@ -6,6 +6,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,6 +28,8 @@ public class OrderStatus extends AppCompatActivity {
     FirebaseRecyclerAdapter<Request,OrderViewHolder> adapter;
     FirebaseDatabase database;
     DatabaseReference requests;
+    //Toolbar
+    Toolbar toolbar;
 
     //Shared Preferences
     SharedPreferences sharedPreferences;
@@ -44,6 +48,24 @@ public class OrderStatus extends AppCompatActivity {
         //firebase
         database=FirebaseDatabase.getInstance();
         requests=database.getReference("Requests");
+
+        //toolBar settings
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle(" My Orders");
+
+        // add back arrow to toolbar
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed(); // Implemented by activity
+            }
+        });
 
 
         //Shared Preferences

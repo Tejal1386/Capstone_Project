@@ -99,7 +99,7 @@ public class ProductDetailActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
-     //   numberButton = (ElegantNumberButton)findViewById(R.id.number_button);
+
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -193,9 +193,7 @@ public class ProductDetailActivity extends AppCompatActivity {
         btnView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-            //    Intent intent = new Intent(ProductDetailActivity.this, AddToFavouriteActivity.class);
-              //  intent.putExtra("ProductID", ProductID);
-                //startActivity(intent);
+
             }
         });
 

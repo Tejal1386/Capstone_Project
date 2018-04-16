@@ -78,8 +78,6 @@ public class Cart extends AppCompatActivity implements RecyclerItemTouchHelperLi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cart);
 
-
-
         //initpaypal
         Intent intent = new Intent(this, PayPalService.class);
         intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION, config);
@@ -107,10 +105,6 @@ public class Cart extends AppCompatActivity implements RecyclerItemTouchHelperLi
             }
         });
 
-
-
-
-
         recyclerView = (RecyclerView) findViewById(R.id.listCart);
         recyclerView.setNestedScrollingEnabled(false);
 
@@ -132,7 +126,6 @@ public class Cart extends AppCompatActivity implements RecyclerItemTouchHelperLi
             public void onClick(View v) {
                 List<Product> orders = new Database(getApplicationContext()).getCarts();
                 if (orders.size() == 0) {
-                //    Toast.makeText(getApplicationContext(), "First add item in cart", Toast.LENGTH_SHORT).show();
 
                     View view = findViewById(android.R.id.content);
                     Snackbar.make(view, "First add item in cart..", Snackbar.LENGTH_LONG).show();
@@ -193,8 +186,6 @@ public class Cart extends AppCompatActivity implements RecyclerItemTouchHelperLi
             public void onClick(DialogInterface dialogInterface, int i) {
                 if (edtphone.getText().toString().equals("") || edtAddress.getText().toString().equals("") || edtname.getText().toString().equals("")) {
 
-                  //  Toast.makeText(getApplicationContext(), "fill information first", Toast.LENGTH_SHORT).show();
-
                     View view = findViewById(android.R.id.content);
                     Snackbar.make(view, "Fill information first..", Snackbar.LENGTH_LONG).show();
 
@@ -227,9 +218,7 @@ public class Cart extends AppCompatActivity implements RecyclerItemTouchHelperLi
 
         //first , get Address and Comment from Alert Dialog
 
-
-
-                alertDialog.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+        alertDialog.setNegativeButton("NO", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         dialogInterface.dismiss();
@@ -238,12 +227,6 @@ public class Cart extends AppCompatActivity implements RecyclerItemTouchHelperLi
 
                 alertDialog.show();
             }
-
-
-
-
-
-    //Press Ctrl+O
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -305,16 +288,11 @@ public class Cart extends AppCompatActivity implements RecyclerItemTouchHelperLi
         float total = 0;
 
         for(Product order:cart) {
-             total+=(Float.parseFloat(String.valueOf(order.getProductPricenew())));//*(Integer.parseInt(order.getProtductQunt()));
-            //  Locale locale = new Locale("en","US");
-            //  NumberFormat fmt = NumberFormat.getCurrencyInstance(locale);
+             total+=(Float.parseFloat(String.valueOf(order.getProductPricenew())));
 
-          // Log.e("===value", order.getProductQunt());
             Log.e("==value", String.valueOf(order.getProductPricenew()));
             Log.e("===2nd value", order.getProductName());
-            txtTotalPrice.setText(total+"");//order.getProductName());
-            //.format(total));
-
+            txtTotalPrice.setText(total+"");
         }
     }
 
@@ -332,13 +310,7 @@ final Product  deleteItem = ((CartAdapter)recyclerView.getAdapter()).getItem(vie
              new Database(getBaseContext()).removeFromCart(deleteItem.getProductID());
 
 
-            float total = 0;/*
-            List<Product> orders = new Database(getBaseContext()).getCarts();
-            for(Product item :orders){
-                total +=(Float.parseFloat(item.getProductPricenew()))*(Integer.parseInt(item.getProductQunt()));
-            txtTotalPrice.setText("$"+total+"");
-*/
-//}
+            float total = 0;
             //make snackbar
             Snackbar snackbar = Snackbar.make(rootLayout,name + "removed from cart !" ,Snackbar.LENGTH_LONG);
             snackbar.setAction("UNDO", new View.OnClickListener() {
@@ -352,17 +324,7 @@ final Product  deleteItem = ((CartAdapter)recyclerView.getAdapter()).getItem(vie
         Log.e("price", String.valueOf(deleteItem.getProductPrice()));
               adapter.restoreItem(deleteItem,deleteIndex);
 
-//update txttotal
-//calculate total price
 
-       /* float totl = 0;
-        List<Product> orders = new Database(getBaseContext()).getCarts();
-        for(Product item :orders){
-            totl +=(Float.parseFloat(item.getProductPricenew()))*(Integer.parseInt(item.getProductQunt()));
-        txtTotalPrice.setText("$"+totl+"");
-
-
-}*/
 
     }
 });

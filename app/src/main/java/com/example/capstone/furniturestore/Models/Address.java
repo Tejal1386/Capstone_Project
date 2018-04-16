@@ -12,7 +12,7 @@ public class Address {
     private String ucity;
     private String ustate;
     private String uphone;
-    //private String UserPostalcode;
+
 
 
     public Address(){

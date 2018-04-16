@@ -8,70 +8,95 @@
     tools:context="com.example.capstone.furniturestore.ProductDetailActivity">
 
     <include layout="@layout/toolbar"></include>
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="-90dp"
+    android:layout_marginLeft="320dp">
+
+
+
+        <com.andremion.counterfab.CounterFab
+            android:id="@+id/fb_ShoppingBasket"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            app:elevation="6dp"
+            android:textColor="@color/bgRow"
+            android:layout_margin="16dp"
+            android:layout_gravity="end|bottom"
+            app:fabSize="normal"
+            android:src="@drawable/ic_shopping_cart_white_24dp"
+            app:backgroundTint="@android:color/transparent"
+            app:background="@android:color/transparent"/>
+
+
+</LinearLayout>
 
     <android.support.v4.widget.NestedScrollView
-        android:fillViewport="true"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:paddingTop="10dp"
+        android:layout_marginTop="-38dp">
 
 
         <LinearLayout
-            android:layout_margin="5dp"
-            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:orientation="vertical">
 
             <TextView
-                android:textSize="24dp"
                 android:id="@+id/txtproductName"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:textSize="24dp" />
 
             <TextView
-                android:textSize="18dp"
                 android:id="@+id/txtproductManufacturer"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:textSize="18dp" />
 
             <ImageView
+                android:id="@+id/imageproduct"
                 android:layout_width="match_parent"
-                android:layout_height="300dp"
-                android:id="@+id/imageproduct"/>
+                android:layout_height="300dp" />
 
             <LinearLayout
-                android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
                 <TextView
-                    android:layout_marginTop="5dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
                     android:id="@+id/txtproductSalePrice"
-                    android:textSize="22dp"
-                    android:textColor="@color/bgRow"/>
-
-                <TextView
-                    android:layout_marginTop="5dp"
-                    android:layout_marginLeft="10dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:textColor="@color/bgRow"
+                    android:textSize="22dp" />
+
+                <TextView
                     android:id="@+id/txtproductPrice"
-                    android:textSize="16dp"
-                    android:textColor="@color/gray"/>
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="5dp"
+                    android:textColor="@color/gray"
+                    android:textSize="16dp" />
 
             </LinearLayout>
 
 
             <TextView
-                android:layout_marginTop="5dp"
+                android:id="@+id/txtproductshipping"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/txtproductshipping"
-                android:textSize="18dp"
-                android:textColor="@color/black"/>
+                android:layout_marginTop="5dp"
+                android:textColor="@color/black"
+                android:textSize="18dp" />
 
-      <!--  <com.cepheuen.elegantnumberbutton.view.ElegantNumberButton
+            <!--  <com.cepheuen.elegantnumberbutton.view.ElegantNumberButton
             android:layout_width="100dp"
             android:layout_height="30dp"
             android:id="@+id/number_button"
@@ -80,148 +105,125 @@
 -->
 
             <Button
-                android:text="Show View"
+                android:id="@+id/btn_View"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/btn_View"/>
+                android:text="Show View" />
 
 
             <Button
-            android:text="Add To Cart"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/btn_AddToCart"/>
-
-            <Button
-                android:text="Save to Favourite"
+                android:id="@+id/btn_AddToCart"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/btn_favoiurite"/>
+                android:text="Add To Cart" />
+
+            <Button
+                android:id="@+id/btn_favoiurite"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Save to Favourite" />
 
 
             <TextView
-                android:layout_marginTop="10dp"
-                android:textSize="18dp"
-                android:text="Product OverView"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Product OverView"
+                android:textSize="18dp" />
 
 
             <LinearLayout
-                android:layout_marginTop="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
                 android:orientation="vertical">
 
                 <RelativeLayout
                     android:id="@+id/layout_info"
                     android:layout_width="match_parent"
-                    android:clickable="true"
                     android:layout_height="40dp"
-                    android:paddingLeft="20dp"
-                    android:paddingRight="20dp"
                     android:background="@color/white"
-                    android:orientation="horizontal">
+                    android:clickable="true"
+                    android:orientation="horizontal"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp">
+
                     <TextView
                         android:id="@+id/txt_Information"
-                        android:text="Information"
-                        android:textSize="20dp"
-                        android:gravity="center"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent" />
-
-                    <ImageView
-                        android:layout_alignParentRight="true"
-                        android:layout_marginRight="1dp"
-                        android:src="@drawable/ic_action_rightarrow"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        />
+                        android:gravity="center"
+                        android:text="Information"
+                        android:textSize="20dp" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="1dp"
+                        android:src="@drawable/ic_action_rightarrow" />
 
                 </RelativeLayout>
 
                 <RelativeLayout
                     android:id="@+id/layout_specification"
-                    android:clickable="true"
-                    android:layout_marginTop="10dp"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
-                    android:paddingLeft="20dp"
-                    android:paddingRight="20dp"
+                    android:layout_marginTop="10dp"
                     android:background="@color/white"
-                    android:orientation="horizontal">
+                    android:clickable="true"
+                    android:orientation="horizontal"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp">
+
                     <TextView
                         android:id="@+id/txt_specification"
-                        android:text="Specification"
-                        android:textSize="20dp"
-                        android:gravity="center"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent" />
-
-                    <ImageView
-                        android:layout_alignParentRight="true"
-                        android:layout_gravity="right"
-                        android:src="@drawable/ic_action_rightarrow"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        />
+                        android:gravity="center"
+                        android:text="Specification"
+                        android:textSize="20dp" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentRight="true"
+                        android:layout_gravity="right"
+                        android:src="@drawable/ic_action_rightarrow" />
 
                 </RelativeLayout>
 
                 <RelativeLayout
                     android:id="@+id/layout_shipping"
-                    android:clickable="true"
-                    android:layout_marginTop="10dp"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
-                    android:paddingLeft="20dp"
-                    android:paddingRight="20dp"
+                    android:layout_marginTop="10dp"
                     android:background="@color/white"
-                    android:orientation="horizontal">
+                    android:clickable="true"
+                    android:orientation="horizontal"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp">
+
                     <TextView
                         android:id="@+id/txt_Shipping"
-                        android:text="Shipping"
-                        android:textSize="20dp"
-                        android:gravity="center"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent" />
-
-                    <ImageView
-                        android:layout_alignParentRight="true"
-                        android:layout_marginLeft="80dp"
-                        android:layout_gravity="center"
-                        android:src="@drawable/ic_action_rightarrow"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        />
+                        android:gravity="center"
+                        android:text="Shipping"
+                        android:textSize="20dp" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentRight="true"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="80dp"
+                        android:src="@drawable/ic_action_rightarrow" />
 
                 </RelativeLayout>
 
             </LinearLayout>
             <!--end-->
-
-
-
-
-
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="10dp">
-
-            <com.andremion.counterfab.CounterFab
-                android:id="@+id/fb_ShoppingBasket"
-                android:backgroundTint="@color/appTheme"
-                app:rippleColor="@color/appTheme"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end|bottom"
-                android:src="@drawable/ic_action_cart"
-                android:layout_margin="16dp" />
-
-
-            </FrameLayout>
-
 
 
         </LinearLayout>

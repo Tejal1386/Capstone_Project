@@ -2,7 +2,7 @@
     <string name="app_name">FurnitureStore</string>
     <string name="slogan">slogan</string>
     <string name="search">Search</string>
-
+<string name="fb_ShoppingBasket">Floating Button</string>
     <string name="appbar_scrolling_view_behavior" translatable="false">android.support.design.widget.AppBarLayout$ScrollingViewBehavior</string>
 
 </resources>

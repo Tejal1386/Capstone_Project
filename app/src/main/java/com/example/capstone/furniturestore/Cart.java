@@ -10,9 +10,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -60,7 +62,7 @@ public class Cart extends AppCompatActivity implements RecyclerItemTouchHelperLi
     Number nbr;
     TextView province;
 
-
+    Toolbar toolbar;
     List<Product> cart = new ArrayList<>();
     CartAdapter adapter;
     //Paypal payment
@@ -77,6 +79,7 @@ public class Cart extends AppCompatActivity implements RecyclerItemTouchHelperLi
         setContentView(R.layout.activity_cart);
 
 
+
         //initpaypal
         Intent intent = new Intent(this, PayPalService.class);
         intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION, config);
@@ -85,6 +88,27 @@ public class Cart extends AppCompatActivity implements RecyclerItemTouchHelperLi
 
         database = FirebaseDatabase.getInstance();
         requests = database.getReference("Requests");
+
+        //toolBar settings
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle(" My Cart");
+
+        // add back arrow to toolbar
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed(); // Implemented by activity
+            }
+        });
+
+
+
 
 
         recyclerView = (RecyclerView) findViewById(R.id.listCart);
@@ -138,6 +162,8 @@ public class Cart extends AppCompatActivity implements RecyclerItemTouchHelperLi
 
         final EditText edtname = new EditText(Cart.this);
         final EditText edtphone = new EditText(Cart.this);
+        edtphone.setHorizontallyScrolling(true);
+        edtphone.setInputType(EditorInfo.TYPE_NUMBER_FLAG_SIGNED|EditorInfo.TYPE_CLASS_NUMBER);
         final EditText edtAddress = new EditText(Cart.this);
 
 

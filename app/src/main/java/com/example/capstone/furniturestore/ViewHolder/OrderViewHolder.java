@@ -12,7 +12,7 @@ import com.example.capstone.furniturestore.R;
 
 public class OrderViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-    public TextView txtOrderId, txtOrderStatus , txtOrderName ,txtOrderPhone , txtOrderAddress ;
+    public TextView txtOrderId,txtOrderDate, txtOrderStatus , txtOrderName ,txtOrderPhone , txtOrderAddress ;
 
     private ProductViewHolder.ItemClickListener itemClickListener;
 
@@ -20,6 +20,7 @@ public class OrderViewHolder extends RecyclerView.ViewHolder implements View.OnC
 
         super(itemView);
         txtOrderId = (TextView) itemView.findViewById(R.id.order_id);
+        txtOrderDate = (TextView) itemView.findViewById(R.id.order_date);
         txtOrderStatus = (TextView) itemView.findViewById(R.id.order_status);
         txtOrderName = (TextView) itemView.findViewById(R.id.order_name);
         txtOrderPhone = (TextView) itemView.findViewById(R.id.order_phone);

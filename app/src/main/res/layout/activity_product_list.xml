@@ -51,7 +51,7 @@
 
                 </android.support.v7.widget.RecyclerView>
 
-                <android.support.design.widget.FloatingActionButton
+                <com.andremion.counterfab.CounterFab
                     android:id="@+id/fb_ShoppingBasket"
                     android:backgroundTint="@color/appTheme"
                     app:rippleColor="@color/appTheme"

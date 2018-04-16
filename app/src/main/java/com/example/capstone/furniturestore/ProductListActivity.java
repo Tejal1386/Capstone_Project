@@ -13,6 +13,8 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.TextView;
 
+import com.andremion.counterfab.CounterFab;
+import com.example.capstone.furniturestore.Database.Database;
 import com.example.capstone.furniturestore.Models.Product;
 import com.example.capstone.furniturestore.ViewHolder.ProductViewHolder;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
@@ -30,7 +32,7 @@ public class ProductListActivity extends AppCompatActivity {
     LinearLayoutManager layoutManager;
     private DatabaseReference productDatabase;
     Toolbar toolbar;
-    FloatingActionButton fb_ShoppingBasket;
+    CounterFab fb_ShoppingBasket;
     String CategoryName = "",CategoryID;
     TextView txtCategoryName;
 
@@ -69,13 +71,13 @@ public class ProductListActivity extends AppCompatActivity {
                 onBackPressed(); // Implemented by activity
             }
         });
+        fb_ShoppingBasket = (CounterFab) findViewById(R.id.fb_ShoppingBasket);
 
-        fb_ShoppingBasket = (FloatingActionButton) findViewById(R.id.fb_ShoppingBasket);
 
         fb_ShoppingBasket.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(ProductListActivity.this, ShoppingBasketActivity.class);
+                Intent intent = new Intent(ProductListActivity.this, Cart.class);
                 startActivity(intent);
 
             }
@@ -91,7 +93,7 @@ public class ProductListActivity extends AppCompatActivity {
 
         product_RecyclerView.setLayoutManager(new GridLayoutManager(this, 2));
 
-
+        fb_ShoppingBasket.setCount(new Database(this).getCountCart());
 
         productDatabase.addValueEventListener(new ValueEventListener() {
             @Override

@@ -82,6 +82,7 @@ public class ProductListActivity extends AppCompatActivity {
 
             }
         });
+        fb_ShoppingBasket.setCount(new Database(this).getCountCart());
 
         //Recycler View
 
@@ -93,7 +94,7 @@ public class ProductListActivity extends AppCompatActivity {
 
         product_RecyclerView.setLayoutManager(new GridLayoutManager(this, 2));
 
-        fb_ShoppingBasket.setCount(new Database(this).getCountCart());
+
 
         productDatabase.addValueEventListener(new ValueEventListener() {
             @Override

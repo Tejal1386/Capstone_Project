@@ -21,8 +21,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.andremion.counterfab.CounterFab;
 import com.example.capstone.furniturestore.Adapter.SearchListAdapter;
 import com.example.capstone.furniturestore.Adapter.ViewPagerAdapter;
+import com.example.capstone.furniturestore.Database.Database;
 import com.example.capstone.furniturestore.Models.Category;
 import com.example.capstone.furniturestore.Models.Department;
 import com.example.capstone.furniturestore.Models.Product;
@@ -64,9 +66,10 @@ public class StoreActivity extends AppCompatActivity {
     TextView textView;
     public RecyclerView department_RecyclerView, ProductInSale_RecyclerView;
     LinearLayoutManager layoutManager;
-    FloatingActionButton fb_ShoppingBasket;
+
     LinearLayout searchList;
     Intent intent;
+    CounterFab fb_ShoppingBasket;
 
 
     @Override
@@ -109,18 +112,18 @@ public class StoreActivity extends AppCompatActivity {
         });
 
 
+        fb_ShoppingBasket = (CounterFab) findViewById(R.id.fb_ShoppingBasket);
 
-        //floating button
-        fb_ShoppingBasket = (FloatingActionButton) findViewById(R.id.fb_ShoppingBasket);
 
         fb_ShoppingBasket.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(StoreActivity.this, ShoppingBasketActivity.class);
+                Intent intent = new Intent(StoreActivity.this, Cart.class);
                 startActivity(intent);
+
             }
         });
-
+        fb_ShoppingBasket.setCount(new Database(this).getCountCart());
 
         //Tagline taxBox
         textView = (TextView) findViewById(R.id.textviewmarquee);

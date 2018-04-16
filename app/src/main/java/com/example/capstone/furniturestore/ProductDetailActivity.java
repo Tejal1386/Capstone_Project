@@ -5,13 +5,19 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -149,13 +155,17 @@ public class ProductDetailActivity extends AppCompatActivity {
                                                     }
                                                     Log.e("==value", String.valueOf(current_product.getProductPrice()));
                                                     if (isAlready) {
-                                                        Toast.makeText(ProductDetailActivity.this, "product is already in cart", Toast.LENGTH_SHORT).show();
+                                                       // Toast.makeText(ProductDetailActivity.this, "product is already in cart", Toast.LENGTH_SHORT).show();
+                                                        View view = findViewById(android.R.id.content);
+                                                        Snackbar.make(view, "product is already in cart..", Snackbar.LENGTH_LONG).show();
+
                                                     } else {
                                                         new Database(ProductDetailActivity.this).addToCart((current_product));
                                                         current_product.setProductImage(current_product.getProductImage());
                                                         current_product.setProductPrice(current_product.getProductPrice());
+                                                        View view = findViewById(android.R.id.content);
+                                                        Snackbar.make(view, "Added in the cart ....", Snackbar.LENGTH_LONG).show();
 
-                                                        Toast.makeText(ProductDetailActivity.this, "Added", Toast.LENGTH_SHORT).show();
                                                     }
                                                 }
 

@@ -1,5 +1,7 @@
 package com.example.capstone.furniturestore;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -10,6 +12,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+
+import com.andremion.counterfab.CounterFab;
+import com.example.capstone.furniturestore.CurrentUser.CurrentUser;
+import com.example.capstone.furniturestore.Database.Database;
 import com.example.capstone.furniturestore.Models.Category;
 import com.example.capstone.furniturestore.ViewHolder.CategoryViewHolder;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
@@ -22,13 +28,25 @@ public class CategoryActivity extends AppCompatActivity {
     LinearLayoutManager layoutManager;
     private DatabaseReference categoryDatabase;
     Toolbar toolbar;
-    FloatingActionButton fb_ShoppingBasket;
+    CounterFab fb_ShoppingBasket;
     String department_ID;
+    //Shared Preferences
+    SharedPreferences sharedPreferences;
+    public static final String MyPREFERENCES = "User";
+    public static final String Name = "UserNameKey";
+    public static final String userid = "UseridKey";
+    String UserID, UserName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_category);
+
+        //Shared Preferences
+        sharedPreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        UserName = (sharedPreferences.getString(Name, ""));
+        UserID = (sharedPreferences.getString(userid, ""));
+
 
         //FireBase
         categoryDatabase =  FirebaseDatabase.getInstance().getReference("Category");
@@ -52,36 +70,43 @@ public class CategoryActivity extends AppCompatActivity {
             }
         });
 
-        //Floating Button
-        fb_ShoppingBasket = (FloatingActionButton) findViewById(R.id.fb_ShoppingBasket);
 
-        fb_ShoppingBasket.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(CategoryActivity.this, ShoppingBasketActivity.class);
-                startActivity(intent);
+            fb_ShoppingBasket = (CounterFab) findViewById(R.id.fb_ShoppingBasket);
+
+
+            fb_ShoppingBasket.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(CategoryActivity.this, Cart.class);
+                    startActivity(intent);
+
+                }
+            });
+            fb_ShoppingBasket.setCount(new Database(this).getCountCart());
+
+
+
+
+            //Recycler View
+            category_RecyclerView = (RecyclerView) findViewById(R.id.recycle_category);
+            category_RecyclerView.setHasFixedSize(true);
+            category_RecyclerView.setNestedScrollingEnabled(false);
+            layoutManager = new LinearLayoutManager(getBaseContext());
+            layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+            category_RecyclerView.setLayoutManager(new GridLayoutManager(this, 1));
+
+
+            // Get Intent here
+            if (getIntent() != null) {
+                Intent i = getIntent();
+                department_ID = i.getExtras().getString("DeptID");
             }
-        });
+            if (!department_ID.isEmpty() && department_ID != null) {
+                load_Category();
+            }
 
-        //Recycler View
-        category_RecyclerView = (RecyclerView) findViewById(R.id.recycle_category);
-        category_RecyclerView.setHasFixedSize(true);
-        category_RecyclerView.setNestedScrollingEnabled(false);
-        layoutManager = new LinearLayoutManager(getBaseContext());
-        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        category_RecyclerView.setLayoutManager(new GridLayoutManager(this, 1));
+        };
 
-
-        // Get Intent here
-        if(getIntent() != null){
-            Intent i = getIntent();
-            department_ID   = i.getExtras().getString("DeptID");
-        }
-        if(!department_ID.isEmpty() && department_ID != null){
-            load_Category();
-        }
-
-    }
 
     public  void load_Category(){
 
@@ -117,5 +142,9 @@ public class CategoryActivity extends AppCompatActivity {
     }
 
 
+        }
 
-}
+
+
+
+

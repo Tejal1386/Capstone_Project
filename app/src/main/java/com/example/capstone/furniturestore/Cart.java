@@ -132,7 +132,12 @@ public class Cart extends AppCompatActivity implements RecyclerItemTouchHelperLi
             public void onClick(View v) {
                 List<Product> orders = new Database(getApplicationContext()).getCarts();
                 if (orders.size() == 0) {
-                    Toast.makeText(getApplicationContext(), "First add item in cart", Toast.LENGTH_SHORT).show();
+                //    Toast.makeText(getApplicationContext(), "First add item in cart", Toast.LENGTH_SHORT).show();
+
+                    View view = findViewById(android.R.id.content);
+                    Snackbar.make(view, "First add item in cart..", Snackbar.LENGTH_LONG).show();
+
+
                 } else {
                     showAlertDialog();
                 }
@@ -187,7 +192,12 @@ public class Cart extends AppCompatActivity implements RecyclerItemTouchHelperLi
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 if (edtphone.getText().toString().equals("") || edtAddress.getText().toString().equals("") || edtname.getText().toString().equals("")) {
-                    Toast.makeText(getApplicationContext(), "fill information first", Toast.LENGTH_SHORT).show();
+
+                  //  Toast.makeText(getApplicationContext(), "fill information first", Toast.LENGTH_SHORT).show();
+
+                    View view = findViewById(android.R.id.content);
+                    Snackbar.make(view, "Fill information first..", Snackbar.LENGTH_LONG).show();
+
                 } else {
 
                     name = edtname.getText().toString();
@@ -268,6 +278,7 @@ public class Cart extends AppCompatActivity implements RecyclerItemTouchHelperLi
                         //delete cart
                         new Database(getBaseContext()).cleanCart();
                         Toast.makeText(Cart.this,"Thank you , order placed", Toast.LENGTH_SHORT).show();
+
                         finish();
 
 

@@ -9,13 +9,20 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.provider.SearchRecentSuggestions;
 import android.speech.RecognizerIntent;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
+import android.text.style.ForegroundColorSpan;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -125,6 +132,35 @@ public class ProductDetailActivity extends AppCompatActivity {
         btnAddToCart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+            //    current_product.setProductQunt(numberButton.getNumber());
+                if(UserID.equals(null) || UserID ==  ""){
+                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                            ProductDetailActivity.this);
+
+                    // set title
+                    alertDialogBuilder.setTitle("LogIn First");
+
+                    // set dialog message
+                    alertDialogBuilder
+                            .setMessage("LogIn First to see your Account!")
+                            .setCancelable(false)
+
+                            .setPositiveButton("LogIn", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int id) {
+                                    Intent i = new Intent(ProductDetailActivity.this,LoginActivity.class);
+                                    startActivity(i);
+                                }
+                            });
+
+                    // create alert dialog
+                    AlertDialog alertDialog = alertDialogBuilder.create();
+
+                    // show it
+                    alertDialog.show();
+                }
+                else
+                {
                 List<Product> tem=new ArrayList<>();
                 tem.addAll(new Database(getApplicationContext()).getCarts());
                 boolean isAlready=false;
@@ -136,16 +172,19 @@ public class ProductDetailActivity extends AppCompatActivity {
                 }
                 Log.e("==value", String.valueOf(current_product.getProductPrice()));
                 if(isAlready){
-                    Toast.makeText(ProductDetailActivity.this,"product is already in cart",Toast.LENGTH_SHORT).show();
+                    View view = findViewById(android.R.id.content);
+                    Snackbar.make(view, "Product is already in the cart..", Snackbar.LENGTH_LONG).show();
+                    //Toast.makeText(ProductDetailActivity.this,"product is already in cart",Toast.LENGTH_SHORT).show();
                 }
-                else
-                {
-                new Database(ProductDetailActivity.this).addToCart((current_product));
-                current_product.setProductImage(current_product.getProductImage());
-                current_product.setProductPrice(current_product.getProductPrice());
+                else {
+                    new Database(ProductDetailActivity.this).addToCart((current_product));
+                    current_product.setProductImage(current_product.getProductImage());
+                    current_product.setProductPrice(current_product.getProductPrice());
 
-                Toast.makeText(ProductDetailActivity.this,"Added",Toast.LENGTH_SHORT).show();
-            }}
+                    // Toast.makeText(ProductDetailActivity.this, "Added", Toast.LENGTH_SHORT).show();
+                    View view = findViewById(android.R.id.content);
+                    Snackbar.make(view, "Added", Snackbar.LENGTH_LONG).show();
+                } }}
         });
 
 

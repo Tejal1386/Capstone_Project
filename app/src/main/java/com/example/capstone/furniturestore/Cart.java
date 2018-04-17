@@ -10,9 +10,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -53,19 +55,22 @@ public class Cart extends AppCompatActivity implements RecyclerItemTouchHelperLi
     FirebaseDatabase database;
     DatabaseReference requests;
 
-  public   TextView txtTotalPrice;
-  Button btnplace;
+    public TextView txtTotalPrice;
+    TextView txtname;
+    Button btnplace;
+    TextView city;
+    Number nbr;
+    TextView province;
 
-
+    Toolbar toolbar;
     List<Product> cart = new ArrayList<>();
-    CartAdapter adapter ;
+    CartAdapter adapter;
     //Paypal payment
 
     static PayPalConfiguration config = new PayPalConfiguration()
             .environment(PayPalConfiguration.ENVIRONMENT_SANDBOX)
             .clientId(Config.PAYPAL_CLIENT_ID);
-    String name,phone,address;
-
+    String name, phone, address;
 
 
     @Override
@@ -73,17 +78,32 @@ public class Cart extends AppCompatActivity implements RecyclerItemTouchHelperLi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cart);
 
-
         //initpaypal
         Intent intent = new Intent(this, PayPalService.class);
-        intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION,config);
+        intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION, config);
         startService(intent);
 
 
-
         database = FirebaseDatabase.getInstance();
-        requests=database.getReference("Requests");
+        requests = database.getReference("Requests");
 
+        //toolBar settings
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle(" My Cart");
+
+        // add back arrow to toolbar
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed(); // Implemented by activity
+            }
+        });
 
         recyclerView = (RecyclerView) findViewById(R.id.listCart);
         recyclerView.setNestedScrollingEnabled(false);
@@ -91,41 +111,42 @@ public class Cart extends AppCompatActivity implements RecyclerItemTouchHelperLi
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
- rootLayout = (RelativeLayout)findViewById(R.id.rootLayout);
+        rootLayout = (RelativeLayout) findViewById(R.id.rootLayout);
 
         //Swipe to delete
 
-        ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new RecyclerItemTouchHelper(0,ItemTouchHelper.LEFT,this);
+        ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new RecyclerItemTouchHelper(0, ItemTouchHelper.LEFT, this);
         new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(recyclerView);
 
 
-
-
-
-        txtTotalPrice = (TextView)findViewById(R.id.total);
+        txtTotalPrice = (TextView) findViewById(R.id.total);
         btnplace = (Button) findViewById(R.id.btn_placeorder);
         btnplace.setOnClickListener(new View.OnClickListener() {
-    @Override
-    public void onClick(View v) {
-        List<Product> orders = new Database(getApplicationContext()).getCarts();
-        if(orders.size()==0){
-            Toast.makeText(getApplicationContext(),"First add item in cart",Toast.LENGTH_SHORT).show();
-        }else {
-            showAlertDialog();
-        }
+            @Override
+            public void onClick(View v) {
+                List<Product> orders = new Database(getApplicationContext()).getCarts();
+                if (orders.size() == 0) {
+
+                    View view = findViewById(android.R.id.content);
+                    Snackbar.make(view, "First add item in cart..", Snackbar.LENGTH_LONG).show();
+
+
+                } else {
+                    showAlertDialog();
+                }
+            }
+        });
+
+
+        loadListOrder();
     }
-});
 
-
-
-
-        loadListOrder();}
-        private void showAlertDialog() {
+    private void showAlertDialog() {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(Cart.this);
         alertDialog.setTitle("One more step!");
-        alertDialog.setMessage("Enter your address:");
+        alertDialog.setMessage("Enter your Information:");
 
-        LinearLayout.LayoutParams lp =new LinearLayout.LayoutParams(
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.MATCH_PARENT
         );
@@ -138,8 +159,10 @@ public class Cart extends AppCompatActivity implements RecyclerItemTouchHelperLi
         lp.height = LinearLayout.LayoutParams.WRAP_CONTENT;
 
         final EditText edtname = new EditText(Cart.this);
-        final EditText edtphone= new EditText(Cart.this);
-        final EditText edtAddress =new EditText(Cart.this);
+        final EditText edtphone = new EditText(Cart.this);
+        edtphone.setHorizontallyScrolling(true);
+        edtphone.setInputType(EditorInfo.TYPE_NUMBER_FLAG_SIGNED|EditorInfo.TYPE_CLASS_NUMBER);
+        final EditText edtAddress = new EditText(Cart.this);
 
 
         edtname.setLayoutParams(lp);
@@ -161,43 +184,49 @@ public class Cart extends AppCompatActivity implements RecyclerItemTouchHelperLi
         alertDialog.setPositiveButton("YES", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
+                if (edtphone.getText().toString().equals("") || edtAddress.getText().toString().equals("") || edtname.getText().toString().equals("")) {
 
-                //Show Paypal to payment
+                    View view = findViewById(android.R.id.content);
+                    Snackbar.make(view, "Fill information first..", Snackbar.LENGTH_LONG).show();
 
-                //first , get Address and Comment from Alert Dialog
+                } else {
 
-                name = edtname.getText().toString();
-                phone = edtphone.getText().toString();
-                address = edtAddress.getText().toString();
+                    name = edtname.getText().toString();
+                    phone = edtphone.getText().toString();
+                    address = edtAddress.getText().toString();
 
-                String formatAmount = txtTotalPrice.getText().toString()
-                        .replace("$","")
-                        .replace(",","");
+                    String formatAmount = txtTotalPrice.getText().toString()
+                            .replace("$", "")
+                            .replace(",", "");
 
 
-                PayPalPayment payPalPayment = new PayPalPayment(new BigDecimal(formatAmount),
-                        "CAD",
-                        "AndroEat app Order",
-                        PayPalPayment.PAYMENT_INTENT_SALE);
-                Intent intent = new Intent(getApplicationContext(), PaymentActivity.class);
-                intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION,config);
-                intent.putExtra(PaymentActivity.EXTRA_PAYMENT,payPalPayment);
-                startActivityForResult(intent,PAYPAL_REQUEST_CODE);
+                    PayPalPayment payPalPayment = new PayPalPayment(new BigDecimal(formatAmount),
+                            "CAD",
+                            "Furniture app Order",
+                            PayPalPayment.PAYMENT_INTENT_SALE);
+                    Intent intent = new Intent(getApplicationContext(), PaymentActivity.class);
+                    intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION, config);
+                    intent.putExtra(PaymentActivity.EXTRA_PAYMENT, payPalPayment);
+                    startActivityForResult(intent, PAYPAL_REQUEST_CODE);
 
-            }
-        });
+                }
+
+        }
+    });
+
+    //Show Paypal to payment
+
+        //first , get Address and Comment from Alert Dialog
 
         alertDialog.setNegativeButton("NO", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                dialogInterface.dismiss();
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                });
+
+                alertDialog.show();
             }
-        });
-
-        alertDialog.show();
-    }
-
-    //Press Ctrl+O
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -232,6 +261,7 @@ public class Cart extends AppCompatActivity implements RecyclerItemTouchHelperLi
                         //delete cart
                         new Database(getBaseContext()).cleanCart();
                         Toast.makeText(Cart.this,"Thank you , order placed", Toast.LENGTH_SHORT).show();
+
                         finish();
 
 
@@ -258,16 +288,11 @@ public class Cart extends AppCompatActivity implements RecyclerItemTouchHelperLi
         float total = 0;
 
         for(Product order:cart) {
-             total+=(Float.parseFloat(String.valueOf(order.getProductPricenew())));//*(Integer.parseInt(order.getProtductQunt()));
-            //  Locale locale = new Locale("en","US");
-            //  NumberFormat fmt = NumberFormat.getCurrencyInstance(locale);
+             total+=(Float.parseFloat(String.valueOf(order.getProductPricenew())));
 
-          // Log.e("===value", order.getProductQunt());
             Log.e("==value", String.valueOf(order.getProductPricenew()));
             Log.e("===2nd value", order.getProductName());
-            txtTotalPrice.setText(total+"");//order.getProductName());
-            //.format(total));
-
+            txtTotalPrice.setText(total+"");
         }
     }
 
@@ -285,13 +310,7 @@ final Product  deleteItem = ((CartAdapter)recyclerView.getAdapter()).getItem(vie
              new Database(getBaseContext()).removeFromCart(deleteItem.getProductID());
 
 
-            float total = 0;/*
-            List<Product> orders = new Database(getBaseContext()).getCarts();
-            for(Product item :orders){
-                total +=(Float.parseFloat(item.getProductPricenew()))*(Integer.parseInt(item.getProductQunt()));
-            txtTotalPrice.setText("$"+total+"");
-*/
-//}
+            float total = 0;
             //make snackbar
             Snackbar snackbar = Snackbar.make(rootLayout,name + "removed from cart !" ,Snackbar.LENGTH_LONG);
             snackbar.setAction("UNDO", new View.OnClickListener() {
@@ -305,17 +324,7 @@ final Product  deleteItem = ((CartAdapter)recyclerView.getAdapter()).getItem(vie
         Log.e("price", String.valueOf(deleteItem.getProductPrice()));
               adapter.restoreItem(deleteItem,deleteIndex);
 
-//update txttotal
-//calculate total price
 
-       /* float totl = 0;
-        List<Product> orders = new Database(getBaseContext()).getCarts();
-        for(Product item :orders){
-            totl +=(Float.parseFloat(item.getProductPricenew()))*(Integer.parseInt(item.getProductQunt()));
-        txtTotalPrice.setText("$"+totl+"");
-
-
-}*/
 
     }
 });

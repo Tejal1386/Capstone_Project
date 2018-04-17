@@ -71,6 +71,7 @@
         <item name="android:hint">@string/search_hint</item>
     </style>
 
+
   <!--  <style name="MaterialSearchBarLight" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="mt_searchBarColor">@color/searchBarPrimaryColor</item>
         <item name="mt_dividerColor">@color/searchBarDividerColor</item>

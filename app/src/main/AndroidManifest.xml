@@ -8,6 +8,7 @@
     <!-- Required for Recording -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
+    <uses-permission android:name="android.permission.SEND_SMS"/>
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -43,6 +44,7 @@
             android:label="Amazon AR Gallery"
             android:screenOrientation="portrait"/>
         <activity android:name=".FavouriteActivity" />
+        <activity android:name=".AccountInformation" />
         <activity android:name=".ProductInSaleActivity" />
         <activity android:name=".ProductInformationActivity" />
         <activity android:name=".Cart" />
@@ -53,6 +55,9 @@
             android:name=".ProductARActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait" />
+        <activity android:name=".EditAddressActivity" />
+        <activity android:name=".TermsAndPoliciesActivity">
+      </activity>
     </application>
 
 </manifest>

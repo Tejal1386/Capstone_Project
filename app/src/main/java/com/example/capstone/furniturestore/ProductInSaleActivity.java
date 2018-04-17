@@ -83,6 +83,8 @@ public class ProductInSaleActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+
                 onBackPressed(); // Implemented by activity
             }
         });
@@ -180,14 +182,19 @@ public class ProductInSaleActivity extends AppCompatActivity {
 
                 viewHolder.setClickListener(new ProductViewHolder.ItemClickListener() {
                     @Override
-                    public void onClickItem(int pos) {
+                    public void onClickItem(View view, int pos, boolean b) {
                         Intent intent = new Intent(ProductInSaleActivity.this, ProductDetailActivity.class);
                         intent.putExtra("ProductID", model.getProductID());
                         startActivity(intent);
                     }
+
+                    @Override
+                    public void onClick(View view, int adapterPosition, boolean b) {
+
+                    }
                 });
             }
-        };
+         };
 
         sale_RecyclerView.setAdapter(adapter);
 

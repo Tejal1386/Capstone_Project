@@ -18,6 +18,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.capstone.furniturestore.CurrentUser.CurrentUser;
 import com.example.capstone.furniturestore.Models.User;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -130,7 +131,8 @@ public class LoginActivity extends AppCompatActivity {
                                 editor.putString(Name, user.getUserName());
                                 editor.apply();
 
-                                intent = new Intent(LoginActivity.this, StoreActivity.class);
+                              Intent  intent = new Intent(LoginActivity.this, StoreActivity.class);
+                                CurrentUser.currentUser = user;
                                 startActivity(intent);
                             } else {
                                 ShowAlert("Wrong Password");

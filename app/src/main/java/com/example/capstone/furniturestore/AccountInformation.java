@@ -29,12 +29,16 @@ import java.util.HashMap;
 import java.util.Map;
 
 
+
 public class AccountInformation extends AppCompatActivity {
 
     TextView txtedit_password,txtedit_username;
     Toolbar toolbar;
     FirebaseDatabase database;
     DatabaseReference userReference;
+    FirebaseAuth auth;
+    EditText editText;
+   // Button btnchangepassword;
 
     SharedPreferences sharedPreferences;
     public static final String MyPREFERENCES = "User" ;
@@ -102,11 +106,10 @@ public class AccountInformation extends AppCompatActivity {
         });
 
 
-
-
-
-
     }
+
+
+
 
     //showdialog method
     public void showChangePasswordDialog() {
@@ -158,7 +161,7 @@ public class AccountInformation extends AppCompatActivity {
         });
         dialogBuilder.setNegativeButton("CANCEl", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
-                //pass
+               dialog.dismiss();
             }
         });
 
@@ -202,14 +205,14 @@ public class AccountInformation extends AppCompatActivity {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
 
-                                    Toast.makeText(AccountInformation.this,"Password updated",Toast.LENGTH_LONG ).show();
+                                    Toast.makeText(AccountInformation.this,"Username updated",Toast.LENGTH_LONG ).show();
 
                                 }
                             })
                             .addOnFailureListener(new OnFailureListener() {
                                 @Override
                                 public void onFailure(@NonNull Exception e) {
-                                    Toast.makeText(AccountInformation.this,"cant update",Toast.LENGTH_LONG ).show();
+                                    Toast.makeText(AccountInformation.this,"Error",Toast.LENGTH_LONG ).show();
                                 }
                             });
 

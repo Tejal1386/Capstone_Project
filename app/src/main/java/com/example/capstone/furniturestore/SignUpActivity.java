@@ -102,21 +102,26 @@ public class SignUpActivity extends AppCompatActivity {
         }
         });
 
-    }
-    private void addUser()
-    {
+        }
+        private void addUser()
+        {
 
-        if(!TextUtils.isEmpty(ID)) {
+            if(!TextUtils.isEmpty(ID)) {
 
-            if(ExistUser == false) {
-                User user = new User(ID, Username, Password, null);
-                mDatabase.child(ID).setValue(user);
-                intent = new Intent(SignUpActivity.this, LoginActivity.class);
-                startActivity(intent);
+                if(ExistUser == false) {
+                    User user = new User(ID, Username, Password, null);
+
+                    mDatabase.child(ID).setValue(user);
+                    intent = new Intent(SignUpActivity.this, LoginActivity.class);
+                    startActivity(intent);
+                }
+                else {
+                    Toast.makeText(this," UserName already Exists",Toast.LENGTH_LONG).show();;
+
+                }
+
+            }else {
+                Toast.makeText(this,"You Should enter UserName",Toast.LENGTH_LONG).show();;
             }
-
-        }else {
-            Toast.makeText(this,"You Should enter UserName",Toast.LENGTH_LONG).show();;
         }
     }
-}

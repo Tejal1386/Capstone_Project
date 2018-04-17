@@ -137,9 +137,6 @@ public class EditFavouriteAdapter extends RecyclerView.Adapter<EditFavouriteAdap
             SelectedProductID.add(favourite.getFavorite_ID());
            // i++;
             }
-
-     //      Toast.makeText(ctx,SelectedProductID.get(0),Toast.LENGTH_LONG).show();
-
         }
     }
 }

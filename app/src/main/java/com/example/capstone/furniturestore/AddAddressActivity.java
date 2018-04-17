@@ -1,6 +1,7 @@
 package com.example.capstone.furniturestore;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -13,6 +14,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -42,33 +44,27 @@ import java.util.Map;
 public class AddAddressActivity extends AppCompatActivity {
 
     Toolbar toolbar;
-    public TextView tvFullName;
-    public TextView tvAddress;
-    public TextView txt_AddAddress;
 
+    Button layoutAddAddress;
     EditText edit_Fullname, edit_Address, edit_City, edit_State, edit_PhoneNumber, edit_postalcode;
     Button buttonSaveaddress;
+
     DatabaseReference addressDatabase;
 
     public RecyclerView Address_RecyclerView;
-
     LinearLayoutManager layoutManager;
-
     AddressAdapter add_adapter;
-
     ArrayList<Address> addressList = new ArrayList<Address>();
 
-
+    Intent intent;
 
     SharedPreferences sharedPreferences;
     public static final String MyPREFERENCES = "User";
     public static final String Userid = "UseridKey";
     public static final String Name = "UserNameKey";
-    public static final String Userpassword = "UserpasswordKey";
+    //public static final String Userpassword = "UserpasswordKey";
 
     String UserID, UserName, UserPassword;
-    //String uid;
-
     String FullName, Address, City, State, PhoneNumber, PostalCode;
 
     @Override
@@ -79,18 +75,13 @@ public class AddAddressActivity extends AppCompatActivity {
         sharedPreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
         UserID = (sharedPreferences.getString(Userid, ""));
         UserName = (sharedPreferences.getString(Name, ""));
-        UserPassword = (sharedPreferences.getString(Userpassword, ""));
-
+       // UserPassword = (sharedPreferences.getString(Userpassword, ""));
 
         addressDatabase = FirebaseDatabase.getInstance().getReference("User");
 
-
-
-
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        toolbar.setTitleTextColor(1);
-        getSupportActionBar().setTitle("Account Information");
+        getSupportActionBar().setTitle("Saved Address");
 
         // add back arrow to toolbar
         if (getSupportActionBar() != null) {
@@ -107,22 +98,19 @@ public class AddAddressActivity extends AppCompatActivity {
         });
 
 
-        //calling save address layout
-        tvFullName = (TextView) findViewById(R.id.tvFullName);
-        tvAddress = (TextView) findViewById(R.id.tvAddress);
-        txt_AddAddress = (TextView) findViewById(R.id.txt_addaddress);
 
-        txt_AddAddress.setOnClickListener(new View.OnClickListener() {
+        layoutAddAddress = (Button) findViewById(R.id.layout_Address);
+
+        layoutAddAddress.setOnClickListener(new View.OnClickListener()
+        {
 
             @Override
             public void onClick(View v) {
                 setContentView(R.layout.save_address);
 
-
                 toolbar = (Toolbar) findViewById(R.id.toolbar);
                 setSupportActionBar(toolbar);
-                toolbar.setTitleTextColor(1);
-                getSupportActionBar().setTitle("Account Information");
+                getSupportActionBar().setTitle("Add Address");
 
                 // add back arrow to toolbar
                 if (getSupportActionBar() != null) {
@@ -135,6 +123,7 @@ public class AddAddressActivity extends AppCompatActivity {
                     public void onClick(View v) {
 
                         onBackPressed(); // Implemented by activity
+
                     }
                 });
 
@@ -153,7 +142,8 @@ public class AddAddressActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
 
-                        if (UserID != null) {
+
+                        if (!UserID.isEmpty() && UserID != null) {
 
                             FullName = edit_Fullname.getText().toString();
                             Address = edit_Address.getText().toString();
@@ -162,47 +152,43 @@ public class AddAddressActivity extends AppCompatActivity {
                             PhoneNumber = edit_PhoneNumber.getText().toString();
                             PostalCode = edit_postalcode.getText().toString();
 
+
                             addressDatabase = FirebaseDatabase.getInstance().getReference("User");
                             String ID = addressDatabase.push().getKey();
 
-                            if (UserName != null) {
 
-                                Map<String, Object> userAddressData = new HashMap<>();
-                                userAddressData.put("addressId", ID);
+                            Map<String, Object> userAddressData = new HashMap<>();
+                            userAddressData.put("addressId", ID);
+                            userAddressData.put("ufullname", FullName);
+                            userAddressData.put("uaddress", Address);
+                            userAddressData.put("ucity", City);
+                            userAddressData.put("ustate", State);
+                            userAddressData.put("uphone", PhoneNumber);
+                            userAddressData.put("upostalcode", PostalCode);
 
-                                userAddressData.put("ufullname", FullName);
-                                userAddressData.put("uaddress", Address);
-                                userAddressData.put("ucity", City);
-                                userAddressData.put("ustate", State);
-                                userAddressData.put("uphone", PhoneNumber);
-                                userAddressData.put("upostalcode", PostalCode);
+                            addressDatabase.child(UserID).child("address").child(ID).setValue(userAddressData);
 
-
-                                addressDatabase.child(UserID).child("address").child(ID).setValue(userAddressData);
-
-                                setContentView(R.layout.activity_add_address);
-
-
-
-                                Toast.makeText(AddAddressActivity.this, "Address added successfully", Toast.LENGTH_SHORT).show();
-                            } else {
-
-                                Toast.makeText(AddAddressActivity.this, "Error. Please Log In", Toast.LENGTH_SHORT).show();
-
-                            }
-
+                            setContentView(R.layout.activity_add_address);
 
                         }
 
+                        else
+                        {
+                            Toast.makeText(AddAddressActivity.this, "Error. Please Log In", Toast.LENGTH_SHORT).show();
+                        }
+
+
+
                     }
                 });
+
 
             }
         });
 
 
-
         load_address();
+
 
     }
 
@@ -210,27 +196,22 @@ public class AddAddressActivity extends AppCompatActivity {
     public void load_address() {
         DatabaseReference addressDB = addressDatabase.child(UserID).child("address");
 
-
-
-       addressDB.addValueEventListener(new ValueEventListener() {
+         addressDB.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
                 addressList.clear();
-
-
 
                 for(DataSnapshot addressSnapshot : dataSnapshot.getChildren()) {
 
                     int k=0;
                     Address newaddress = addressSnapshot.getValue(Address.class);
 
-                    if(UserID != null){
-
-                            addressList.add(newaddress);
-
-                            k++;
-                        }
+                     if(UserID != null)
+                    {
+                        addressList.add(newaddress);
+                        k++;
+                    }
 
                 }
 
@@ -244,17 +225,17 @@ public class AddAddressActivity extends AppCompatActivity {
                 layoutManager = new LinearLayoutManager(getBaseContext());
                 Address_RecyclerView.setLayoutManager(new GridLayoutManager(AddAddressActivity.this, 1));
 
-                // favourite_RecyclerView.setLayoutManager(layoutManager);
                 Address_RecyclerView.setAdapter(add_adapter);
+
 
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
+            public void onCancelled(DatabaseError databaseError)
+            {
 
             }
         });
-
 
     }
 

@@ -41,12 +41,11 @@ import java.util.ArrayList;
 
 public class UserAccountActivity extends AppCompatActivity {
 
-    //private FirebaseAuth firebaseAuth;
+
     Button btnsignout;
-    TextView txtmyorders,txtaccountinformation,txtEmail,txtCall,txtSavedaddress;
     Intent intent;
 
-    RelativeLayout relativeLayout_myorders,relativeLayout_mypurchases,relativeLayout_editaccount,relativeLayout_savedaddress;
+    RelativeLayout relativeLayout_myorders,relativeLayout_mypurchases,relativeLayout_editaccount,relativeLayout_savedaddress,relativeLayout_terms;
     LinearLayout linearLayout_Call,linearLayout_Email;
 
     SharedPreferences sharedPreferences;
@@ -78,6 +77,8 @@ public class UserAccountActivity extends AppCompatActivity {
         setContentView(R.layout.activity_user_account);
 
         categoryDatabase = FirebaseDatabase.getInstance().getReference("Category");
+
+
 
 
 
@@ -208,6 +209,18 @@ public class UserAccountActivity extends AppCompatActivity {
         });
 
 
+        relativeLayout_terms = (RelativeLayout)findViewById(R.id.layout_termsandpolicies);
+        relativeLayout_terms.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                intent =  new Intent(UserAccountActivity.this,TermsAndPoliciesActivity.class);
+                startActivity(intent);
+
+            }
+        });
+
+
 
         //Signout button
         btnsignout = (Button)findViewById(R.id.button_signout);
@@ -224,8 +237,7 @@ public class UserAccountActivity extends AppCompatActivity {
                intent = new Intent(UserAccountActivity.this,MainActivity.class);
                startActivity(intent);
 
-               //firebaseAuth.getInstance().signOut();
-               Toast.makeText(UserAccountActivity.this,"signout",Toast.LENGTH_LONG).show();
+               Toast.makeText(UserAccountActivity.this,"Successfully signed out",Toast.LENGTH_LONG).show();
 
            }
        });

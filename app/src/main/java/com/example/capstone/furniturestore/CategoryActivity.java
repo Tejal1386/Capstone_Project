@@ -1,5 +1,6 @@
 package com.example.capstone.furniturestore;
 import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SearchRecentSuggestionsProvider;
 import android.graphics.Color;
@@ -8,6 +9,14 @@ import android.speech.RecognizerIntent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.CoordinatorLayout;
+import android.content.SharedPreferences;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -21,11 +30,17 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+
+import com.andremion.counterfab.CounterFab;
+import com.example.capstone.furniturestore.CurrentUser.CurrentUser;
+import com.example.capstone.furniturestore.Database.Database;
 import android.widget.TextView;
 import com.andremion.counterfab.CounterFab;
 import com.example.capstone.furniturestore.Adapter.SearchListAdapter;
 import com.example.capstone.furniturestore.Database.Database;
 import com.example.capstone.furniturestore.Models.Category;
+import com.example.capstone.furniturestore.ViewHolder.BottomNavigationViewHolder;
+import com.example.capstone.furniturestore.ViewHolder.BottomNavigationViewHolder;
 import com.example.capstone.furniturestore.ViewHolder.BottomNavigationViewHolder;
 import com.example.capstone.furniturestore.ViewHolder.CategoryViewHolder;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
@@ -67,9 +82,9 @@ public class CategoryActivity extends AppCompatActivity {
         categoryDatabase =  FirebaseDatabase.getInstance().getReference("Category");
 
         //toolBar settings
-        toolbar = (Toolbar) findViewById(R.id.searchtoolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        toolbar.setTitleTextColor(Color.WHITE);
+       // toolbar.setTitleTextColor(1);
         getSupportActionBar().setTitle(" Category");
 
         // add back arrow to toolbar
@@ -85,6 +100,7 @@ public class CategoryActivity extends AppCompatActivity {
             }
         });
 
+
         //Floating Button
         fb_ShoppingBasket = (CounterFab) findViewById(R.id.fb_ShoppingBasket);
 
@@ -97,6 +113,7 @@ public class CategoryActivity extends AppCompatActivity {
             }
         });
         fb_ShoppingBasket.setCount(new Database(this).getCountCart());
+
 
         //Bottom navigation
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
@@ -338,5 +355,4 @@ public class CategoryActivity extends AppCompatActivity {
 
 
 
-
-}
+        }

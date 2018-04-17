@@ -71,16 +71,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-        <ImageView
-            android:src="@drawable/logo"
-          android:layout_width="match_parent"
-          android:layout_height="30dp" />
-
-        </LinearLayout>
-
-
         <LinearLayout
-            android:layout_marginBottom="20dp"
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -327,6 +318,8 @@
 
     <!--end-->
 
+
+
     <!--start-->
     <LinearLayout
         android:orientation="vertical"
@@ -369,6 +362,7 @@
         </RelativeLayout>
 
         <RelativeLayout
+            android:id="@+id/layout_termsandpolicies"
             android:layout_marginTop="10dp"
             android:layout_width="match_parent"
             android:layout_height="40dp"
@@ -417,11 +411,17 @@
         </LinearLayout>
 
 
+    </LinearLayout>
+
+
+
     <LinearLayout
         android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="20dp">
     </LinearLayout>
+
+
 
     </LinearLayout>
     </android.support.v4.widget.NestedScrollView>

@@ -84,7 +84,7 @@ public class CategoryActivity extends AppCompatActivity {
         //toolBar settings
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-       // toolbar.setTitleTextColor(1);
+        toolbar.setTitleTextColor(Color.WHITE);
         getSupportActionBar().setTitle(" Category");
 
         // add back arrow to toolbar
@@ -117,6 +117,9 @@ public class CategoryActivity extends AppCompatActivity {
 
         //Bottom navigation
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
+        CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) bottomNavigationView.getLayoutParams();
+        layoutParams.setBehavior(new BottomNavigationViewHolder());
+
         BottomNavigationViewHolder.disableShiftMode(bottomNavigationView);
 
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -282,7 +285,6 @@ public class CategoryActivity extends AppCompatActivity {
                         if(item.getCategoryName().contains(newText))
                             lstfound.add(item);
                     }
-
                     searchListAdapter = new SearchListAdapter(CategoryActivity.this, lstfound);
                     listView.setAdapter(searchListAdapter);
 

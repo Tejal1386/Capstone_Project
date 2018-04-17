@@ -85,7 +85,7 @@ public class OrderStatus extends AppCompatActivity {
         else
         {
             txtcountitem.setText(counter + " Item");
-           // Toast.makeText(OrderStatus.this,"Firstly sigun up for place order",Toast.LENGTH_SHORT).show();
+            // Toast.makeText(OrderStatus.this,"Firstly sigun up for place order",Toast.LENGTH_SHORT).show();
         }
 
     }
@@ -134,4 +134,4 @@ public class OrderStatus extends AppCompatActivity {
 
  
 
-        
+

@@ -8,6 +8,7 @@ import android.provider.SearchRecentSuggestions;
 import android.speech.RecognizerIntent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -130,6 +131,10 @@ public class StoreActivity extends AppCompatActivity {
 
         //Bottom navigation
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
+
+        CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) bottomNavigationView.getLayoutParams();
+        layoutParams.setBehavior(new BottomNavigationViewHolder());
+
         BottomNavigationViewHolder.disableShiftMode(bottomNavigationView);
 
 
@@ -240,7 +245,7 @@ public class StoreActivity extends AppCompatActivity {
 
 
 
-        FirebaseRecyclerAdapter<Product, ProductViewHolder> adapter = new FirebaseRecyclerAdapter<Product, ProductViewHolder>(Product.class,R.layout.product_sale_layout,ProductViewHolder.class,saleDatabase.orderByChild("ProductSale").equalTo("True").limitToFirst(2)) {
+        FirebaseRecyclerAdapter<Product, ProductViewHolder> adapter = new FirebaseRecyclerAdapter<Product, ProductViewHolder>(Product.class,R.layout.product_sale_layout,ProductViewHolder.class,saleDatabase.orderByChild("ProductSale").equalTo("Sale").limitToFirst(2)) {
             @Override
             protected void populateViewHolder(ProductViewHolder viewHolder, final Product model, int position) {
                 Picasso.with(getBaseContext()).load(model.getProductImage()).into(viewHolder.product_Image);

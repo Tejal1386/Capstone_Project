@@ -10,7 +10,6 @@ import android.speech.RecognizerIntent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -28,8 +27,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.andremion.counterfab.CounterFab;
-import com.example.capstone.furniturestore.Database.Database;
-import com.andremion.counterfab.CounterFab;
 import com.example.capstone.furniturestore.Adapter.FavouriteAdapter;
 import com.example.capstone.furniturestore.Adapter.ProductFilterAdapter;
 import com.example.capstone.furniturestore.Adapter.SearchListAdapter;
@@ -38,7 +35,6 @@ import com.example.capstone.furniturestore.Models.Category;
 import com.example.capstone.furniturestore.Models.Favourite;
 import com.example.capstone.furniturestore.Models.Product;
 import com.example.capstone.furniturestore.ViewHolder.BottomNavigationViewHolder;
-import com.example.capstone.furniturestore.ViewHolder.CategoryViewHolder;
 import com.example.capstone.furniturestore.ViewHolder.ProductViewHolder;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.database.DataSnapshot;
@@ -124,6 +120,9 @@ public class ProductListActivity extends AppCompatActivity {
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
         BottomNavigationViewHolder.disableShiftMode(bottomNavigationView);
 
+        CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) bottomNavigationView.getLayoutParams();
+        layoutParams.setBehavior(new BottomNavigationViewHolder());
+
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -180,6 +179,7 @@ public class ProductListActivity extends AppCompatActivity {
                 txtCategoryName = (TextView) findViewById(R.id.txt_categoryName);
                 txtCategoryName.setText(CategoryName);
 
+
                 //Recycler View
                 product_RecyclerView = (RecyclerView) findViewById(R.id.recycle_product);
                 product_RecyclerView.setHasFixedSize(true);
@@ -194,6 +194,7 @@ public class ProductListActivity extends AppCompatActivity {
                 filterItem = (HashMap<String, String>) i.getSerializableExtra("selectedItem");
                 CategoryID = i.getExtras().getString("CategoryID");
                 load_Products_ByFilter();
+
             }
 
         }
@@ -248,10 +249,13 @@ public class ProductListActivity extends AppCompatActivity {
                     public void onClick(View view, int adapterPosition, boolean b) {
 
                     }
+
+
+
                 });
             }
         };
-       product_RecyclerView.setAdapter(adapter);
+        product_RecyclerView.setAdapter(adapter);
 
     }
 
@@ -280,20 +284,20 @@ public class ProductListActivity extends AppCompatActivity {
                         String value=(String)filterItem.get(key);
 
 
-                            if(key.equals("Color") && color.equals(value)){
-                                counter++;
-                            }
-                            if (key.equals("Availability") &&  qunt > 0) {
-                                counter ++;
-                            }
-                            if (key.equals("Special Offer") &&  offer.equals(value)){
-                                counter++;
-                            }
+                        if(key.equals("Color") && color.equals(value)){
+                            counter++;
+                        }
+                        if (key.equals("Availability") &&  qunt > 0) {
+                            counter ++;
+                        }
+                        if (key.equals("Special Offer") &&  offer.equals(value)){
+                            counter++;
+                        }
                     }
 
-                            if(counter > 0){
-                                productList.add(product);
-                            }
+                    if(counter > 0){
+                        productList.add(product);
+                    }
                 }
                 filter_adapter = new FavouriteAdapter(productList, ProductListActivity.this);
                 product_RecyclerView = (RecyclerView) findViewById(R.id.recycle_product);

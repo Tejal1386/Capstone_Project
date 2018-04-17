@@ -1,9 +1,6 @@
 package com.example.capstone.furniturestore;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.graphics.Paint;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -83,10 +80,15 @@ public class ProductInSaleActivity extends AppCompatActivity {
 
                 viewHolder.setClickListener(new ProductViewHolder.ItemClickListener() {
                     @Override
-                    public void onClickItem(int pos) {
+                    public void onClickItem(View view, int pos, boolean b) {
                         Intent intent = new Intent(ProductInSaleActivity.this, ProductDetailActivity.class);
                         intent.putExtra("ProductID", model.getProductID());
                         startActivity(intent);
+                    }
+
+                    @Override
+                    public void onClick(View view, int adapterPosition, boolean b) {
+
                     }
                 });
             }

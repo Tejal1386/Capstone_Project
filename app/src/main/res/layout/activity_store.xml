@@ -9,205 +9,209 @@
 
    <include layout="@layout/searchtoolbar"></include>
 
-<LinearLayout
-    android:visibility="gone"
-    android:id="@+id/search_listlayout"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycler_search_List"
-        android:clickable="true"
-        android:clipToPadding="false"
-        android:horizontalSpacing="30dp"
-        android:verticalSpacing="30dp"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="-90dp"
+        android:layout_marginLeft="280dp">
 
-    </android.support.v7.widget.RecyclerView>
 
-</LinearLayout>
+
+        <com.andremion.counterfab.CounterFab
+            android:id="@+id/fb_ShoppingBasket"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            app:elevation="6dp"
+            android:textColor="@color/bgRow"
+            android:layout_margin="16dp"
+            android:layout_gravity="end|bottom"
+            app:fabSize="normal"
+            android:src="@drawable/ic_shopping_cart_white_24dp"
+            app:backgroundTint="@android:color/transparent"
+            app:background="@android:color/transparent"/>
+
+
+    </LinearLayout>
+    <LinearLayout
+        android:visibility="gone"
+        android:id="@+id/search_listlayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_search_List"
+            android:clickable="true"
+            android:clipToPadding="false"
+            android:horizontalSpacing="30dp"
+            android:verticalSpacing="30dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        </android.support.v7.widget.RecyclerView>
+
+    </LinearLayout>
 
     <android.support.design.widget.CoordinatorLayout
+
         android:id="@+id/coordinator_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <android.support.v4.widget.NestedScrollView
-        android:fillViewport="true"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/toolbar"
+            android:fillViewport="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/searchtoolbar"
 
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <LinearLayout
-            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <LinearLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center">
-                <TextView
-
-                    android:marqueeRepeatLimit="marquee_forever"
-                    android:scrollHorizontally="true"
-                    android:focusable="true"
-                    android:focusableInTouchMode="true"
-                    android:textColor="@color/colorPrimary"
-                    android:text="FREE SHIPPING Over CAD $75"
-                    android:layout_marginStart="2dp"
-                    android:textStyle="bold"
-                    android:textSize="18sp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/textviewmarquee"
-                    android:singleLine="true"
-                    />
-
-            </LinearLayout>
-
+            android:layout_height="match_parent">
             <LinearLayout
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <android.support.v4.view.ViewPager
-                    android:id="@+id/viewPager"
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center">
+                    <TextView
+
+                        android:marqueeRepeatLimit="marquee_forever"
+                        android:scrollHorizontally="true"
+                        android:focusable="true"
+                        android:focusableInTouchMode="true"
+                        android:textColor="@color/colorPrimary"
+                        android:text="FREE SHIPPING Over CAD $75"
+                        android:layout_marginStart="2dp"
+                        android:textStyle="bold"
+                        android:textSize="18sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/textviewmarquee"
+                        android:singleLine="true"
+                        />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="vertical"
                     android:layout_width="match_parent"
-                    android:layout_height="230dp"
-                    />
+                    android:layout_height="wrap_content">
 
-            </LinearLayout>
+                    <android.support.v4.view.ViewPager
+                        android:id="@+id/viewPager"
+                        android:layout_width="match_parent"
+                        android:layout_height="230dp"
+                        />
 
-
-            <LinearLayout
-                android:orientation="horizontal"
-
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp">
+                </LinearLayout>
 
 
+                <LinearLayout
+                    android:orientation="horizontal"
 
-                <TextView
-                    android:text="Shop by Department"
-                    android:layout_marginLeft="5dp"
-                    android:textColor="@color/colorPrimary"
-                    android:textSize="26sp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-
-
-            </LinearLayout>
-
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="10dp">
-
-
-
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/recycle_dept"
                     android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp">
 
+
+
+                    <TextView
+                        android:text="Shop by Department"
+                        android:layout_marginLeft="5dp"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="26sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+
+
+                </LinearLayout>
+
+                <FrameLayout
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:clickable="true"
-                    android:clipToPadding="false"
-                    android:horizontalSpacing="20dp"
-                    android:verticalSpacing="20dp">
-
-                </android.support.v7.widget.RecyclerView>
+                    android:layout_margin="10dp">
 
 
 
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/recycle_dept"
+                        android:layout_width="match_parent"
 
-            </FrameLayout>
+                        android:layout_height="match_parent"
+                        android:clickable="true"
+                        android:clipToPadding="false"
+                        android:horizontalSpacing="20dp"
+                        android:verticalSpacing="20dp">
 
+                    </android.support.v7.widget.RecyclerView>
 
-
-
-            <LinearLayout
-                android:orientation="horizontal"
-
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp">
-
-
-
-                <TextView
-
-                    android:text="Featured Sale"
-                    android:textColor="@color/colorPrimary"
-                    android:layout_marginLeft="5dp"
-                    android:textSize="26sp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-
-
-            </LinearLayout>
+                </FrameLayout>
 
 
 
 
-            <FrameLayout
-                android:layout_marginTop="5dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/recycle_sale"
+                <LinearLayout
+                    android:orientation="horizontal"
                     android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp">
 
-                    android:layout_height="match_parent"
-                    android:clickable="true"
-                    android:clipToPadding="false"
-                    android:horizontalSpacing="30dp"
-                    android:verticalSpacing="30dp">
+                    <TextView
+                        android:text="Featured Sale"
+                        android:textColor="@color/colorPrimary"
+                        android:layout_marginLeft="5dp"
+                        android:textSize="26sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
 
-                </android.support.v7.widget.RecyclerView>
-
-
-
-            </FrameLayout>
-
-
-            <LinearLayout
-                android:orientation="horizontal"
-
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp">
+                </LinearLayout>
 
 
 
-               <ImageView
-                   android:layout_width="match_parent"
-                   android:layout_height="wrap_content" />
 
+                <FrameLayout
+                    android:layout_marginTop="5dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/recycle_sale"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:clickable="true"
+                        android:clipToPadding="false"
+                        android:horizontalSpacing="30dp"
+                        android:verticalSpacing="30dp">
+                    </android.support.v7.widget.RecyclerView>
+
+                </FrameLayout>
+
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp">
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                </LinearLayout>
 
 
             </LinearLayout>
 
+        </android.support.v4.widget.NestedScrollView>
 
-        </LinearLayout>
+        <FrameLayout
+            android:id="@+id/container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
-    </android.support.v4.widget.NestedScrollView>
-
-    <FrameLayout
-        android:id="@+id/container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
-
-    <android.support.design.widget.BottomNavigationView
+        <android.support.design.widget.BottomNavigationView
             android:layout_marginTop="30dp"
 
             android:layout_gravity="bottom"
@@ -219,15 +223,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fb_ShoppingBasket"
-            android:backgroundTint="@color/appTheme"
-            app:rippleColor="@color/appTheme"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end|bottom"
-            android:src="@drawable/ic_action_cart"
-            android:layout_margin="16dp" />
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </FrameLayout>
 
 
     </android.support.design.widget.CoordinatorLayout>

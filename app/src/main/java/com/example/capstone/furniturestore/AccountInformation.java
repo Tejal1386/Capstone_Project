@@ -68,6 +68,7 @@ public class AccountInformation extends AppCompatActivity {
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        toolbar.setTitleTextColor(1);
         getSupportActionBar().setTitle("Account Information");
 
         // add back arrow to toolbar
@@ -83,6 +84,8 @@ public class AccountInformation extends AppCompatActivity {
                 onBackPressed(); // Implemented by activity
             }
         });
+
+
 
 
         txtedit_password = (TextView)findViewById(R.id.txt_changepassword);

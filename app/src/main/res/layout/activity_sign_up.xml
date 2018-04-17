@@ -11,8 +11,6 @@
     <include layout="@layout/toolbar"></include>
 
 
-
-
     <TextView
         android:layout_margin="20dp"
         android:layout_gravity="center"

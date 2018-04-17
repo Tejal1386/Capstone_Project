@@ -1,5 +1,16 @@
 package com.example.capstone.furniturestore;
+import android.content.Context;
 import android.content.Intent;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.CoordinatorLayout;
+import android.content.SharedPreferences;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -10,7 +21,19 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+
+import com.andremion.counterfab.CounterFab;
+import com.example.capstone.furniturestore.CurrentUser.CurrentUser;
+import com.example.capstone.furniturestore.Database.Database;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.andremion.counterfab.CounterFab;
+import com.example.capstone.furniturestore.Database.Database;
 import com.example.capstone.furniturestore.Models.Category;
+import com.example.capstone.furniturestore.ViewHolder.BottomNavigationViewHolder;
+import com.example.capstone.furniturestore.ViewHolder.BottomNavigationViewHolder;
+import com.example.capstone.furniturestore.ViewHolder.BottomNavigationViewHolder;
 import com.example.capstone.furniturestore.ViewHolder.CategoryViewHolder;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.database.DatabaseReference;
@@ -22,13 +45,27 @@ public class CategoryActivity extends AppCompatActivity {
     LinearLayoutManager layoutManager;
     private DatabaseReference categoryDatabase;
     Toolbar toolbar;
-    FloatingActionButton fb_ShoppingBasket;
-    String department_ID;
+
+    //Shared Preferences
+    SharedPreferences sharedPreferences;
+    public static final String MyPREFERENCES = "User";
+    public static final String Name = "UserNameKey";
+    public static final String userid = "UseridKey";
+    String UserID, UserName;
+    CounterFab fb_ShoppingBasket;
+    String department_ID, department_Name;
+    TextView txt_deptName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_category);
+
+        //Shared Preferences
+        sharedPreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        UserName = (sharedPreferences.getString(Name, ""));
+        UserID = (sharedPreferences.getString(userid, ""));
+
 
         //FireBase
         categoryDatabase =  FirebaseDatabase.getInstance().getReference("Category");
@@ -52,36 +89,89 @@ public class CategoryActivity extends AppCompatActivity {
             }
         });
 
+
+            fb_ShoppingBasket = (CounterFab) findViewById(R.id.fb_ShoppingBasket);
+
         //Floating Button
-        fb_ShoppingBasket = (FloatingActionButton) findViewById(R.id.fb_ShoppingBasket);
+        fb_ShoppingBasket = (CounterFab) findViewById(R.id.fb_ShoppingBasket);
+
+            fb_ShoppingBasket.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(CategoryActivity.this, Cart.class);
+                    startActivity(intent);
+
+                }
+            });
+            fb_ShoppingBasket.setCount(new Database(this).getCountCart());
+
+
 
         fb_ShoppingBasket.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(CategoryActivity.this, ShoppingBasketActivity.class);
+                Intent intent = new Intent(CategoryActivity.this, Cart.class);
                 startActivity(intent);
+
+            }
+        });
+        fb_ShoppingBasket.setCount(new Database(this).getCountCart());
+
+
+
+        //Bottom navigation
+        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
+
+        CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) bottomNavigationView.getLayoutParams();
+        layoutParams.setBehavior(new BottomNavigationViewHolder());
+
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()){
+                    case R.id.action_myFavoutite:
+                        Intent intent = new Intent(CategoryActivity.this, FavouriteActivity.class);
+                        startActivity(intent);
+                         break;
+                    case R.id.action_myAccount:
+                        intent = new Intent(CategoryActivity.this,UserAccountActivity.class);
+                        startActivity(intent);
+                        break;
+                    case R.id.action_sale:
+                        intent = new Intent(CategoryActivity.this,ProductInSaleActivity.class);
+                        startActivity(intent);
+                        break;
+                }
+                return true;
             }
         });
 
-        //Recycler View
-        category_RecyclerView = (RecyclerView) findViewById(R.id.recycle_category);
-        category_RecyclerView.setHasFixedSize(true);
-        category_RecyclerView.setNestedScrollingEnabled(false);
-        layoutManager = new LinearLayoutManager(getBaseContext());
-        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        category_RecyclerView.setLayoutManager(new GridLayoutManager(this, 1));
+
+            //Recycler View
+            category_RecyclerView = (RecyclerView) findViewById(R.id.recycle_category);
+            category_RecyclerView.setHasFixedSize(true);
+            category_RecyclerView.setNestedScrollingEnabled(false);
+            layoutManager = new LinearLayoutManager(getBaseContext());
+            layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+            category_RecyclerView.setLayoutManager(new GridLayoutManager(this, 1));
 
 
         // Get Intent here
         if(getIntent() != null){
             Intent i = getIntent();
             department_ID   = i.getExtras().getString("DeptID");
+            department_Name   = i.getExtras().getString("DeptName");
+            txt_deptName = (TextView) findViewById(R.id.txt_departmentName);
+            txt_deptName.setText(department_Name);
+
+
         }
         if(!department_ID.isEmpty() && department_ID != null){
             load_Category();
         }
 
-    }
+        };
+
 
     public  void load_Category(){
 
@@ -117,5 +207,9 @@ public class CategoryActivity extends AppCompatActivity {
     }
 
 
+        }
 
-}
+
+
+
+

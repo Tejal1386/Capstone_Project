@@ -10,13 +10,15 @@
     <include layout="@layout/toolbar"></include>
 
     <LinearLayout
+        android:layout_margin="10dp"
+
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <RelativeLayout
+            android:layout_margin="10dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="20dp">
+            android:layout_height="wrap_content">
 
             <ImageView
                 android:id="@+id/imgProduct"
@@ -58,7 +60,6 @@
         </RelativeLayout>
 
         <Button
-            android:layout_margin="20dp"
             style="@style/Button_Style"
             android:id="@+id/btn_AddToCart"
             android:text="Add To Cart"
@@ -87,10 +88,5 @@
         </android.support.v4.widget.NestedScrollView>
 
     </LinearLayout>
-
-
-
-
-
 
 </LinearLayout>

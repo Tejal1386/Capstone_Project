@@ -122,6 +122,7 @@ We may use your deidentified Personal Information and Online Information to prep
 
     </string>
 
+<string name="fb_ShoppingBasket">Floating Button</string>
     <string name="appbar_scrolling_view_behavior" translatable="false">android.support.design.widget.AppBarLayout$ScrollingViewBehavior</string>
 
 </resources>

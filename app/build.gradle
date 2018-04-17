@@ -6,6 +6,7 @@ android {
     defaultConfig {
         applicationId "com.example.capstone.furniturestore"
         minSdkVersion 19
+
         targetSdkVersion 26
         versionCode 1
         versionName "1.0"
@@ -24,6 +25,10 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
+
+//paypal
+
+    implementation 'com.paypal.sdk:paypal-android-sdk:2.15.3'
 
     //counterFAB
 

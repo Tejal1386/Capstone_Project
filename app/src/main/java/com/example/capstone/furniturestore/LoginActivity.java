@@ -8,6 +8,8 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -15,6 +17,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.capstone.furniturestore.CurrentUser.CurrentUser;
 import com.example.capstone.furniturestore.Models.User;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -51,7 +54,7 @@ public class LoginActivity extends AppCompatActivity {
         //toolBar settings
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-       // toolbar.setTitleTextColor(1);
+        // toolbar.setTitleTextColor(1);
         getSupportActionBar().setTitle(" LogIn");
 
         // add back arrow to toolbar
@@ -72,7 +75,6 @@ public class LoginActivity extends AppCompatActivity {
 
 
         editText_username = (EditText)  findViewById(R.id.editTxt_UserName);
-        //
 
         editText_username.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -85,6 +87,7 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
         });
+
 
 
 
@@ -137,7 +140,8 @@ public class LoginActivity extends AppCompatActivity {
                                 editor.putString(Name, user.getUserName());
                                 editor.apply();
 
-                                intent = new Intent(LoginActivity.this, StoreActivity.class);
+                              Intent  intent = new Intent(LoginActivity.this, StoreActivity.class);
+                                CurrentUser.currentUser = user;
                                 startActivity(intent);
                             } else {
                                 ShowAlert("Wrong Password");
@@ -167,7 +171,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
         // set title
-      //  alertDialogBuilder.setTitle("Wrong Username or Password");
+        //  alertDialogBuilder.setTitle("Wrong Username or Password");
 
         // set dialog message
         alertDialogBuilder

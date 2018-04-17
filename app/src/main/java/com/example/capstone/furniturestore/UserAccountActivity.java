@@ -48,6 +48,7 @@ public class UserAccountActivity extends AppCompatActivity {
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        toolbar.setTitleTextColor(1);
         getSupportActionBar().setTitle("My Account");
 
         // add back arrow to toolbar
@@ -160,7 +161,7 @@ public class UserAccountActivity extends AppCompatActivity {
 
         //Signout button
         btnsignout = (Button)findViewById(R.id.button_signout);
-        btnsignout.setOnClickListener(new View.OnClickListener() {
+       btnsignout.setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View v) {
 

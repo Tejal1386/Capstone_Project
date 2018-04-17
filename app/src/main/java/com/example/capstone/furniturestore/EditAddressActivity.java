@@ -123,7 +123,7 @@ public class EditAddressActivity extends AppCompatActivity {
 
 
         //Update Address
-    /*    buttonUpdateAddress = (Button)findViewById(R.id.button_updateaddress);
+        buttonUpdateAddress = (Button)findViewById(R.id.button_updateaddress);
         buttonUpdateAddress.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -138,23 +138,23 @@ public class EditAddressActivity extends AppCompatActivity {
                 EditaddressDatabase.child(UserID).child("address").child(UID).updateChildren(AddressUpdate);
                 Toast.makeText(EditAddressActivity.this,"Data Updated",Toast.LENGTH_LONG ).show();
 
-                *//*edit_getusername.setText("");
+                /*edit_getusername.setText("");
                 edit_getuseraddress.setText("");
                 edit_getusercity.setText("");
                 edit_getuserstate.setText("");
                 edit_getuserpostalcode.setText("");
-                edit_getuserphone.setText("");*//*
+                edit_getuserphone.setText("");*/
 
                 intent = new Intent(EditAddressActivity.this,AddAddressActivity.class);
                 startActivity(intent);
 
                 }
 
-        });*/
+        });
 
 
         //Delete address
-       /* buttonDeleteAddress = (Button)findViewById(R.id.button_deleteaddress);
+        buttonDeleteAddress = (Button)findViewById(R.id.button_deleteaddress);
         buttonDeleteAddress.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -185,7 +185,7 @@ public class EditAddressActivity extends AppCompatActivity {
 
             }
         });
-*/
+
 
 
 

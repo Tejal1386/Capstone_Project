@@ -72,6 +72,24 @@ public class LoginActivity extends AppCompatActivity {
 
 
         editText_username = (EditText)  findViewById(R.id.editTxt_UserName);
+        //
+
+        editText_username.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    String username = editText_username.getText().toString();
+                    if(username.length() < 10){
+                        editText_username.setError("atleast 10 digit for Phone number!");
+                    }
+                }
+            }
+        });
+
+
+
+
+
         editText_password = (EditText) findViewById(R.id.editTxt_Password);
         btn_login = (Button) findViewById(R.id.btnLogin);
         txtlink_SignUp = (TextView) findViewById(R.id.txtlinkSignUp);
@@ -100,7 +118,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
 
-        mDatabase.orderByChild("userName").equalTo(userName).addValueEventListener(new ValueEventListener() {
+        mDatabase.orderByChild("userId").equalTo(userName).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 

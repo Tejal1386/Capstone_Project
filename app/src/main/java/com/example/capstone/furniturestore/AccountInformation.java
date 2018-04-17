@@ -68,7 +68,6 @@ public class AccountInformation extends AppCompatActivity {
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        toolbar.setTitleTextColor(1);
         getSupportActionBar().setTitle("Account Information");
 
         // add back arrow to toolbar
@@ -84,8 +83,6 @@ public class AccountInformation extends AppCompatActivity {
                 onBackPressed(); // Implemented by activity
             }
         });
-
-
 
 
         txtedit_password = (TextView)findViewById(R.id.txt_changepassword);
@@ -110,96 +107,7 @@ public class AccountInformation extends AppCompatActivity {
         });
 
 
-
-
-
-
     }
-
-
-
-
-    /*
-        private void showChangePasswordDialogold()
-    {
-
-
-        AlertDialog.Builder alertdialog = new AlertDialog.Builder(AccountInformation.this);
-        alertdialog.setTitle("Change password");
-        alertdialog.setMessage("Please fill all information");
-
-        LayoutInflater inflater = LayoutInflater.from(this);
-        View layout_pwd = inflater.inflate(R.layout.change_password,null);
-
-
-       final MaterialEditText edit_password = (MaterialEditText)layout_pwd.findViewById(R.id.editpassword);
-       final MaterialEditText edit_Newpassword = (MaterialEditText)layout_pwd.findViewById(R.id.editNewpassword);
-        final MaterialEditText edit_Repeatpassword = (MaterialEditText)layout_pwd.findViewById(R.id.editRepeatNewpassword);
-
-        alertdialog.setView(layout_pwd);
-
-        //button
-       alertdialog.setPositiveButton("CHANGE", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int i) {
-                //change password here
-
-                final android.app.AlertDialog waitingdialog  = new SpotsDialog(AccountInformation.this);
-                waitingdialog.show();
-
-                //
-                if(edit_password.getText().toString().equals(UserPassword))
-                {
-                    if(edit_Newpassword.getText().toString().equals(edit_Repeatpassword.getText().toString()))
-                    {
-                        Map<String,Object> passwordUpdate = new HashMap<>();
-                        passwordUpdate.put("password",edit_Newpassword.getText().toString());
-
-
-                        DatabaseReference user_pass = FirebaseDatabase.getInstance().getReference("User");
-
-
-                        user_pass.child(UserID).updateChildren(passwordUpdate).
-                                addOnCompleteListener(new OnCompleteListener<Void>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<Void> task) {
-                                        waitingdialog.dismiss();
-                                        Toast.makeText(AccountInformation.this,"Password updated",Toast.LENGTH_LONG ).show();
-
-                                    }
-                                })
-                                .addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception e) {
-                                        Toast.makeText(AccountInformation.this,e.getMessage(),Toast.LENGTH_LONG ).show();
-                                    }
-                                });
-
-                    }
-
-                    else{
-                        waitingdialog.dismiss();
-                        Toast.makeText(AccountInformation.this,"New Password does not match",Toast.LENGTH_LONG ).show();
-                        }
-                }
-
-                else{
-
-                    Toast.makeText(AccountInformation.this,"Wrong Password ",Toast.LENGTH_LONG ).show();
-                    }
-            }
-        });
-
-
-        alertdialog.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int i) {
-
-            }
-        });
-
-   } */
-
 
 
 
@@ -253,7 +161,7 @@ public class AccountInformation extends AppCompatActivity {
         });
         dialogBuilder.setNegativeButton("CANCEl", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
-                //pass
+               dialog.dismiss();
             }
         });
 
@@ -297,14 +205,14 @@ public class AccountInformation extends AppCompatActivity {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
 
-                                    Toast.makeText(AccountInformation.this,"Password updated",Toast.LENGTH_LONG ).show();
+                                    Toast.makeText(AccountInformation.this,"Username updated",Toast.LENGTH_LONG ).show();
 
                                 }
                             })
                             .addOnFailureListener(new OnFailureListener() {
                                 @Override
                                 public void onFailure(@NonNull Exception e) {
-                                    Toast.makeText(AccountInformation.this,"cant update",Toast.LENGTH_LONG ).show();
+                                    Toast.makeText(AccountInformation.this,"Error",Toast.LENGTH_LONG ).show();
                                 }
                             });
 

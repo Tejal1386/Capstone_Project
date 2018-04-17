@@ -17,7 +17,7 @@ import com.google.firebase.database.FirebaseDatabase;
 public class SignUpActivity extends AppCompatActivity {
 
     private DatabaseReference mDatabase;
-    private EditText editText_username, editText_password;
+    private EditText editText_userID, editText_password,editText_userFullname;
     private Button btn_register;
     private Intent intent;
     Toolbar toolbar;
@@ -48,7 +48,24 @@ public class SignUpActivity extends AppCompatActivity {
             }
         });
 
-        editText_username = (EditText)  findViewById(R.id.editTxt_UserName);
+
+        editText_userID = (EditText)  findViewById(R.id.editTxt_UserName);
+        editText_userFullname = (EditText)  findViewById(R.id.editTxt_Fullname);
+
+        editText_userID.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    String username = editText_userID.getText().toString();
+                    if(username.length() < 10){
+                        editText_userID.setError("atleast 10 digit for Phone number!");
+                    }
+                }
+            }
+        });
+
+
+
         editText_password = (EditText) findViewById(R.id.editTxt_Password);
         btn_register = (Button) findViewById(R.id.btnRegister);
 
@@ -63,9 +80,10 @@ public class SignUpActivity extends AppCompatActivity {
     }
     private void addUser()
     {
-        String ID = mDatabase.push().getKey();
-        String userName = editText_username.getText().toString();
+        String ID = editText_userID.getText().toString() ;
+        String userName = editText_userFullname.getText().toString();
         String password = editText_password.getText().toString();
+
         //String address = "";
 
         if(!TextUtils.isEmpty(userName)) {

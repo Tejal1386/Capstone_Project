@@ -51,8 +51,6 @@ public class Cart extends AppCompatActivity implements RecyclerItemTouchHelperLi
     List<Product> cart = new ArrayList<>();
     CartAdapter adapter ;
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -191,7 +189,7 @@ public class Cart extends AppCompatActivity implements RecyclerItemTouchHelperLi
         if(viewHolder instanceof CartViewHolder)
         {
             String name = ((CartAdapter)recyclerView.getAdapter()).getItem(viewHolder.getAdapterPosition()).getProductName();
-final Product  deleteItem = ((CartAdapter)recyclerView.getAdapter()).getItem(viewHolder.getAdapterPosition());
+            final Product  deleteItem = ((CartAdapter)recyclerView.getAdapter()).getItem(viewHolder.getAdapterPosition());
 
             final int deleteIndex = viewHolder.getAdapterPosition();
 
@@ -209,7 +207,7 @@ final Product  deleteItem = ((CartAdapter)recyclerView.getAdapter()).getItem(vie
             Snackbar snackbar = Snackbar.make(rootLayout,name + "removed from cart !" ,Snackbar.LENGTH_LONG);
             snackbar.setAction("UNDO", new View.OnClickListener() {
     @Override
-    public void onClick(View v) {
+             public void onClick(View v) {
               adapter.restoreItem(deleteItem,deleteIndex);
               new Database(getBaseContext()).addToCart(deleteItem);
 //update txttotal

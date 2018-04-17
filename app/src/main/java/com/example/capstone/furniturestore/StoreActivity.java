@@ -138,20 +138,19 @@ public class StoreActivity extends AppCompatActivity {
 
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            public boolean onNavigationItemSelected(@NonNull MenuItem item)
+            {
                 switch (item.getItemId()){
                     case R.id.action_myFavoutite:
                         intent = new Intent(StoreActivity.this,FavouriteActivity.class);
                         startActivity(intent);
 
-                        // Toast.makeText(StoreActivity.this,"My Favourite",Toast.LENGTH_LONG).show();
                         break;
                     case R.id.action_myAccount:
                         intent = new Intent(StoreActivity.this,UserAccountActivity.class);
                         startActivity(intent);
 
 
-                        Toast.makeText(StoreActivity.this,"My Account",Toast.LENGTH_LONG).show();
                         break;
                     case R.id.action_sale:
 

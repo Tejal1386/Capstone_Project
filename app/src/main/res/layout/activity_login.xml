@@ -6,14 +6,26 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="com.example.capstone.furniturestore.LoginActivity">
+
+    <include layout="@layout/toolbar"></include>
+
+
     <LinearLayout
-
         android:orientation="vertical"
+        android:background="@drawable/loginbackground"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
-        <include layout="@layout/toolbar"></include>
-
+        <TextView
+            android:layout_margin="20dp"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxLines="2"
+            android:textSize="20dp"
+            android:textColor="@color/black"
+            android:fontFamily="sans-serif-condensed"
+            android:text="Enter Your Phone Number To Log in"/>
 
 
         <LinearLayout
@@ -26,7 +38,10 @@
                 android:id="@+id/editTxt_UserName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="User Name*" />
+                android:hint="Phone number*"
+                android:maxLength="10"
+                android:inputType="number" />
+
 
         </LinearLayout>
 
@@ -55,6 +70,7 @@
 
             <Button
                 android:id="@+id/btnLogin"
+                style="@style/Button_Style"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="LOG IN" />
@@ -68,6 +84,7 @@
 
 
             <TextView
+                android:textColor="@color/black"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAlignment="center"
@@ -80,8 +97,8 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/colorPrimary"
                 android:text=" Sign up "
+                android:fontFamily="sans-serif-smallcaps"
                 android:textSize="20dp"
-                android:onClick="onCLick"
                 android:linksClickable="true"
                 />
             <TextView
@@ -89,7 +106,7 @@
                 android:layout_height="wrap_content"
                 android:textAlignment="center"
                 android:textSize="16dp"
-
+                android:textColor="@color/black"
                 android:text=" here"
                 />
 

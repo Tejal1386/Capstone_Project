@@ -1,0 +1,123 @@
+Index: app/build.gradle
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>apply plugin: 'com.android.application'\n\nandroid {\n    compileSdkVersion 26\n    buildToolsVersion \"27.0.3\"\n    defaultConfig {\n        applicationId \"com.example.capstone.furniturestore\"\n        minSdkVersion 19\n\n        targetSdkVersion 26\n        versionCode 1\n        versionName \"1.0\"\n        testInstrumentationRunner \"android.support.test.runner.AndroidJUnitRunner\"\n    }\n    buildTypes {\n        release {\n            minifyEnabled false\n            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'\n        }\n    }\n}\n\ndependencies {\n    compile fileTree(dir: 'libs', include: ['*.jar'])\n    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {\n        exclude group: 'com.android.support', module: 'support-annotations'\n    })\n\n//paypal\n\n    implementation 'com.paypal.sdk:paypal-android-sdk:2.15.3'\n\n    //counterFAB\n\n    implementation 'com.github.andremion:counterfab:1.0.1'\n\n    compile 'com.android.support:appcompat-v7:26.+'\n    compile 'com.amulyakhare:com.amulyakhare.textdrawable:1.0.1'\n    compile 'com.readystatesoftware.sqliteasset:sqliteassethelper:+'\n    compile 'com.cepheuen.elegant-number-button:lib:1.0.2'\n    compile 'com.android.support.constraint:constraint-layout:1.0.2'\n    compile 'com.google.firebase:firebase-storage:9.6.1'\n    compile 'com.google.firebase:firebase-core:11.8.0'\n    compile 'com.google.firebase:firebase-database:11.8.0'\n    compile 'com.android.support:recyclerview-v7:26.1.0'\n    compile 'com.android.support:design:26.1.0'\n    compile 'com.android.support:cardview-v7:26.1.0'\n    compile 'com.google.firebase:firebase-auth:11.8.0'\n    compile 'com.firebaseui:firebase-ui-database:0.4.0'\n    compile 'com.google.firebase:firebase-storage:11.8.0'\n    compile 'com.squareup.picasso:picasso:2.5.2'\n    compile 'com.github.mancj:MaterialSearchBar:0.7.1'\n    compile 'com.miguelcatalan:materialsearchview:1.4.0'\n    compile 'com.android.support:design:26.1.0'\n    testCompile 'junit:junit:4.12'\n    testCompile 'org.testng:testng:6.10'\n}\napply plugin: 'com.google.gms.google-services'\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/build.gradle	(date 1523403253000)
++++ app/build.gradle	(revision )
+@@ -33,7 +33,7 @@
+     //counterFAB
+ 
+     implementation 'com.github.andremion:counterfab:1.0.1'
+-
++    compile group: 'org.seleniumhq.selenium', name: 'selenium-java', version: '2.+'
+     compile 'com.android.support:appcompat-v7:26.+'
+     compile 'com.amulyakhare:com.amulyakhare.textdrawable:1.0.1'
+     compile 'com.readystatesoftware.sqliteasset:sqliteassethelper:+'
+@@ -54,5 +54,15 @@
+     compile 'com.android.support:design:26.1.0'
+     testCompile 'junit:junit:4.12'
+     testCompile 'org.testng:testng:6.10'
++    compile fileTree(dir: 'lib', include: ['*.jar'])
++    compile 'junit:junit:4.12'
++    compile 'io.appium:java-client:3.3.0'
++    compile 'com.googlecode.json-simple:json-simple:1.1.1'
++
++    compile 'commons-lang:commons-lang:2.6'
++    compile 'com.google.code.gson:gson:2.5'
++    compile 'com.google.http-client:google-http-client:1.21.0'
++    compile 'com.testdroid:testdroid-api:2.9'
++    compile 'com.google.http-client:google-http-client-jackson2:1.21.0'
+ }
+ apply plugin: 'com.google.gms.google-services'
+Index: .idea/modules.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<project version=\"4\">\n  <component name=\"ProjectModuleManager\">\n    <modules>\n      <module fileurl=\"file://$PROJECT_DIR$/FurnitureStore.iml\" filepath=\"$PROJECT_DIR$/FurnitureStore.iml\" />\n      <module fileurl=\"file://$PROJECT_DIR$/app/app.iml\" filepath=\"$PROJECT_DIR$/app/app.iml\" />\n    </modules>\n  </component>\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- .idea/modules.xml	(date 1523403253000)
++++ .idea/modules.xml	(revision )
+@@ -2,6 +2,7 @@
+ <project version="4">
+   <component name="ProjectModuleManager">
+     <modules>
++      <module fileurl="file://$PROJECT_DIR$/CapstoneProject.iml" filepath="$PROJECT_DIR$/CapstoneProject.iml" />
+       <module fileurl="file://$PROJECT_DIR$/FurnitureStore.iml" filepath="$PROJECT_DIR$/FurnitureStore.iml" />
+       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+     </modules>
+Index: app/src/test/java/com/example/capstone/furniturestore/Example.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/test/java/com/example/capstone/furniturestore/Example.java	(revision )
++++ app/src/test/java/com/example/capstone/furniturestore/Example.java	(revision )
+@@ -0,0 +1,64 @@
++package com.example.capstone.furniturestore;
++
++
++
++import org.junit.Before;
++import org.openqa.selenium.By;
++import org.openqa.selenium.Platform;
++import org.openqa.selenium.WebDriver;
++import org.openqa.selenium.remote.BrowserType;
++import org.openqa.selenium.remote.DesiredCapabilities;
++import org.openqa.selenium.remote.RemoteWebDriver;
++
++import org.testng.annotations.BeforeMethod;
++import org.testng.annotations.Test;
++
++import java.net.MalformedURLException;
++import java.net.URL;
++
++import io.appium.java_client.AppiumDriver;
++import io.appium.java_client.android.AndroidDriver;
++import io.appium.java_client.remote.MobileCapabilityType;
++
++
++public class Example {
++
++
++
++
++    @org.junit.Test
++    public void setUp() throws MalformedURLException {
++
++
++        DesiredCapabilities capabilities = DesiredCapabilities.android();
++        capabilities.setCapability(MobileCapabilityType.BROWSER_NAME, BrowserType.CHROME);
++        capabilities.setCapability(MobileCapabilityType.PLATFORM, Platform.ANDROID);
++        capabilities.setCapability(MobileCapabilityType.PLATFORM_NAME, "Android");
++        capabilities.setCapability(MobileCapabilityType.DEVICE_NAME, "mydevice");
++        capabilities.setCapability(MobileCapabilityType.VERSION, "6.0.1");
++
++        URL url = new URL("http://127.0.0.1:4725/wd/hub");
++
++        WebDriver driver = new AndroidDriver(url, capabilities);
++
++        driver.get("http://www.facebook.com");
++
++        System.out.print("Title:"+ driver.getTitle());
++
++        driver.quit();
++
++
++
++
++
++
++
++
++
++
++
++
++    }
++
++
++}

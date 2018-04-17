@@ -14,7 +14,7 @@
         android:layout_height="60dp"
         android:layout_margin="38dp"
 
-        android:background="@color/bg_row">
+        android:background="@color/bgRow">
 
         <ImageView
             android:id="@+id/delete_icon"

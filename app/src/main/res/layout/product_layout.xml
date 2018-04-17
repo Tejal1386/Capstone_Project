@@ -19,6 +19,7 @@
             <TextView
                 android:textColor="@color/white"
                 android:paddingLeft="5dp"
+                android:paddingRight="5dp"
                 android:visibility="gone"
                 android:id="@+id/txtSaleTag"
                 android:background="@color/bgRow"
@@ -26,6 +27,7 @@
                 android:layout_height="wrap_content" />
 
             <ImageView
+                android:layout_margin="5dp"
                 style="@style/ProductLayoutMargin"
                 android:layout_width="match_parent"
                 android:layout_height="150dp"

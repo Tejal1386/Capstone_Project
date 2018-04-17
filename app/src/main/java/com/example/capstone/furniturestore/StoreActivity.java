@@ -14,9 +14,11 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,6 +30,7 @@ import com.example.capstone.furniturestore.Database.Database;
 import com.example.capstone.furniturestore.Models.Category;
 import com.example.capstone.furniturestore.Models.Department;
 import com.example.capstone.furniturestore.Models.Product;
+import com.example.capstone.furniturestore.ViewHolder.BottomNavigationViewHolder;
 import com.example.capstone.furniturestore.ViewHolder.DepartmentViewHolder;
 import com.example.capstone.furniturestore.ViewHolder.ProductViewHolder;
 import com.google.firebase.database.DataSnapshot;
@@ -135,7 +138,7 @@ public class StoreActivity extends AppCompatActivity {
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
 
         CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) bottomNavigationView.getLayoutParams();
-        layoutParams.setBehavior(new BottomNavigationViewBehavior());
+        layoutParams.setBehavior(new BottomNavigationViewHolder());
 
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -220,9 +223,18 @@ public class StoreActivity extends AppCompatActivity {
                 viewHolder.setClickListener(new DepartmentViewHolder.ItemClickListener() {
                     @Override
                     public void onClickItem(int pos) {
-                        Intent intent = new Intent(StoreActivity.this,CategoryActivity.class);
-                        intent.putExtra("DeptID",model.getDepartmentID());
-                        startActivity(intent);
+                        String name = model.getDepartmentName();
+                        if(name.equals("Sales"))
+                        {
+                            Intent intent = new Intent(StoreActivity.this, ProductInSaleActivity.class);
+                                startActivity(intent);
+                        }
+                        else {
+                            Intent intent = new Intent(StoreActivity.this, CategoryActivity.class);
+                            intent.putExtra("DeptName", model.getDepartmentName());
+                            intent.putExtra("DeptID", model.getDepartmentID());
+                            startActivity(intent);
+                        }
                     }
                 });
 
@@ -282,7 +294,11 @@ public class StoreActivity extends AppCompatActivity {
             @Override
             public void onSearchViewShown() {
                     searchList.setVisibility(View.VISIBLE);
-
+                // remove back arrow to toolbar
+                if (getSupportActionBar() != null){
+                    getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+                    getSupportActionBar().setDisplayShowHomeEnabled(false);
+                }
 
                    if(searchList.getVisibility() == View.VISIBLE){
                        searchListAdapter = new SearchListAdapter(suggestList,StoreActivity.this);
@@ -302,6 +318,12 @@ public class StoreActivity extends AppCompatActivity {
             public void onSearchViewClosed() {
                 searchList.setVisibility(View.INVISIBLE);
                 searchList.setVisibility(View.GONE);
+
+                // add back arrow to toolbar
+                if (getSupportActionBar() != null){
+                    getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+                    getSupportActionBar().setDisplayShowHomeEnabled(true);
+                }
 
             }
         });
@@ -377,51 +399,6 @@ public class StoreActivity extends AppCompatActivity {
           MenuItem item = menu.findItem(R.id.action_search);
           materialSearchView.setMenuItem(item);
         return true;
-    }
-
-
-    //Bottom Navigation Bar
-    public class BottomNavigationViewBehavior extends CoordinatorLayout.Behavior<BottomNavigationView> {
-
-        private int height;
-
-        @Override
-        public boolean onLayoutChild(CoordinatorLayout parent, BottomNavigationView child, int layoutDirection) {
-            height = child.getHeight();
-            return super.onLayoutChild(parent, child, layoutDirection);
-        }
-
-        @Override
-        public boolean onStartNestedScroll(@NonNull CoordinatorLayout coordinatorLayout,
-                                           BottomNavigationView child, @NonNull
-                                                   View directTargetChild, @NonNull View target,
-                                           int axes, int type)
-        {
-            return axes == ViewCompat.SCROLL_AXIS_VERTICAL;
-        }
-
-        @Override
-        public void onNestedScroll(@NonNull CoordinatorLayout coordinatorLayout, @NonNull BottomNavigationView child,
-                                   @NonNull View target, int dxConsumed, int dyConsumed,
-                                   int dxUnconsumed, int dyUnconsumed,
-                                   @ViewCompat.NestedScrollType int type)
-        {
-            if (dyConsumed > 0) {
-                slideDown(child);
-            } else if (dyConsumed < 0) {
-                slideUp(child);
-            }
-        }
-
-        private void slideUp(BottomNavigationView child) {
-            child.clearAnimation();
-            child.animate().translationY(0).setDuration(200);
-        }
-
-        private void slideDown(BottomNavigationView child) {
-            child.clearAnimation();
-            child.animate().translationY(height).setDuration(200);
-        }
     }
 
 

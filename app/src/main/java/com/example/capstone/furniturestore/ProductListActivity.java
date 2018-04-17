@@ -2,6 +2,9 @@ package com.example.capstone.furniturestore;
 
 import android.content.Intent;
 import android.graphics.Paint;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -10,12 +13,22 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.GridView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.andremion.counterfab.CounterFab;
 import com.example.capstone.furniturestore.Database.Database;
+import com.andremion.counterfab.CounterFab;
+import com.example.capstone.furniturestore.Database.Database;
+import com.example.capstone.furniturestore.Models.Category;
 import com.example.capstone.furniturestore.Models.Product;
+import com.example.capstone.furniturestore.ViewHolder.BottomNavigationViewHolder;
+import com.example.capstone.furniturestore.ViewHolder.CategoryViewHolder;
 import com.example.capstone.furniturestore.ViewHolder.ProductViewHolder;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.database.DataSnapshot;
@@ -35,7 +48,7 @@ public class ProductListActivity extends AppCompatActivity {
     CounterFab fb_ShoppingBasket;
     String CategoryName = "",CategoryID;
     TextView txtCategoryName;
-
+    Button btnFilter;
 
 
     @Override
@@ -71,8 +84,19 @@ public class ProductListActivity extends AppCompatActivity {
                 onBackPressed(); // Implemented by activity
             }
         });
-        fb_ShoppingBasket = (CounterFab) findViewById(R.id.fb_ShoppingBasket);
 
+
+
+        btnFilter = (Button) findViewById(R.id.btn_Filter);
+        btnFilter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ProductListActivity.this, FilterActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        fb_ShoppingBasket = (CounterFab) findViewById(R.id.fb_ShoppingBasket);
 
         fb_ShoppingBasket.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -83,6 +107,36 @@ public class ProductListActivity extends AppCompatActivity {
             }
         });
         fb_ShoppingBasket.setCount(new Database(this).getCountCart());
+
+
+        //Bottom navigation
+        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
+
+        CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) bottomNavigationView.getLayoutParams();
+        layoutParams.setBehavior(new BottomNavigationViewHolder());
+
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()){
+                    case R.id.action_myFavoutite:
+                        Intent intent = new Intent(ProductListActivity.this, FavouriteActivity.class);
+                        startActivity(intent);
+                        break;
+                    case R.id.action_myAccount:
+                        intent = new Intent(ProductListActivity.this,UserAccountActivity.class);
+                        startActivity(intent);
+                        break;
+                    case R.id.action_sale:
+                        intent = new Intent(ProductListActivity.this,ProductInSaleActivity.class);
+                        startActivity(intent);
+                        break;
+                }
+                return true;
+            }
+        });
+
+
 
         //Recycler View
 

@@ -32,71 +32,79 @@
 
 </LinearLayout>
 
+    <android.support.design.widget.CoordinatorLayout
+
+        android:id="@+id/coordinator_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
     <android.support.v4.widget.NestedScrollView
+        android:fillViewport="true"
+        android:layout_margin="5dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fillViewport="true"
+
         android:paddingTop="10dp"
         android:layout_marginTop="-38dp">
 
 
         <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:orientation="vertical">
+            android:layout_height="wrap_content">
 
             <TextView
+                android:textSize="24dp"
                 android:id="@+id/txtproductName"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="24dp" />
+                android:layout_height="wrap_content" />
 
             <TextView
+                android:textSize="18dp"
                 android:id="@+id/txtproductManufacturer"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="18dp" />
+                android:layout_height="wrap_content" />
 
             <ImageView
-                android:id="@+id/imageproduct"
                 android:layout_width="match_parent"
-                android:layout_height="300dp" />
+                android:layout_height="300dp"
+                android:id="@+id/imageproduct"/>
 
             <LinearLayout
+                android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:layout_height="wrap_content">
 
                 <TextView
+                    android:layout_marginTop="5dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:id="@+id/txtproductSalePrice"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:textColor="@color/bgRow"
-                    android:textSize="22dp" />
+                    android:textSize="22dp"
+                    android:textColor="@color/bgRow"/>
 
                 <TextView
-                    android:id="@+id/txtproductPrice"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginLeft="10dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="5dp"
-                    android:textColor="@color/gray"
-                    android:textSize="16dp" />
+                    android:id="@+id/txtproductPrice"
+                    android:textSize="16dp"
+                    android:textColor="@color/gray"/>
 
             </LinearLayout>
 
 
             <TextView
-                android:id="@+id/txtproductshipping"
+                android:layout_marginTop="5dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:textColor="@color/black"
-                android:textSize="18dp" />
+                android:id="@+id/txtproductshipping"
+                android:textSize="18dp"
+                android:textColor="@color/black"/>
 
-            <!--  <com.cepheuen.elegantnumberbutton.view.ElegantNumberButton
+      <!--  <com.cepheuen.elegantnumberbutton.view.ElegantNumberButton
             android:layout_width="100dp"
             android:layout_height="30dp"
             android:id="@+id/number_button"
@@ -105,120 +113,120 @@
 -->
 
             <Button
-                android:id="@+id/btn_View"
+                android:text="Show View"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Show View" />
+                android:id="@+id/btn_View"/>
 
 
             <Button
-                android:id="@+id/btn_AddToCart"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Add To Cart" />
+            android:text="Add To Cart"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/btn_AddToCart"/>
 
             <Button
-                android:id="@+id/btn_favoiurite"
+                android:text="Save to Favourite"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Save to Favourite" />
+                android:id="@+id/btn_favoiurite"/>
 
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
+                android:textSize="18dp"
                 android:text="Product OverView"
-                android:textSize="18dp" />
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
 
 
             <LinearLayout
+                android:layout_marginTop="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
                 android:orientation="vertical">
 
                 <RelativeLayout
                     android:id="@+id/layout_info"
                     android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:background="@color/white"
                     android:clickable="true"
-                    android:orientation="horizontal"
+                    android:layout_height="40dp"
                     android:paddingLeft="20dp"
-                    android:paddingRight="20dp">
-
+                    android:paddingRight="20dp"
+                    android:background="@color/white"
+                    android:orientation="horizontal">
                     <TextView
                         android:id="@+id/txt_Information"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:gravity="center"
                         android:text="Information"
-                        android:textSize="20dp" />
+                        android:textSize="20dp"
+                        android:gravity="center"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent" />
 
                     <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
                         android:layout_alignParentRight="true"
                         android:layout_marginRight="1dp"
-                        android:src="@drawable/ic_action_rightarrow" />
+                        android:src="@drawable/ic_action_rightarrow"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        />
 
                 </RelativeLayout>
 
                 <RelativeLayout
                     android:id="@+id/layout_specification"
+                    android:clickable="true"
+                    android:layout_marginTop="10dp"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
-                    android:layout_marginTop="10dp"
-                    android:background="@color/white"
-                    android:clickable="true"
-                    android:orientation="horizontal"
                     android:paddingLeft="20dp"
-                    android:paddingRight="20dp">
-
+                    android:paddingRight="20dp"
+                    android:background="@color/white"
+                    android:orientation="horizontal">
                     <TextView
                         android:id="@+id/txt_specification"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:gravity="center"
                         android:text="Specification"
-                        android:textSize="20dp" />
+                        android:textSize="20dp"
+                        android:gravity="center"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent" />
 
                     <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
                         android:layout_alignParentRight="true"
                         android:layout_gravity="right"
-                        android:src="@drawable/ic_action_rightarrow" />
+                        android:src="@drawable/ic_action_rightarrow"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        />
 
                 </RelativeLayout>
 
                 <RelativeLayout
                     android:id="@+id/layout_shipping"
+                    android:clickable="true"
+                    android:layout_marginTop="10dp"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
-                    android:layout_marginTop="10dp"
-                    android:background="@color/white"
-                    android:clickable="true"
-                    android:orientation="horizontal"
                     android:paddingLeft="20dp"
-                    android:paddingRight="20dp">
-
+                    android:paddingRight="20dp"
+                    android:background="@color/white"
+                    android:orientation="horizontal">
                     <TextView
                         android:id="@+id/txt_Shipping"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:gravity="center"
                         android:text="Shipping"
-                        android:textSize="20dp" />
+                        android:textSize="20dp"
+                        android:gravity="center"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent" />
 
                     <ImageView
+                        android:layout_alignParentRight="true"
+                        android:layout_marginLeft="80dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_action_rightarrow"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:layout_alignParentRight="true"
-                        android:layout_gravity="center"
-                        android:layout_marginLeft="80dp"
-                        android:src="@drawable/ic_action_rightarrow" />
+                        />
 
                 </RelativeLayout>
 
@@ -226,7 +234,37 @@
             <!--end-->
 
 
+
+
+
         </LinearLayout>
 
     </android.support.v4.widget.NestedScrollView>
+
+        <FrameLayout
+            android:id="@+id/container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+        <android.support.design.widget.BottomNavigationView
+            android:layout_marginTop="30dp"
+
+            android:layout_gravity="bottom"
+            android:id="@+id/bottom_navigation"
+            app:itemBackground="@color/white"
+            app:itemIconTint="@color/appTheme"
+            app:itemTextColor="@color/appTheme"
+            app:menu="@menu/bottom_navigation_menu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+        </FrameLayout>
+
+    </android.support.design.widget.CoordinatorLayout>
 </LinearLayout>

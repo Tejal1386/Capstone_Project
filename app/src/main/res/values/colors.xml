@@ -9,7 +9,7 @@
     <color name="appTheme"> #634561 </color>
     <color name="shadow">#BDBDBD </color>
     <color name="gray"> #757575 </color>
-    <color name="bgRow"> #FA315B</color>
+    <color name="bgRow"> #bd2d2f </color>
 
 
     //Material SearchBar Light Theme Colors
@@ -34,7 +34,6 @@
     <color name="leftTextSelectorColor">#00a1ff</color>
     <color name="middleTextSelectorColor">#00a1ff</color>
     <color name="rightTextSelectorColor">#00a1ff</color>
-    <color name = "bg_row">#FA315B</color>
 
 
 </resources>

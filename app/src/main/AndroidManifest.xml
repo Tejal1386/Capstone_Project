@@ -8,6 +8,7 @@
     <!-- Required for Recording -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
+    <uses-permission android:name="android.permission.SEND_SMS"/>
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -33,19 +34,20 @@
         <activity android:name=".MainActivity" />
         <activity android:name=".SignUpActivity" />
         <activity android:name=".StoreActivity" />
-        <activity android:name=".ShoppingBasketActivity" />
         <activity android:name=".UserAccountActivity" />
         <activity android:name=".ProductListActivity" />
-        <activity android:name=".SearchItemActivity" />
+        <activity android:name=".AddAddressActivity" />
+        <activity android:name=".OrderStatus" />
+
         <activity android:name=".CategoryActivity" />
         <activity android:name=".ProductDetailActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="Amazon AR Gallery"
             android:screenOrientation="portrait"/>
         <activity android:name=".FavouriteActivity" />
+        <activity android:name=".AccountInformation" />
         <activity android:name=".ProductInSaleActivity" />
         <activity android:name=".ProductInformationActivity" />
-        <activity android:name=".SearchListActivity" />
         <activity android:name=".Cart" />
         <activity android:name=".EditFavouriteActivity" />
         <activity android:name=".FilterActivity" />
@@ -54,6 +56,9 @@
             android:name=".ProductARActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait" />
+        <activity android:name=".EditAddressActivity" />
+        <activity android:name=".TermsAndPoliciesActivity">
+      </activity>
     </application>
 
 </manifest>

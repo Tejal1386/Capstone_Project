@@ -25,7 +25,9 @@ public class ProductViewHolder extends RecyclerView.ViewHolder implements View.O
     private ItemClickListener mListener;
 
     public interface ItemClickListener {
-        void onClickItem(int pos);
+        void onClickItem(View view, int pos, boolean b);
+
+        void onClick(View view, int adapterPosition, boolean b);
     }
 
 
@@ -48,8 +50,8 @@ public class ProductViewHolder extends RecyclerView.ViewHolder implements View.O
     }
 
     @Override
-    public void onClick(View v) {
+    public void onClick(View view) {
 
-        mListener.onClickItem(getLayoutPosition());
+        mListener.onClickItem(view, getLayoutPosition(), false);
     }
 }

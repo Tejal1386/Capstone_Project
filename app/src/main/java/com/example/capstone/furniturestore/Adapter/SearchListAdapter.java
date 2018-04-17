@@ -7,7 +7,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.example.capstone.furniturestore.Models.Category;
@@ -25,11 +28,36 @@ import java.util.List;
  * Created by tejalpatel on 2018-03-13.
  */
 
-public class SearchListAdapter extends RecyclerView.Adapter<SearchListAdapter.SearchViewHolder> {
+public class SearchListAdapter extends ArrayAdapter<Category> {
+    public SearchListAdapter(Context context, ArrayList<Category> categories) {
+        super(context, 0, categories);
+    }
+
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+        // Get the data item for this position
+        Category category = getItem(position);
+        // Check if an existing view is being reused, otherwise inflate the view
+        if (convertView == null) {
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.search_list, parent, false);
+        }
+        // Lookup view for data population
+        TextView catName = (TextView) convertView.findViewById(R.id.txtCategoryName);
+        // Populate the data into the template view using the data object
+        catName.setText(category.getCategoryName());
 
 
 
 
+        // Return the completed view to render on screen
+        return convertView;
+    }
+}
+
+
+
+/*
+*
     ArrayList<Category> categories = new ArrayList<Category>();
     Context ctx;
 
@@ -84,6 +112,4 @@ public class SearchListAdapter extends RecyclerView.Adapter<SearchListAdapter.Se
             ctx.startActivity(intent);
         }
     }
-
-
-}
+*/

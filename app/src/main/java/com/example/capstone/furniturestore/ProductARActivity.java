@@ -80,6 +80,8 @@ public class ProductARActivity extends Activity {
 
     private static final String TAG = ProductARActivity.class.getSimpleName();
     final public static String INTENT_PRODUCT_KEY = "product_key";
+     public static String key ;
+
 
     private ViroView mViroView;
     private View mHudGroupView;
@@ -131,7 +133,7 @@ public class ProductARActivity extends Activity {
         setContentView(mViroView);
 
         Intent intent = getIntent();
-        String key = intent.getStringExtra(INTENT_PRODUCT_KEY);
+        key = intent.getStringExtra(INTENT_PRODUCT_KEY);
         /*ProductApplicationContext context = (ProductApplicationContext)getApplicationContext();
         mSelectedProduct = context.getProductDB().getProductByName(key);*/
 
@@ -327,7 +329,7 @@ public class ProductARActivity extends Activity {
 
         // Load the model from the given mSelected Product
 
-        final Bitmap bot = getBitmapFromAsset(this, "bed.jpg");
+        final Bitmap bot = getBitmapFromAsset(this, "bed.png");
         final Object3D productModel = new Object3D();
         productModel.loadModel(Uri.parse("file:///android_asset/bed.obj"), Object3D.Type.OBJ, new AsyncObject3DListener() {
             @Override

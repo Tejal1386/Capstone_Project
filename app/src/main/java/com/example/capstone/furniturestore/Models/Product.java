@@ -14,11 +14,11 @@ public class Product {
     private double ProductSalePrice;
     private String ProductQunt="1";
     private String ProductBrand;
-    private String ProductColor;
+    private String ProductColour;
     private String ProductDept;
     private String ProductStyle;
     private String ProductManufacturer;
-    private String ProductOffer;
+    private String ProductSale;
     private String ProductCatID;
     private String ProductSaleEndDate;
 
@@ -40,17 +40,17 @@ public class Product {
     private int ProductSaleLimit;
     private String number;
 
-    public Product(String productId, String productName,  String productPrice,String productQuantity, String productOffer,String productImage) {
+    public Product(String productId, String productName, String productPrice, String productQuantity, String productSale, String productImage) {
         ProductID = productId;
         ProductName = productName;
         ProductPricenew = productPrice;
         ProductQunt = productQuantity;
-        ProductOffer = productOffer;
+        ProductSale = productSale;
         ProductImage =productImage;
 
     }
 
-  public Product(String productID, String productName, String productImage, double productPrice, double productSalePrice, String productQunt, String productBrand, String productColor, String productDept, String productStyle, String productManufacturer, String productOffer, String productCatID,int productSaleLimit,String productSaleEndDate) {
+  public Product(String productID, String productName, String productImage, double productPrice, double productSalePrice, String productQunt, String productBrand, String productColour, String productDept, String productStyle, String productManufacturer, String productSale, String productCatID, int productSaleLimit, String productSaleEndDate) {
         ProductID = productID;
         ProductName = productName;
         ProductImage = productImage;
@@ -58,12 +58,12 @@ public class Product {
         ProductSalePrice = productSalePrice;
         ProductQunt = productQunt;
         ProductBrand = productBrand;
-        ProductColor = productColor;
+        ProductColour = productColour;
         ProductDept = productDept;
         ProductStyle = productStyle;
         ProductSaleLimit = productSaleLimit;
         ProductManufacturer = productManufacturer;
-        ProductOffer = productOffer;
+        ProductSale = productSale;
         ProductCatID = productCatID;
         ProductSaleEndDate = productSaleEndDate;
     }
@@ -151,12 +151,12 @@ public class Product {
         ProductBrand = productBrand;
     }
 
-    public String getProductColor() {
-        return ProductColor;
+    public String getProductColour() {
+        return ProductColour;
     }
 
-    public void setProductColor(String productColor) {
-        ProductColor = productColor;
+    public void setProductColour(String productColour) {
+        ProductColour = productColour;
     }
 
     public String getProductDept() {
@@ -184,12 +184,12 @@ public class Product {
         ProductManufacturer = productManufacturer;
     }
 
-    public String getProductOffer() {
-        return ProductOffer;
+    public String getProductSale() {
+        return ProductSale;
     }
 
-    public void setProductOffer(String productOffer) {
-        ProductOffer = productOffer;
+    public void setProductSale(String productSale) {
+        ProductSale = productSale;
     }
 
     public String getProductCatID() {

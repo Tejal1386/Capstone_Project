@@ -4,10 +4,13 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -15,6 +18,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.capstone.furniturestore.CurrentUser.CurrentUser;
 import com.example.capstone.furniturestore.Models.User;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -25,21 +29,21 @@ import com.google.firebase.database.ValueEventListener;
 
 public class LoginActivity extends AppCompatActivity {
 
+    //Database reference
     private DatabaseReference mDatabase;
-    private EditText editText_username, editText_password;
-    private Button btn_login;
-    private TextView txtlink_SignUp;
-    Intent intent;
+
+    //SharedPreferences
     SharedPreferences sharedPreferences;
     public static final String MyPREFERENCES = "User" ;
     public static final String Name = "UserNameKey";
     public static final String Userid = "UseridKey";
 
-
-
     Toolbar toolbar;
+    private EditText editText_username, editText_password;
+    private Button btn_login;
+    private TextView txtlink_SignUp;
+    Intent intent;
 
-    private Integer checkUser,checkPassword;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,7 +55,7 @@ public class LoginActivity extends AppCompatActivity {
         //toolBar settings
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-       // toolbar.setTitleTextColor(1);
+        toolbar.setTitleTextColor(Color.WHITE);
         getSupportActionBar().setTitle(" LogIn");
 
         // add back arrow to toolbar
@@ -63,15 +67,25 @@ public class LoginActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
                 onBackPressed(); // Implemented by activity
             }
         });
 
 
-
         editText_username = (EditText)  findViewById(R.id.editTxt_UserName);
+
+        editText_username.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    String username = editText_username.getText().toString();
+                    if(username.length() < 10){
+                        editText_username.setError("atleast 10 digit for Phone number!");
+                    }
+                }
+            }
+        });
+
         editText_password = (EditText) findViewById(R.id.editTxt_Password);
         btn_login = (Button) findViewById(R.id.btnLogin);
         txtlink_SignUp = (TextView) findViewById(R.id.txtlinkSignUp);
@@ -98,9 +112,7 @@ public class LoginActivity extends AppCompatActivity {
         final String userName = editText_username.getText().toString();
         final String passWord = editText_password.getText().toString();
 
-
-
-        mDatabase.orderByChild("userName").equalTo(userName).addValueEventListener(new ValueEventListener() {
+        mDatabase.orderByChild("userId").equalTo(userName).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
@@ -119,7 +131,8 @@ public class LoginActivity extends AppCompatActivity {
                                 editor.putString(Name, user.getUserName());
                                 editor.apply();
 
-                                intent = new Intent(LoginActivity.this, StoreActivity.class);
+                              Intent  intent = new Intent(LoginActivity.this, StoreActivity.class);
+                                CurrentUser.currentUser = user;
                                 startActivity(intent);
                             } else {
                                 ShowAlert("Wrong Password");
@@ -146,10 +159,6 @@ public class LoginActivity extends AppCompatActivity {
     public void ShowAlert(String msg){
         final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
                 LoginActivity.this);
-
-
-        // set title
-      //  alertDialogBuilder.setTitle("Wrong Username or Password");
 
         // set dialog message
         alertDialogBuilder

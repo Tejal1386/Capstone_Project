@@ -10,7 +10,6 @@ import android.widget.TextView;
 
 public class SplashActivity extends AppCompatActivity {
 
-    TextView txtSplash;
     ImageView imgSplash;
 
     @Override
@@ -18,12 +17,10 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
-        txtSplash = (TextView) findViewById(R.id.txtSplash);
         imgSplash = (ImageView) findViewById(R.id.imgSplash) ;
 
         Animation myanim = AnimationUtils.loadAnimation(this, R.anim.mytransition);
         imgSplash.startAnimation(myanim);
-        txtSplash.startAnimation(myanim);
 
         Thread thread = new Thread(){
             public void run()

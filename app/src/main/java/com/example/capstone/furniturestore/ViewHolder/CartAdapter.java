@@ -52,19 +52,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartViewHolder>{
                 .centerCrop()
                 .into(holder.cart_image);
 
-      /*  TextDrawable drawable = TextDrawable.builder()
-                .buildRound(""+ listData.get(position).getProductQunt(), Color.RED);
-        holder.img_cart_count.setImageDrawable(drawable);*/
-    /*    holder.delete_item.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Product order = listData.get(position);
-                new Database(cart).DeleteRecord(order);
-                listData.remove(position);
-                notifyItemRemoved(position);
-                checkList(listData);
-            }
-        });*/
+
 holder.btn_quantity.setNumber(listData.get(position).getProductQunt());
       holder.btn_quantity.setOnValueChangeListener(new ElegantNumberButton.OnValueChangeListener() {
           @Override
@@ -73,30 +61,19 @@ holder.btn_quantity.setNumber(listData.get(position).getProductQunt());
               order.setProductQunt(String.valueOf(newValue));
               new Database(cart).updateCart(order);
 
-
-
-                        float total = 0;
+              float total = 0;
                       //Do something after 100ms
                       List<Product> orders = new Database(cart).getCarts();
                       for(Product item :listData)
                           total +=(Float.parseFloat(item.getProductPricenew()))*(Integer.parseInt(item.getProductQunt()));
                       cart.txtTotalPrice.setText("$"+total+"");
-
-
-
-
-
           }
 
       });
         holder.txt_price.setText(listData.get(position).getProductPricenew());
 
-      //  Locale locale = new Locale("en","US");
-      //  NumberFormat fmt = NumberFormat.getCurrencyInstance(locale);
-      //  int price = (Integer.parseInt(String.valueOf(listData.get(position).getProductPrice()))) * (Integer.parseInt(listData.get(position).getProductQunt())) ;
-       // holder.txt_price.setText(fmt.format(price));
-        holder.txt_cart_name.setText(listData.get(position).getProductName());
 
+        holder.txt_cart_name.setText(listData.get(position).getProductName());
 
     }
 

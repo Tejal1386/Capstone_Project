@@ -109,12 +109,13 @@ public class EditFavouriteActivity extends AppCompatActivity {
 
 
     public  void load_Favourite(){
-
-        favouriteDatabase.addValueEventListener(new ValueEventListener() {
+          favouriteDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Integer i = 0;
                 favouriteList.clear();
+                productList.clear();
+
                 for(DataSnapshot favouriteSnapshot : dataSnapshot.getChildren())
                 {
                     Favourite fav_product = favouriteSnapshot.getValue(Favourite.class);
@@ -126,7 +127,7 @@ public class EditFavouriteActivity extends AppCompatActivity {
                     productDatabase.orderByChild("ProductID").equalTo(id).addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
-                            productList.clear();
+                          //  productList.clear();
                             for(DataSnapshot productSnapshot : dataSnapshot.getChildren()) {
                                 Product product = productSnapshot.getValue(Product.class);
                                 productList.add(product);

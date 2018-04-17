@@ -9,17 +9,9 @@
 
     <com.miguelcatalan.materialsearchview.MaterialSearchView
         android:id="@+id/search_view"
+        android:background="@color/colorPrimaryDark"
+        android:searchSuggestAuthority="com.example.MySuggestionProvider"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_width="match_parent"
-        style="@style/MaterialSearchViewStyle"
-        />
-    <!--<com.mancj.materialsearchbar.MaterialSearchBar
-        style="@style/MaterialSearchViewStyle"
-        android:id="@+id/searchBar"
-        app:mt_navIconEnabled="true"
-        app:mt_placeholder="Google Play"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="8dp"
-        />-->
+        android:visibility="gone"/>
 </android.support.v7.widget.Toolbar>

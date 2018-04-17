@@ -11,10 +11,8 @@ import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
-    Toolbar toolbar;
     private Button butnLogin, btnSignup;
-    private TextView txtlinkGuest;
-
+    private TextView txtlinkGuest,txtslogun;
     Intent intent;
 
     @Override
@@ -22,16 +20,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //toolBar settings
-     /*   toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle(" supreme Furniture");*/
-
 
         butnLogin = (Button) findViewById(R.id.btnLogin);
         btnSignup = (Button) findViewById(R.id.btnSignUp);
         txtlinkGuest = (TextView) findViewById(R.id.txtlinkGuest);
 
+        txtslogun = (TextView)  findViewById(R.id.txtSlogan);
+        txtslogun.setText("Furnish your home on your fingure tip");
 
         butnLogin.setOnClickListener(new View.OnClickListener() {
             @Override

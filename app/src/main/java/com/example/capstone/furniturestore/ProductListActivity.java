@@ -176,7 +176,6 @@ public class ProductListActivity extends AppCompatActivity {
                 txtCategoryName = (TextView) findViewById(R.id.txt_categoryName);
                 txtCategoryName.setText(CategoryName);
 
-
                 //Recycler View
                 product_RecyclerView = (RecyclerView) findViewById(R.id.recycle_product);
                 product_RecyclerView.setHasFixedSize(true);
@@ -191,7 +190,6 @@ public class ProductListActivity extends AppCompatActivity {
                 filterItem = (HashMap<String, String>) i.getSerializableExtra("selectedItem");
                 CategoryID = i.getExtras().getString("CategoryID");
                 load_Products_ByFilter();
-
             }
 
         }
@@ -248,7 +246,6 @@ public class ProductListActivity extends AppCompatActivity {
 
     }
 
-
     public void load_Products_ByFilter(){
 
 
@@ -288,9 +285,7 @@ public class ProductListActivity extends AppCompatActivity {
                             if(counter > 0){
                                 productList.add(product);
                             }
-
-
-                    }
+                }
                 filter_adapter = new FavouriteAdapter(productList, ProductListActivity.this);
                 product_RecyclerView = (RecyclerView) findViewById(R.id.recycle_product);
                 product_RecyclerView.setHasFixedSize(true);
@@ -310,68 +305,6 @@ public class ProductListActivity extends AppCompatActivity {
             }
         });
 
-     /*  FirebaseRecyclerAdapter<Product,ProductViewHolder> adapter = new FirebaseRecyclerAdapter<Product, ProductViewHolder>(Product.class,R.layout.product_layout,ProductViewHolder.class,productDatabase.orderByChild("ProductCategoryID").equalTo(CategoryID)) {
-            @Override
-            protected void populateViewHolder(ProductViewHolder viewHolder, final Product model, int position) {
-
-                Iterator myIterator = filterItem.keySet().iterator();
-                final Boolean filterFlag = false;
-
-
-                while(myIterator.hasNext()) {
-                    String key=(String)myIterator.next();
-                    String value=(String)filterItem.get(key);
-
-
-                    if( (key == "Color" && model.getProductColor() == value) ||
-                            (key == "Availability" && Integer.parseInt(model.getProductQunt()) > 0) ||
-                            (key == "Special Offer" && model.getProductSale() == value)){
-
-
-
-
-                    }
-
-
-                }
-
-
-                Picasso.with(getBaseContext()).load(model.getProductImage()).into(viewHolder.product_Image);
-                viewHolder.product_Name.setText(model.getProductName());
-                viewHolder.product_Manufacturer.setText(model.getProductManufacturer());
-                viewHolder.product_Sale_Price.setText("$"+String.valueOf( model.getProductSalePrice()));
-                viewHolder.product_Price.setText("$"+String.valueOf(model.getProductPrice()));
-                viewHolder.product_Price.setPaintFlags(viewHolder.product_Price.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-
-                if( model.getProductSaleLimit() > 0) {
-                    viewHolder.product_saleLimit.setVisibility(View.VISIBLE);
-                    viewHolder.product_saleLimit.setText(" " + model.getProductSaleLimit() + " off");
-                }
-
-                Double price = model.getProductSalePrice();
-                if (price>=75.0){
-                    viewHolder.product_Shipping.setText("Free Shipping");
-                }
-                else {
-                    viewHolder.product_Shipping.setText(" ");
-                }
-
-                viewHolder.setClickListener(new ProductViewHolder.ItemClickListener() {
-                    @Override
-                    public void onClickItem(int pos) {
-                        Intent intent = new Intent(ProductListActivity.this, ProductDetailActivity.class);
-                        intent.putExtra("ProductID", model.getProductID());
-                        startActivity(intent);
-                    }
-                });
-
-
-
-
-
-            }
-        };
-        product_RecyclerView.setAdapter(adapter);*/
     }
 
     public class MySuggestionProvider extends SearchRecentSuggestionsProvider {
@@ -517,34 +450,3 @@ public class ProductListActivity extends AppCompatActivity {
 
 
 }
-
-
-/*
-*   Picasso.with(getBaseContext()).load(model.getProductImage()).into(viewHolder.product_Image);
-                viewHolder.product_Name.setText(model.getProductName());
-                viewHolder.product_Manufacturer.setText(model.getProductManufacturer());
-                viewHolder.product_Sale_Price.setText("$"+String.valueOf( model.getProductSalePrice()));
-                viewHolder.product_Price.setText("$"+String.valueOf(model.getProductPrice()));
-                viewHolder.product_Price.setPaintFlags(viewHolder.product_Price.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-
-                if( model.getProductSaleLimit() > 0) {
-                    viewHolder.product_saleLimit.setVisibility(View.VISIBLE);
-                    viewHolder.product_saleLimit.setText(" " + model.getProductSaleLimit() + " off");
-                }
-
-                Double price = model.getProductSalePrice();
-                if (price>=75.0){
-                    viewHolder.product_Shipping.setText("Free Shipping");
-                }
-                else {
-                    viewHolder.product_Shipping.setText(" ");
-                }
-
-                viewHolder.setClickListener(new ProductViewHolder.ItemClickListener() {
-                    @Override
-                    public void onClickItem(int pos) {
-                        Intent intent = new Intent(ProductListActivity.this, ProductDetailActivity.class);
-                        intent.putExtra("ProductID", model.getProductID());
-                        startActivity(intent);
-                    }
-                });*/

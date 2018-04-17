@@ -261,8 +261,8 @@
             android:layout_gravity="bottom"
             android:id="@+id/bottom_navigation"
             app:itemBackground="@color/white"
-            app:itemIconTint="@color/appTheme"
-            app:itemTextColor="@color/appTheme"
+            app:itemIconTint="@drawable/selector"
+            app:itemTextColor="@drawable/selector"
             app:menu="@menu/bottom_navigation_menu"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>

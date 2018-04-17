@@ -100,16 +100,18 @@ public class CategoryActivity extends AppCompatActivity {
 
         //Bottom navigation
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
-
-        CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) bottomNavigationView.getLayoutParams();
-        layoutParams.setBehavior(new BottomNavigationViewHolder());
+        BottomNavigationViewHolder.disableShiftMode(bottomNavigationView);
 
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()){
+                    case R.id.action_home:
+                        Intent intent = new Intent(CategoryActivity.this, StoreActivity.class);
+                        startActivity(intent);
+                        break;
                     case R.id.action_myFavoutite:
-                        Intent intent = new Intent(CategoryActivity.this, FavouriteActivity.class);
+                        intent = new Intent(CategoryActivity.this, FavouriteActivity.class);
                         startActivity(intent);
                          break;
                     case R.id.action_myAccount:

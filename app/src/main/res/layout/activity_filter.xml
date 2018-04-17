@@ -4,44 +4,69 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="horizontal"
+    android:orientation="vertical"
     tools:context="com.example.capstone.furniturestore.FilterActivity">
 
-    <FrameLayout
-        android:id="@+id/toolbar_container"
+  <include layout="@layout/toolbar" ></include>
+
+
+
+    <RelativeLayout
+        android:layout_margin="10dp"
+        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/searchtoolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="@color/colorPrimaryDark" />
-
-        <com.miguelcatalan.materialsearchview.MaterialSearchView
-            android:id="@+id/search_view"
-            android:searchSuggestAuthority="com.example.MySuggestionProvider"
-            android:layout_width="match_parent"
+        <Button
+            android:id="@+id/btn_clear"
+            style="@style/Button_Style"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="gone"/>
-    </FrameLayout>
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_gravity="left"
+            android:text="Clear" />
 
-    <LinearLayout
-        android:orientation="vertical"
-        android:visibility="gone"
-        android:id="@+id/search_listlayout"
+        <Button
+            android:id="@+id/btn_apply"
+            style="@style/Button_Style"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentTop="true"
+            android:layout_gravity="right"
+            android:text="Apply" />
+    </RelativeLayout>
+
+
+    <android.support.v4.widget.NestedScrollView
+        android:fillViewport="true"
+        android:layout_margin="10dp"
+
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
-        <ListView
-            android:id="@+id/list_Search"
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_marginBottom="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-        </ListView>
 
-    </LinearLayout>
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recycler_Filter"
+                android:layout_width="match_parent"
 
+                android:layout_height="match_parent"
+                android:clickable="true"
+                android:clipToPadding="false"
+                android:horizontalSpacing="30dp"
+                android:verticalSpacing="30dp">
+
+            </android.support.v7.widget.RecyclerView>
+
+        </LinearLayout>
+
+    </android.support.v4.widget.NestedScrollView>
 
 
 </LinearLayout>

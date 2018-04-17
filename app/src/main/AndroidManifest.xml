@@ -35,7 +35,6 @@
         <activity android:name=".StoreActivity" />
         <activity android:name=".UserAccountActivity" />
         <activity android:name=".ProductListActivity" />
-        <activity android:name=".SearchItemActivity" />
         <activity android:name=".AddAddressActivity" />
 
         <activity android:name=".CategoryActivity" />
@@ -46,7 +45,6 @@
         <activity android:name=".FavouriteActivity" />
         <activity android:name=".ProductInSaleActivity" />
         <activity android:name=".ProductInformationActivity" />
-        <activity android:name=".SearchListActivity" />
         <activity android:name=".Cart" />
         <activity android:name=".EditFavouriteActivity" />
         <activity android:name=".FilterActivity" />

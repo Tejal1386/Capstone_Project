@@ -12,7 +12,7 @@ import android.widget.TextView;
 public class MainActivity extends AppCompatActivity {
 
     private Button butnLogin, btnSignup;
-    private TextView txtlinkGuest;
+    private TextView txtlinkGuest,txtslogun;
     Intent intent;
 
     @Override
@@ -25,6 +25,8 @@ public class MainActivity extends AppCompatActivity {
         btnSignup = (Button) findViewById(R.id.btnSignUp);
         txtlinkGuest = (TextView) findViewById(R.id.txtlinkGuest);
 
+        txtslogun = (TextView)  findViewById(R.id.txtSlogan);
+        txtslogun.setText("Furnish your home on your fingure tip");
 
         butnLogin.setOnClickListener(new View.OnClickListener() {
             @Override

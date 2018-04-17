@@ -4,7 +4,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
-import android.util.Log;
 
 import com.example.capstone.furniturestore.Models.Product;
 import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
@@ -59,7 +58,7 @@ public class Database extends SQLiteAssetHelper{
                 order.getProductName(),
                 order.getProductPrice(),
                 order.getProductQunt(),
-                order.getProductOffer(),
+                order.getProductSale(),
         order.getProductImage());
         db.execSQL(query);
 

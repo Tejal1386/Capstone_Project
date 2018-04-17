@@ -3,19 +3,20 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
 
-  <!--  <item
+    <item
         android:id="@+id/action_home"
         android:enabled="true"
         android:title="Home"
-        app:showAsAction="always"
+
+        app:showAsAction="always|withText"
         android:icon="@drawable/ic_action_home">
-    </item>-->
+    </item>
 
     <item
         android:id="@+id/action_myAccount"
         android:enabled="true"
         android:title="Account"
-        app:showAsAction="always"
+        app:showAsAction="always|withText"
         android:icon="@drawable/account">
     </item>
 
@@ -24,7 +25,7 @@
         android:id="@+id/action_myFavoutite"
         android:enabled="true"
         android:title="Favourite"
-        app:showAsAction="always"
+        app:showAsAction="always|withText"
         android:icon="@drawable/ic_action_favourite">
     </item>
 
@@ -34,7 +35,7 @@
         android:id="@+id/action_sale"
         android:enabled="true"
         android:title="Sales"
-        app:showAsAction="always"
+        app:showAsAction="always|withText"
         android:icon="@drawable/sales">
     </item>
 </menu>

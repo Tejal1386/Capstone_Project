@@ -10,8 +10,6 @@ import android.speech.RecognizerIntent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -19,24 +17,24 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.andremion.counterfab.CounterFab;
+import com.example.capstone.furniturestore.Adapter.FavouriteAdapter;
+import com.example.capstone.furniturestore.Adapter.ProductFilterAdapter;
 import com.example.capstone.furniturestore.Adapter.SearchListAdapter;
 import com.example.capstone.furniturestore.Database.Database;
 import com.example.capstone.furniturestore.Models.Category;
+import com.example.capstone.furniturestore.Models.Favourite;
 import com.example.capstone.furniturestore.Models.Product;
 import com.example.capstone.furniturestore.ViewHolder.BottomNavigationViewHolder;
-import com.example.capstone.furniturestore.ViewHolder.CategoryViewHolder;
 import com.example.capstone.furniturestore.ViewHolder.ProductViewHolder;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.database.DataSnapshot;
@@ -48,7 +46,8 @@ import com.miguelcatalan.materialsearchview.MaterialSearchView;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
-import java.util.Timer;
+import java.util.HashMap;
+import java.util.Iterator;
 
 public class ProductListActivity extends AppCompatActivity {
 
@@ -69,7 +68,10 @@ public class ProductListActivity extends AppCompatActivity {
     private CounterFab fb_ShoppingBasket;
     private TextView txtCategoryName;
     private Button btnFilter;
-    private String CategoryName = "",CategoryID ="";
+    private String CategoryName = null,CategoryID = null;
+    HashMap<String, String> filterItem = new HashMap<>();
+    ArrayList<Product> productList = new ArrayList<Product>();
+    FavouriteAdapter filter_adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,14 +101,7 @@ public class ProductListActivity extends AppCompatActivity {
         });
 
 
-        btnFilter = (Button) findViewById(R.id.btn_Filter);
-        btnFilter.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(ProductListActivity.this, FilterActivity.class);
-                startActivity(intent);
-            }
-        });
+
 
         fb_ShoppingBasket = (CounterFab) findViewById(R.id.fb_ShoppingBasket);
 
@@ -123,9 +118,7 @@ public class ProductListActivity extends AppCompatActivity {
 
         //Bottom navigation
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
-
-        CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) bottomNavigationView.getLayoutParams();
-        layoutParams.setBehavior(new BottomNavigationViewHolder());
+        BottomNavigationViewHolder.disableShiftMode(bottomNavigationView);
 
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -133,6 +126,10 @@ public class ProductListActivity extends AppCompatActivity {
                 switch (item.getItemId()){
                     case R.id.action_myFavoutite:
                         Intent intent = new Intent(ProductListActivity.this, FavouriteActivity.class);
+                        startActivity(intent);
+                        break;
+                    case R.id.action_home:
+                        intent = new Intent(ProductListActivity.this, StoreActivity.class);
                         startActivity(intent);
                         break;
                     case R.id.action_myAccount:
@@ -148,49 +145,6 @@ public class ProductListActivity extends AppCompatActivity {
             }
         });
 
-
-        //Recycler View
-
-        product_RecyclerView = (RecyclerView) findViewById(R.id.recycle_product);
-        product_RecyclerView.setHasFixedSize(true);
-        product_RecyclerView.setNestedScrollingEnabled(false);
-        layoutManager = new LinearLayoutManager(getBaseContext());
-        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-
-        product_RecyclerView.setLayoutManager(new GridLayoutManager(this, 2));
-
-
-        productDatabase.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                Integer i = 0;
-                for(DataSnapshot productSnapshot : dataSnapshot.getChildren())
-                {
-                    Product products = productSnapshot.getValue(Product.class);
-                    String x =  products.getProductName();
-
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-
-
-        // Get Intent here
-        if(getIntent() != null){
-            Intent i = getIntent();
-            CategoryName   = i.getExtras().getString("CategoryName");
-            CategoryID = i.getExtras().getString("CategoryID");
-            txtCategoryName = (TextView) findViewById(R.id.txt_categoryName);
-            txtCategoryName.setText(CategoryName);
-
-        }
-        if(!CategoryID.isEmpty() && CategoryID != null){
-            load_Products();
-        }
 
         categoryDatabase.addValueEventListener(new ValueEventListener() {
             @Override
@@ -209,7 +163,48 @@ public class ProductListActivity extends AppCompatActivity {
             }
         });
 
-       load_SearchItems();
+        load_SearchItems();
+
+
+        // Get Intent here
+        if(getIntent() != null){
+            Intent i = getIntent();
+
+            if(getIntent().hasExtra("CategoryName") && getIntent().hasExtra("CategoryID")) {
+                CategoryName   = i.getExtras().getString("CategoryName");
+                CategoryID = i.getExtras().getString("CategoryID");
+                txtCategoryName = (TextView) findViewById(R.id.txt_categoryName);
+                txtCategoryName.setText(CategoryName);
+
+
+                //Recycler View
+                product_RecyclerView = (RecyclerView) findViewById(R.id.recycle_product);
+                product_RecyclerView.setHasFixedSize(true);
+                product_RecyclerView.setNestedScrollingEnabled(false);
+                layoutManager = new LinearLayoutManager(getBaseContext());
+                layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+                product_RecyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+                load_Products();
+            }
+
+            if(getIntent().hasExtra("selectedItem") && getIntent().hasExtra("CategoryID")){
+                filterItem = (HashMap<String, String>) i.getSerializableExtra("selectedItem");
+                CategoryID = i.getExtras().getString("CategoryID");
+                load_Products_ByFilter();
+
+            }
+
+        }
+
+        btnFilter = (Button) findViewById(R.id.btn_Filter);
+        btnFilter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ProductListActivity.this, FilterActivity.class);
+                intent.putExtra("CategoryID", CategoryID);
+                startActivity(intent);
+            }
+        });
 
 
     }
@@ -251,6 +246,132 @@ public class ProductListActivity extends AppCompatActivity {
         };
        product_RecyclerView.setAdapter(adapter);
 
+    }
+
+
+    public void load_Products_ByFilter(){
+
+
+        productDatabase.orderByChild("ProductCategoryID").equalTo(CategoryID).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                //favouriteList.clear();
+                productList.clear();
+                for (DataSnapshot prodSnapshot : dataSnapshot.getChildren()) {
+                    Product product = prodSnapshot.getValue(Product.class);
+
+                    String pid = product.getProductID();
+                    String color = product.getProductColour();
+                    int qunt = Integer.parseInt(product.getProductQunt());
+                    String offer = product.getProductSale();
+                    Iterator myIterator = filterItem.keySet().iterator();
+                    final Boolean filterFlag = false;
+
+                    int counter = 0;
+                    while(myIterator.hasNext()) {
+                        String key=(String)myIterator.next();
+                        String value=(String)filterItem.get(key);
+
+
+                            if(key.equals("Color") && color.equals(value)){
+                                counter++;
+                            }
+                            if (key.equals("Availability") &&  qunt > 0) {
+                                counter ++;
+                            }
+                            if (key.equals("Special Offer") &&  offer.equals(value)){
+                                counter++;
+                            }
+                    }
+
+                            if(counter > 0){
+                                productList.add(product);
+                            }
+
+
+                    }
+                filter_adapter = new FavouriteAdapter(productList, ProductListActivity.this);
+                product_RecyclerView = (RecyclerView) findViewById(R.id.recycle_product);
+                product_RecyclerView.setHasFixedSize(true);
+                product_RecyclerView.setNestedScrollingEnabled(false);
+                product_RecyclerView.setLayoutManager(new GridLayoutManager(ProductListActivity.this, 2));
+                product_RecyclerView.setAdapter(filter_adapter);
+
+
+
+
+            }
+
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+     /*  FirebaseRecyclerAdapter<Product,ProductViewHolder> adapter = new FirebaseRecyclerAdapter<Product, ProductViewHolder>(Product.class,R.layout.product_layout,ProductViewHolder.class,productDatabase.orderByChild("ProductCategoryID").equalTo(CategoryID)) {
+            @Override
+            protected void populateViewHolder(ProductViewHolder viewHolder, final Product model, int position) {
+
+                Iterator myIterator = filterItem.keySet().iterator();
+                final Boolean filterFlag = false;
+
+
+                while(myIterator.hasNext()) {
+                    String key=(String)myIterator.next();
+                    String value=(String)filterItem.get(key);
+
+
+                    if( (key == "Color" && model.getProductColor() == value) ||
+                            (key == "Availability" && Integer.parseInt(model.getProductQunt()) > 0) ||
+                            (key == "Special Offer" && model.getProductSale() == value)){
+
+
+
+
+                    }
+
+
+                }
+
+
+                Picasso.with(getBaseContext()).load(model.getProductImage()).into(viewHolder.product_Image);
+                viewHolder.product_Name.setText(model.getProductName());
+                viewHolder.product_Manufacturer.setText(model.getProductManufacturer());
+                viewHolder.product_Sale_Price.setText("$"+String.valueOf( model.getProductSalePrice()));
+                viewHolder.product_Price.setText("$"+String.valueOf(model.getProductPrice()));
+                viewHolder.product_Price.setPaintFlags(viewHolder.product_Price.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+
+                if( model.getProductSaleLimit() > 0) {
+                    viewHolder.product_saleLimit.setVisibility(View.VISIBLE);
+                    viewHolder.product_saleLimit.setText(" " + model.getProductSaleLimit() + " off");
+                }
+
+                Double price = model.getProductSalePrice();
+                if (price>=75.0){
+                    viewHolder.product_Shipping.setText("Free Shipping");
+                }
+                else {
+                    viewHolder.product_Shipping.setText(" ");
+                }
+
+                viewHolder.setClickListener(new ProductViewHolder.ItemClickListener() {
+                    @Override
+                    public void onClickItem(int pos) {
+                        Intent intent = new Intent(ProductListActivity.this, ProductDetailActivity.class);
+                        intent.putExtra("ProductID", model.getProductID());
+                        startActivity(intent);
+                    }
+                });
+
+
+
+
+
+            }
+        };
+        product_RecyclerView.setAdapter(adapter);*/
     }
 
     public class MySuggestionProvider extends SearchRecentSuggestionsProvider {
@@ -365,7 +486,6 @@ public class ProductListActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-
     @Override
     public void onBackPressed() {
         if (materialSearchView.isSearchOpen()) {
@@ -375,7 +495,6 @@ public class ProductListActivity extends AppCompatActivity {
             super.onBackPressed();
         }
     }
-
 
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.search_item_menu, menu);
@@ -398,3 +517,34 @@ public class ProductListActivity extends AppCompatActivity {
 
 
 }
+
+
+/*
+*   Picasso.with(getBaseContext()).load(model.getProductImage()).into(viewHolder.product_Image);
+                viewHolder.product_Name.setText(model.getProductName());
+                viewHolder.product_Manufacturer.setText(model.getProductManufacturer());
+                viewHolder.product_Sale_Price.setText("$"+String.valueOf( model.getProductSalePrice()));
+                viewHolder.product_Price.setText("$"+String.valueOf(model.getProductPrice()));
+                viewHolder.product_Price.setPaintFlags(viewHolder.product_Price.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+
+                if( model.getProductSaleLimit() > 0) {
+                    viewHolder.product_saleLimit.setVisibility(View.VISIBLE);
+                    viewHolder.product_saleLimit.setText(" " + model.getProductSaleLimit() + " off");
+                }
+
+                Double price = model.getProductSalePrice();
+                if (price>=75.0){
+                    viewHolder.product_Shipping.setText("Free Shipping");
+                }
+                else {
+                    viewHolder.product_Shipping.setText(" ");
+                }
+
+                viewHolder.setClickListener(new ProductViewHolder.ItemClickListener() {
+                    @Override
+                    public void onClickItem(int pos) {
+                        Intent intent = new Intent(ProductListActivity.this, ProductDetailActivity.class);
+                        intent.putExtra("ProductID", model.getProductID());
+                        startActivity(intent);
+                    }
+                });*/

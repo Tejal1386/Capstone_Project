@@ -1,6 +1,5 @@
 package com.example.capstone.furniturestore;
 
-import android.app.Dialog;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -13,12 +12,9 @@ import android.speech.RecognizerIntent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
@@ -37,7 +33,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.andremion.counterfab.CounterFab;
-import com.cepheuen.elegantnumberbutton.view.ElegantNumberButton;
 import com.example.capstone.furniturestore.Adapter.SearchListAdapter;
 import com.example.capstone.furniturestore.Database.Database;
 import com.example.capstone.furniturestore.Models.Category;
@@ -174,7 +169,7 @@ public class ProductDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(ProductDetailActivity.this, ProductARActivity.class);
-                intent.putExtra(INTENT_PRODUCT_KEY, "Furniture");
+                intent.putExtra(INTENT_PRODUCT_KEY, txtProductName.getText());
                 startActivity(intent);
             }
         });
@@ -193,9 +188,7 @@ public class ProductDetailActivity extends AppCompatActivity {
 
         //Bottom navigation
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
-
-        CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) bottomNavigationView.getLayoutParams();
-        layoutParams.setBehavior(new BottomNavigationViewHolder());
+        BottomNavigationViewHolder.disableShiftMode(bottomNavigationView);
 
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -203,6 +196,10 @@ public class ProductDetailActivity extends AppCompatActivity {
                 switch (item.getItemId()){
                     case R.id.action_myFavoutite:
                         Intent intent = new Intent(ProductDetailActivity.this, FavouriteActivity.class);
+                        startActivity(intent);
+                        break;
+                    case R.id.action_home:
+                         intent = new Intent(ProductDetailActivity.this, StoreActivity.class);
                         startActivity(intent);
                         break;
                     case R.id.action_myAccount:

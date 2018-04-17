@@ -1,6 +1,9 @@
 package com.example.capstone.furniturestore;
 import android.content.Context;
 import android.content.Intent;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.CoordinatorLayout;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -28,6 +31,7 @@ import android.widget.Toast;
 import com.andremion.counterfab.CounterFab;
 import com.example.capstone.furniturestore.Database.Database;
 import com.example.capstone.furniturestore.Models.Category;
+import com.example.capstone.furniturestore.ViewHolder.BottomNavigationViewHolder;
 import com.example.capstone.furniturestore.ViewHolder.BottomNavigationViewHolder;
 import com.example.capstone.furniturestore.ViewHolder.BottomNavigationViewHolder;
 import com.example.capstone.furniturestore.ViewHolder.CategoryViewHolder;
@@ -100,6 +104,18 @@ public class CategoryActivity extends AppCompatActivity {
                 }
             });
             fb_ShoppingBasket.setCount(new Database(this).getCountCart());
+
+
+
+        fb_ShoppingBasket.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(CategoryActivity.this, Cart.class);
+                startActivity(intent);
+
+            }
+        });
+        fb_ShoppingBasket.setCount(new Database(this).getCountCart());
 
 
 

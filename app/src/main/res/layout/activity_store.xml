@@ -8,6 +8,7 @@
     tools:context="com.example.capstone.furniturestore.StoreActivity">
 
    <include layout="@layout/searchtoolbar"></include>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -31,7 +32,6 @@
 
 
     </LinearLayout>
-
     <LinearLayout
         android:visibility="gone"
         android:id="@+id/search_listlayout"
@@ -226,7 +226,6 @@
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-
 
         </FrameLayout>
 

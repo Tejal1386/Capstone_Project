@@ -69,10 +69,9 @@ public class StoreActivity extends AppCompatActivity {
     TextView textView;
     public RecyclerView department_RecyclerView, ProductInSale_RecyclerView;
     LinearLayoutManager layoutManager;
-
+    CounterFab fb_ShoppingBasket;
     LinearLayout searchList;
     Intent intent;
-    CounterFab fb_ShoppingBasket;
 
 
     @Override
@@ -115,8 +114,9 @@ public class StoreActivity extends AppCompatActivity {
         });
 
 
-        fb_ShoppingBasket = (CounterFab) findViewById(R.id.fb_ShoppingBasket);
 
+        //floating button
+        fb_ShoppingBasket = (CounterFab) findViewById(R.id.fb_ShoppingBasket);
 
         fb_ShoppingBasket.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -127,6 +127,8 @@ public class StoreActivity extends AppCompatActivity {
             }
         });
         fb_ShoppingBasket.setCount(new Database(this).getCountCart());
+
+
 
         //Tagline taxBox
         textView = (TextView) findViewById(R.id.textviewmarquee);

@@ -96,6 +96,18 @@ public class ProductListActivity extends AppCompatActivity {
             }
         });
 
+
+
+
+        btnFilter = (Button) findViewById(R.id.btn_Filter);
+        btnFilter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ProductListActivity.this, FilterActivity.class);
+                startActivity(intent);
+            }
+        });
+
         fb_ShoppingBasket = (CounterFab) findViewById(R.id.fb_ShoppingBasket);
 
         fb_ShoppingBasket.setOnClickListener(new View.OnClickListener() {

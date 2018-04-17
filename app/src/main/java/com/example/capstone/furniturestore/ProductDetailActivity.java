@@ -122,7 +122,34 @@ public class ProductDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
             //    current_product.setProductQunt(numberButton.getNumber());
+                if(UserID.equals(null) || UserID ==  ""){
+                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                            ProductDetailActivity.this);
 
+                    // set title
+                    alertDialogBuilder.setTitle("LogIn First");
+
+                    // set dialog message
+                    alertDialogBuilder
+                            .setMessage("LogIn First to see your Account!")
+                            .setCancelable(false)
+
+                            .setPositiveButton("LogIn", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int id) {
+                                    Intent i = new Intent(ProductDetailActivity.this,LoginActivity.class);
+                                    startActivity(i);
+                                }
+                            });
+
+                    // create alert dialog
+                    AlertDialog alertDialog = alertDialogBuilder.create();
+
+                    // show it
+                    alertDialog.show();
+                }
+                else
+                {
                 List<Product> tem=new ArrayList<>();
                 tem.addAll(new Database(getApplicationContext()).getCarts());
                 boolean isAlready=false;
@@ -134,16 +161,19 @@ public class ProductDetailActivity extends AppCompatActivity {
                 }
                 Log.e("==value", String.valueOf(current_product.getProductPrice()));
                 if(isAlready){
-                    Toast.makeText(ProductDetailActivity.this,"product is already in cart",Toast.LENGTH_SHORT).show();
+                    View view = findViewById(android.R.id.content);
+                    Snackbar.make(view, "Product is already in the cart..", Snackbar.LENGTH_LONG).show();
+                    //Toast.makeText(ProductDetailActivity.this,"product is already in cart",Toast.LENGTH_SHORT).show();
                 }
-                else
-                {
-                new Database(ProductDetailActivity.this).addToCart((current_product));
-                current_product.setProductImage(current_product.getProductImage());
-                current_product.setProductPrice(current_product.getProductPrice());
+                else {
+                    new Database(ProductDetailActivity.this).addToCart((current_product));
+                    current_product.setProductImage(current_product.getProductImage());
+                    current_product.setProductPrice(current_product.getProductPrice());
 
-                Toast.makeText(ProductDetailActivity.this,"Added",Toast.LENGTH_SHORT).show();
-            }}
+                   // Toast.makeText(ProductDetailActivity.this, "Added", Toast.LENGTH_SHORT).show();
+                    View view = findViewById(android.R.id.content);
+                    Snackbar.make(view, "Added", Snackbar.LENGTH_LONG).show();
+                }  }}
         });
 
 

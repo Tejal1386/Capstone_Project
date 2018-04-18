@@ -22,7 +22,7 @@ public class SignUpActivity extends AppCompatActivity {
 
     //Database reference
     private DatabaseReference mDatabase;
-    private EditText editText_userID, editText_password,editText_userFullname;
+    private EditText editText_userID, editText_password,editText_Confirmpassword , editText_userFullname;
     private Button btn_register;
     private Intent intent;
     private Boolean ExistUser =  false;
@@ -70,6 +70,8 @@ public class SignUpActivity extends AppCompatActivity {
 
 
         editText_password = (EditText) findViewById(R.id.editTxt_Password);
+        editText_Confirmpassword = (EditText) findViewById(R.id.editTxt_ConfirmPassword);
+
         btn_register = (Button) findViewById(R.id.btnRegister);
 
         btn_register.setOnClickListener(new View.OnClickListener() {
@@ -89,8 +91,16 @@ public class SignUpActivity extends AppCompatActivity {
 
                         }
                         else {
-                            //Add user in database
-                            addUser();
+
+                            if(editText_password.getText().toString().equals(editText_Confirmpassword.getText().toString())){
+                                //Add user in database
+                                addUser();
+                            }
+                            else {
+                                Toast.makeText(SignUpActivity.this," Password dosen't match",Toast.LENGTH_LONG).show();;
+
+                            }
+
                         }
                     }
                     @Override

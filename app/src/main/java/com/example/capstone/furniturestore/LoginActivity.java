@@ -93,8 +93,10 @@ public class LoginActivity extends AppCompatActivity {
         txtlink_SignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                intent = new Intent(LoginActivity.this,SignUpActivity.class);
-                startActivity(intent);
+
+                    intent = new Intent(LoginActivity.this, SignUpActivity.class);
+                    startActivity(intent);
+
 
             }
         });
@@ -102,7 +104,18 @@ public class LoginActivity extends AppCompatActivity {
         btn_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getUser();
+
+                if(editText_username.getText().toString().isEmpty()) {
+                    Toast.makeText(LoginActivity.this," UserName is required",Toast.LENGTH_LONG).show();;
+
+                }
+                else if (editText_password.getText().toString().isEmpty()){
+                    Toast.makeText(LoginActivity.this," Password is required",Toast.LENGTH_LONG).show();;
+
+                }
+                else {
+                    getUser();
+                }
             }
         });
     }

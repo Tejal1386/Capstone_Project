@@ -136,12 +136,6 @@ public class FilterActivity extends AppCompatActivity {
         ChildDataItems.add(child_dataItem);
 
         //
-        child_dataItem = new Filter_Child();
-        child_dataItem.setChildName("Blue");
-        ChildDataItems.add(child_dataItem);
-
-
-        //
         parent_dataItem.setChildDataItems(ChildDataItems);
         DataItems.add(parent_dataItem);
 

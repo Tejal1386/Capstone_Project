@@ -1,10 +1,14 @@
 package com.example.capstone.furniturestore;
 
 import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SearchRecentSuggestionsProvider;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.LayerDrawable;
 import android.provider.SearchRecentSuggestions;
 import android.speech.RecognizerIntent;
 import android.support.annotation.NonNull;
@@ -31,6 +35,7 @@ import com.example.capstone.furniturestore.Adapter.FavouriteAdapter;
 import com.example.capstone.furniturestore.Adapter.ProductFilterAdapter;
 import com.example.capstone.furniturestore.Adapter.SearchListAdapter;
 import com.example.capstone.furniturestore.Database.Database;
+import com.example.capstone.furniturestore.Helper.BadgeDrawable;
 import com.example.capstone.furniturestore.Models.Category;
 import com.example.capstone.furniturestore.Models.Favourite;
 import com.example.capstone.furniturestore.Models.Product;
@@ -65,13 +70,23 @@ public class ProductListActivity extends AppCompatActivity {
     Toolbar toolbar;
     public RecyclerView product_RecyclerView;
     LinearLayoutManager layoutManager;
-    private CounterFab fb_ShoppingBasket;
+   // private CounterFab fb_ShoppingBasket;
     private TextView txtCategoryName;
     private Button btnFilter;
     private String CategoryName = null,CategoryID = null;
     HashMap<String, String> filterItem = new HashMap<>();
     ArrayList<Product> productList = new ArrayList<Product>();
     FavouriteAdapter filter_adapter;
+
+    SharedPreferences sharedPreferences, sharedPref;
+    public static final String MyPREFERENCES = "User" ;
+    public static final String CartPREFERENCES = "Cart" ;
+    public static final String count = "count";
+    public static final String Name = "UserNameKey";
+    public static final String Userid = "UseridKey";
+    private String  ProductID = "", UserID="";
+    private  int cartCount= 0;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,6 +95,13 @@ public class ProductListActivity extends AppCompatActivity {
 
         productDatabase =  FirebaseDatabase.getInstance().getReference("Products");
         categoryDatabase = FirebaseDatabase.getInstance().getReference("Category");
+
+        //Shared preference
+        sharedPreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        UserID = (sharedPreferences.getString(Userid, ""));
+        sharedPref = getSharedPreferences(CartPREFERENCES, Context.MODE_PRIVATE);
+        cartCount =  (sharedPref.getInt(count, 0));
+
 
         //toolBar settings
         toolbar = (Toolbar) findViewById(R.id.searchtoolbar);
@@ -101,9 +123,40 @@ public class ProductListActivity extends AppCompatActivity {
         });
 
 
+        // Get Intent here
+        if(getIntent() != null){
+            Intent i = getIntent();
 
+            if(getIntent().hasExtra("CategoryName") && getIntent().hasExtra("CategoryID")) {
+                CategoryName   = i.getExtras().getString("CategoryName");
+                CategoryID = i.getExtras().getString("CategoryID");
+                txtCategoryName = (TextView) findViewById(R.id.txt_categoryName);
+                txtCategoryName.setText(CategoryName);
 
-        fb_ShoppingBasket = (CounterFab) findViewById(R.id.fb_ShoppingBasket);
+                //Recycler View
+                product_RecyclerView = (RecyclerView) findViewById(R.id.recycle_product);
+                product_RecyclerView.setHasFixedSize(true);
+                product_RecyclerView.setNestedScrollingEnabled(false);
+                layoutManager = new LinearLayoutManager(getBaseContext());
+                layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+                product_RecyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+                load_Products();
+            }
+
+            if(getIntent().hasExtra("selectedItem") && getIntent().hasExtra("CategoryID")){
+                filterItem = (HashMap<String, String>) i.getSerializableExtra("selectedItem");
+                CategoryID = i.getExtras().getString("CategoryID");
+                CategoryName   = i.getExtras().getString("CategoryName");
+                txtCategoryName = (TextView) findViewById(R.id.txt_categoryName);
+                txtCategoryName.setText(CategoryName);
+
+                load_Products_ByFilter();
+
+            }
+
+        }
+
+       /* fb_ShoppingBasket = (CounterFab) findViewById(R.id.fb_ShoppingBasket);
 
         fb_ShoppingBasket.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -114,7 +167,7 @@ public class ProductListActivity extends AppCompatActivity {
             }
         });
         fb_ShoppingBasket.setCount(new Database(this).getCountCart());
-
+*/
 
         //Bottom navigation
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
@@ -169,35 +222,7 @@ public class ProductListActivity extends AppCompatActivity {
         load_SearchItems();
 
 
-        // Get Intent here
-        if(getIntent() != null){
-            Intent i = getIntent();
 
-            if(getIntent().hasExtra("CategoryName") && getIntent().hasExtra("CategoryID")) {
-                CategoryName   = i.getExtras().getString("CategoryName");
-                CategoryID = i.getExtras().getString("CategoryID");
-                txtCategoryName = (TextView) findViewById(R.id.txt_categoryName);
-                txtCategoryName.setText(CategoryName);
-
-
-                //Recycler View
-                product_RecyclerView = (RecyclerView) findViewById(R.id.recycle_product);
-                product_RecyclerView.setHasFixedSize(true);
-                product_RecyclerView.setNestedScrollingEnabled(false);
-                layoutManager = new LinearLayoutManager(getBaseContext());
-                layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-                product_RecyclerView.setLayoutManager(new GridLayoutManager(this, 2));
-                load_Products();
-            }
-
-            if(getIntent().hasExtra("selectedItem") && getIntent().hasExtra("CategoryID")){
-                filterItem = (HashMap<String, String>) i.getSerializableExtra("selectedItem");
-                CategoryID = i.getExtras().getString("CategoryID");
-                load_Products_ByFilter();
-
-            }
-
-        }
 
         btnFilter = (Button) findViewById(R.id.btn_Filter);
         btnFilter.setOnClickListener(new View.OnClickListener() {
@@ -205,6 +230,7 @@ public class ProductListActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(ProductListActivity.this, FilterActivity.class);
                 intent.putExtra("CategoryID", CategoryID);
+                intent.putExtra("CategoryName", CategoryName);
                 startActivity(intent);
             }
         });
@@ -442,10 +468,16 @@ public class ProductListActivity extends AppCompatActivity {
         }
     }
 
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.search_item_menu, menu);
         MenuItem item = menu.findItem(R.id.action_search);
         materialSearchView.setMenuItem(item);
+        item = menu.findItem(R.id.action_cart);
+        LayerDrawable icon = (LayerDrawable) item.getIcon();
+        if(!UserID.isEmpty() && !UserID.equals(null)) {
+            setBadgeCount(this, icon, String.valueOf(cartCount));
+        }
         return true;
     }
 
@@ -455,10 +487,30 @@ public class ProductListActivity extends AppCompatActivity {
         switch (item.getItemId()){
             case R.id.action_search:
                 return true;
+            case R.id.action_cart:
+                Intent intent = new Intent(ProductListActivity.this, Cart.class);
+                startActivity(intent);
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
 
+    }
+    public static void setBadgeCount(Context context, LayerDrawable icon, String count) {
+
+        BadgeDrawable badge;
+
+        // Reuse drawable if possible
+        Drawable reuse = icon.findDrawableByLayerId(R.id.ic_badge);
+        if (reuse != null && reuse instanceof BadgeDrawable) {
+            badge = (BadgeDrawable) reuse;
+        } else {
+            badge = new BadgeDrawable(context);
+        }
+
+        badge.setCount(count);
+        icon.mutate();
+        icon.setDrawableByLayerId(R.id.ic_badge, badge);
     }
 
 

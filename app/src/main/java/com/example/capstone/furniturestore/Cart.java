@@ -1,8 +1,10 @@
 package com.example.capstone.furniturestore;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
@@ -62,6 +64,16 @@ public class Cart extends AppCompatActivity implements RecyclerItemTouchHelperLi
     Number nbr;
     TextView province;
 
+    //shared preference
+    SharedPreferences sharedPreferences, sharedPref;
+    public static final String MyPREFERENCES = "User" ;
+    public static final String CartPREFERENCES = "Cart" ;
+    public static final String count = "count";
+    public static final String Name = "UserNameKey";
+    public static final String Userid = "UseridKey";
+    private String  ProductID = "", UserID="";
+    private  int cartCount= 0;
+
     Toolbar toolbar;
     List<Product> cart = new ArrayList<>();
     CartAdapter adapter;
@@ -82,6 +94,12 @@ public class Cart extends AppCompatActivity implements RecyclerItemTouchHelperLi
         Intent intent = new Intent(this, PayPalService.class);
         intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION, config);
         startService(intent);
+
+        //Shared preference
+        sharedPreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        UserID = (sharedPreferences.getString(Userid, ""));
+        sharedPref = getSharedPreferences(CartPREFERENCES, Context.MODE_PRIVATE);
+        cartCount =  (sharedPref.getInt(count, 0));
 
 
         database = FirebaseDatabase.getInstance();
@@ -302,31 +320,34 @@ public class Cart extends AppCompatActivity implements RecyclerItemTouchHelperLi
         if(viewHolder instanceof CartViewHolder)
         {
             String name = ((CartAdapter)recyclerView.getAdapter()).getItem(viewHolder.getAdapterPosition()).getProductName();
-final Product  deleteItem = ((CartAdapter)recyclerView.getAdapter()).getItem(viewHolder.getAdapterPosition());
+            final Product  deleteItem = ((CartAdapter)recyclerView.getAdapter()).getItem(viewHolder.getAdapterPosition());
 
-           final int deleteIndex = viewHolder.getAdapterPosition();
+            final int deleteIndex = viewHolder.getAdapterPosition();
 
-             adapter.removeItem(deleteIndex);
-             new Database(getBaseContext()).removeFromCart(deleteItem.getProductID());
+            adapter.removeItem(deleteIndex);
+            new Database(getBaseContext()).removeFromCart(deleteItem.getProductID());
 
+
+            cartCount = cartCount - 1;
+
+            SharedPreferences.Editor editor = sharedPref.edit();
+            editor.putInt(count , cartCount);
+            editor.apply();
 
             float total = 0;
             //make snackbar
             Snackbar snackbar = Snackbar.make(rootLayout,name + "removed from cart !" ,Snackbar.LENGTH_LONG);
             snackbar.setAction("UNDO", new View.OnClickListener() {
-    @Override
-    public void onClick(View v) {
-        new Database(getBaseContext()).addToCart(deleteItem);
+            @Override
+            public void onClick(View v) {
+            new Database(getBaseContext()).addToCart(deleteItem);
 
 
-        Log.e("price22", String.valueOf(deleteItem.getProductPricenew()));
-        deleteItem.setProductPrice(Double.parseDouble(deleteItem.getProductPricenew()));
-        Log.e("price", String.valueOf(deleteItem.getProductPrice()));
-              adapter.restoreItem(deleteItem,deleteIndex);
-
-
-
-    }
+            Log.e("price22", String.valueOf(deleteItem.getProductPricenew()));
+            deleteItem.setProductPrice(Double.parseDouble(deleteItem.getProductPricenew()));
+            Log.e("price", String.valueOf(deleteItem.getProductPrice()));
+            adapter.restoreItem(deleteItem,deleteIndex);
+            }
 });
 snackbar.setActionTextColor(Color.YELLOW);
 snackbar.show();

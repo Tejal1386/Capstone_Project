@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.content.SearchRecentSuggestionsProvider;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.LayerDrawable;
 import android.net.Uri;
 import android.provider.SearchRecentSuggestions;
 import android.speech.RecognizerIntent;
@@ -28,6 +30,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.capstone.furniturestore.Adapter.SearchListAdapter;
+import com.example.capstone.furniturestore.Helper.BadgeDrawable;
 import com.example.capstone.furniturestore.Models.Category;
 import com.example.capstone.furniturestore.ViewHolder.BottomNavigationViewHolder;
 import com.google.firebase.database.DataSnapshot;
@@ -48,13 +51,16 @@ public class UserAccountActivity extends AppCompatActivity {
     RelativeLayout relativeLayout_myorders,relativeLayout_mypurchases,relativeLayout_editaccount,relativeLayout_savedaddress,relativeLayout_terms;
     LinearLayout linearLayout_Call,linearLayout_Email;
 
-    SharedPreferences sharedPreferences;
+    SharedPreferences sharedPreferences, sharedPref;
     public static final String MyPREFERENCES = "User" ;
+    public static final String CartPREFERENCES = "Cart" ;
+    public static final String count = "count";
     public static final String Name = "UserNameKey";
     public static final String Userid = "UseridKey";
+    private String  ProductID = "", UserID="";
+    private  int cartCount= 0;
 
-
-    String UserID,UserName;
+    String UserName;
     String PhoneNumber = "0987654321";
 
     private DatabaseReference categoryDatabase;
@@ -79,6 +85,11 @@ public class UserAccountActivity extends AppCompatActivity {
         categoryDatabase = FirebaseDatabase.getInstance().getReference("Category");
 
 
+        //Shared preference
+        sharedPreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        UserID = (sharedPreferences.getString(Userid, ""));
+        sharedPref = getSharedPreferences(CartPREFERENCES, Context.MODE_PRIVATE);
+        cartCount =  (sharedPref.getInt(count, 0));
 
 
 
@@ -415,18 +426,28 @@ public class UserAccountActivity extends AppCompatActivity {
     }
 
 
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.search_item_menu, menu);
         MenuItem item = menu.findItem(R.id.action_search);
         materialSearchView.setMenuItem(item);
+        item = menu.findItem(R.id.action_cart);
+        LayerDrawable icon = (LayerDrawable) item.getIcon();
+        if (!UserID.isEmpty() && !UserID.equals(null)) {
+            setBadgeCount(this, icon, String.valueOf(cartCount));
+        }
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.action_search:
+                return true;
+            case R.id.action_cart:
+                Intent intent = new Intent(UserAccountActivity.this, Cart.class);
+                startActivity(intent);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -434,5 +455,20 @@ public class UserAccountActivity extends AppCompatActivity {
 
     }
 
+    public static void setBadgeCount(Context context, LayerDrawable icon, String count) {
+
+        BadgeDrawable badge;
+        // Reuse drawable if possible
+        Drawable reuse = icon.findDrawableByLayerId(R.id.ic_badge);
+        if (reuse != null && reuse instanceof BadgeDrawable) {
+            badge = (BadgeDrawable) reuse;
+        } else {
+            badge = new BadgeDrawable(context);
+        }
+
+        badge.setCount(count);
+        icon.mutate();
+        icon.setDrawableByLayerId(R.id.ic_badge, badge);
+    }
 
 }

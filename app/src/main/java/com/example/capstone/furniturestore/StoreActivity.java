@@ -1,9 +1,13 @@
 package com.example.capstone.furniturestore;
 
 import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SearchRecentSuggestionsProvider;
+import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.LayerDrawable;
 import android.provider.SearchRecentSuggestions;
 import android.speech.RecognizerIntent;
 import android.support.annotation.NonNull;
@@ -29,6 +33,7 @@ import com.andremion.counterfab.CounterFab;
 import com.example.capstone.furniturestore.Adapter.SearchListAdapter;
 import com.example.capstone.furniturestore.Adapter.ViewPagerAdapter;
 import com.example.capstone.furniturestore.Database.Database;
+import com.example.capstone.furniturestore.Helper.BadgeDrawable;
 import com.example.capstone.furniturestore.Models.Category;
 import com.example.capstone.furniturestore.Models.Department;
 import com.example.capstone.furniturestore.Models.Product;
@@ -68,9 +73,17 @@ public class StoreActivity extends AppCompatActivity {
     private TextView textView;
     public RecyclerView department_RecyclerView, ProductInSale_RecyclerView;
     LinearLayoutManager layoutManager;
-    private CounterFab fb_ShoppingBasket;
+  //  private CounterFab fb_ShoppingBasket;
     Intent intent;
 
+    SharedPreferences sharedPreferences, sharedPref;
+    public static final String MyPREFERENCES = "User" ;
+    public static final String CartPREFERENCES = "Cart" ;
+    public static final String count = "count";
+    public static final String Name = "UserNameKey";
+    public static final String Userid = "UseridKey";
+    private String  ProductID = "", UserID="";
+    private  int cartCount= 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +94,13 @@ public class StoreActivity extends AppCompatActivity {
         deptDatabase = FirebaseDatabase.getInstance().getReference("Department");
         saleDatabase = FirebaseDatabase.getInstance().getReference("Products");
         categoryDatabase = FirebaseDatabase.getInstance().getReference("Category");
+
+        //Shared preference
+        sharedPreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        UserID = (sharedPreferences.getString(Userid, ""));
+        sharedPref = getSharedPreferences(CartPREFERENCES, Context.MODE_PRIVATE);
+        cartCount =  (sharedPref.getInt(count, 0));
+
 
         // prodDatabase = FirebaseDatabase.getInstance().getReference("Products");
 
@@ -109,7 +129,7 @@ public class StoreActivity extends AppCompatActivity {
         });
 
 
-        //floating button
+       /* //floating button
         fb_ShoppingBasket = (CounterFab) findViewById(R.id.fb_ShoppingBasket);
 
         fb_ShoppingBasket.setOnClickListener(new View.OnClickListener() {
@@ -122,7 +142,7 @@ public class StoreActivity extends AppCompatActivity {
         });
         fb_ShoppingBasket.setCount(new Database(this).getCountCart());
 
-
+*/
         //Tagline taxBox
         textView = (TextView) findViewById(R.id.textviewmarquee);
         textView.setEllipsize(TextUtils.TruncateAt.MARQUEE);
@@ -405,6 +425,11 @@ public class StoreActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.search_item_menu, menu);
           MenuItem item = menu.findItem(R.id.action_search);
           materialSearchView.setMenuItem(item);
+          item = menu.findItem(R.id.action_cart);
+          LayerDrawable icon = (LayerDrawable) item.getIcon();
+          if(!UserID.isEmpty() && !UserID.equals(null)) {
+              setBadgeCount(this, icon, String.valueOf(cartCount));
+          }
         return true;
     }
 
@@ -413,13 +438,33 @@ public class StoreActivity extends AppCompatActivity {
 
         switch (item.getItemId()){
             case R.id.action_search:
-
-
+                return true;
+            case R.id.action_cart:
+                Intent intent = new Intent(StoreActivity.this, Cart.class);
+                startActivity(intent);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
 
+    }
+
+
+    public static void setBadgeCount(Context context, LayerDrawable icon, String count) {
+
+        BadgeDrawable badge;
+
+        // Reuse drawable if possible
+        Drawable reuse = icon.findDrawableByLayerId(R.id.ic_badge);
+        if (reuse != null && reuse instanceof BadgeDrawable) {
+            badge = (BadgeDrawable) reuse;
+        } else {
+            badge = new BadgeDrawable(context);
+        }
+
+        badge.setCount(count);
+        icon.mutate();
+        icon.setDrawableByLayerId(R.id.ic_badge, badge);
     }
 
     private void setupAutoPager()
@@ -446,5 +491,6 @@ public class StoreActivity extends AppCompatActivity {
             }
         }, 500, 3000);
     }
+
 
 }

@@ -40,7 +40,7 @@ public class FilterActivity extends AppCompatActivity {
     HashMap<String, String> filterItem = new HashMap<>();
 
     Button btn_apply, btn_clear;
-    String CategoryID="";
+    String CategoryID="",CategoryName="";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,6 +58,7 @@ public class FilterActivity extends AppCompatActivity {
 
             if (getIntent().hasExtra("CategoryID")) {
                 CategoryID = i.getExtras().getString("CategoryID");
+                CategoryName   = i.getExtras().getString("CategoryName");
 
             }
         }
@@ -72,6 +73,7 @@ public class FilterActivity extends AppCompatActivity {
 
                 intent.putExtra("selectedItem", filterItem);
                 intent.putExtra("CategoryID", CategoryID );
+                intent.putExtra("CategoryName", CategoryName);
 
                 startActivity(intent);
             }

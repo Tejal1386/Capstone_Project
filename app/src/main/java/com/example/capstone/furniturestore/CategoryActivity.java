@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SearchRecentSuggestionsProvider;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.LayerDrawable;
 import android.provider.SearchRecentSuggestions;
 import android.speech.RecognizerIntent;
 import android.support.annotation.NonNull;
@@ -38,6 +40,7 @@ import android.widget.TextView;
 import com.andremion.counterfab.CounterFab;
 import com.example.capstone.furniturestore.Adapter.SearchListAdapter;
 import com.example.capstone.furniturestore.Database.Database;
+import com.example.capstone.furniturestore.Helper.BadgeDrawable;
 import com.example.capstone.furniturestore.Models.Category;
 import com.example.capstone.furniturestore.ViewHolder.BottomNavigationViewHolder;
 import com.example.capstone.furniturestore.ViewHolder.BottomNavigationViewHolder;
@@ -68,9 +71,18 @@ public class CategoryActivity extends AppCompatActivity {
     Toolbar toolbar;
     public RecyclerView category_RecyclerView;
     LinearLayoutManager layoutManager;
-    private CounterFab fb_ShoppingBasket;
+    // private CounterFab fb_ShoppingBasket;
     private TextView txt_deptName;
     private String department_ID, department_Name;
+
+    SharedPreferences sharedPreferences, sharedPref;
+    public static final String MyPREFERENCES = "User" ;
+    public static final String CartPREFERENCES = "Cart" ;
+    public static final String count = "count";
+    public static final String Name = "UserNameKey";
+    public static final String Userid = "UseridKey";
+    private String  ProductID = "", UserID="";
+    private  int cartCount= 0;
 
 
     @Override
@@ -79,7 +91,14 @@ public class CategoryActivity extends AppCompatActivity {
         setContentView(R.layout.activity_category);
 
         //FireBase
-        categoryDatabase =  FirebaseDatabase.getInstance().getReference("Category");
+        categoryDatabase = FirebaseDatabase.getInstance().getReference("Category");
+
+        //Shared preference
+        sharedPreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        UserID = (sharedPreferences.getString(Userid, ""));
+        sharedPref = getSharedPreferences(CartPREFERENCES, Context.MODE_PRIVATE);
+        cartCount =  (sharedPref.getInt(count, 0));
+
 
         //toolBar settings
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -88,7 +107,7 @@ public class CategoryActivity extends AppCompatActivity {
         getSupportActionBar().setTitle(" Category");
 
         // add back arrow to toolbar
-        if (getSupportActionBar() != null){
+        if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
@@ -101,7 +120,7 @@ public class CategoryActivity extends AppCompatActivity {
         });
 
 
-        //Floating Button
+      /*  //Floating Button
         fb_ShoppingBasket = (CounterFab) findViewById(R.id.fb_ShoppingBasket);
 
         fb_ShoppingBasket.setOnClickListener(new View.OnClickListener() {
@@ -114,7 +133,7 @@ public class CategoryActivity extends AppCompatActivity {
         });
         fb_ShoppingBasket.setCount(new Database(this).getCountCart());
 
-
+*/
         //Bottom navigation
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
         CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) bottomNavigationView.getLayoutParams();
@@ -125,7 +144,7 @@ public class CategoryActivity extends AppCompatActivity {
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()){
+                switch (item.getItemId()) {
                     case R.id.action_home:
                         Intent intent = new Intent(CategoryActivity.this, StoreActivity.class);
                         startActivity(intent);
@@ -133,13 +152,13 @@ public class CategoryActivity extends AppCompatActivity {
                     case R.id.action_myFavoutite:
                         intent = new Intent(CategoryActivity.this, FavouriteActivity.class);
                         startActivity(intent);
-                         break;
+                        break;
                     case R.id.action_myAccount:
-                        intent = new Intent(CategoryActivity.this,UserAccountActivity.class);
+                        intent = new Intent(CategoryActivity.this, UserAccountActivity.class);
                         startActivity(intent);
                         break;
                     case R.id.action_sale:
-                        intent = new Intent(CategoryActivity.this,ProductInSaleActivity.class);
+                        intent = new Intent(CategoryActivity.this, ProductInSaleActivity.class);
                         startActivity(intent);
                         break;
                 }
@@ -158,15 +177,15 @@ public class CategoryActivity extends AppCompatActivity {
 
 
         // Get Intent here
-        if(getIntent() != null){
+        if (getIntent() != null) {
             Intent i = getIntent();
-            department_ID   = i.getExtras().getString("DeptID");
-            department_Name   = i.getExtras().getString("DeptName");
+            department_ID = i.getExtras().getString("DeptID");
+            department_Name = i.getExtras().getString("DeptName");
             txt_deptName = (TextView) findViewById(R.id.txt_departmentName);
             txt_deptName.setText(department_Name);
 
         }
-        if(!department_ID.isEmpty() && department_ID != null){
+        if (!department_ID.isEmpty() && department_ID != null) {
             load_Category();
         }
 
@@ -175,11 +194,12 @@ public class CategoryActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
-                for(DataSnapshot categorySnapshot : dataSnapshot.getChildren()) {
+                for (DataSnapshot categorySnapshot : dataSnapshot.getChildren()) {
                     Category category = categorySnapshot.getValue(Category.class);
                     suggestList.add(category);
                 }
             }
+
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
@@ -190,9 +210,9 @@ public class CategoryActivity extends AppCompatActivity {
 
     }
 
-    public  void load_Category(){
+    public void load_Category() {
 
-        FirebaseRecyclerAdapter<Category,CategoryViewHolder> adapter = new FirebaseRecyclerAdapter<Category, CategoryViewHolder>(Category.class, R.layout.category_layout,CategoryViewHolder.class,categoryDatabase.orderByChild("CategoryDepartmentID").equalTo(department_ID)) {
+        FirebaseRecyclerAdapter<Category, CategoryViewHolder> adapter = new FirebaseRecyclerAdapter<Category, CategoryViewHolder>(Category.class, R.layout.category_layout, CategoryViewHolder.class, categoryDatabase.orderByChild("CategoryDepartmentID").equalTo(department_ID)) {
             @Override
             protected void populateViewHolder(CategoryViewHolder viewHolder, final Category model, int position) {
                 viewHolder.Category_Name.setText(model.getCategoryName());
@@ -221,7 +241,7 @@ public class CategoryActivity extends AppCompatActivity {
         }
     }
 
-    public void load_SearchItems(){
+    public void load_SearchItems() {
 
         materialSearchView = (MaterialSearchView) findViewById(R.id.search_view);
         materialSearchView.setEllipsize(true);
@@ -232,7 +252,7 @@ public class CategoryActivity extends AppCompatActivity {
 
         //   materialSearchView.setSuggestions(getResources().getStringArray(R.array.query_suggestions));
 
-        Intent intent  = getIntent();
+        Intent intent = getIntent();
 
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             String query = intent.getStringExtra(SearchManager.QUERY);
@@ -251,7 +271,7 @@ public class CategoryActivity extends AppCompatActivity {
                 searchList.setVisibility(View.VISIBLE);
                 materialSearchView.setVisibility(View.VISIBLE);
                 // remove back arrow to toolbar
-                if (getSupportActionBar() != null){
+                if (getSupportActionBar() != null) {
                     getSupportActionBar().setDisplayHomeAsUpEnabled(false);
                     getSupportActionBar().setDisplayShowHomeEnabled(false);
                 }
@@ -262,7 +282,7 @@ public class CategoryActivity extends AppCompatActivity {
                 searchList.setVisibility(View.GONE);
                 materialSearchView.setVisibility(View.GONE);
                 // add back arrow to toolbar
-                if (getSupportActionBar() != null){
+                if (getSupportActionBar() != null) {
                     getSupportActionBar().setDisplayHomeAsUpEnabled(true);
                     getSupportActionBar().setDisplayShowHomeEnabled(true);
                 }
@@ -278,11 +298,11 @@ public class CategoryActivity extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                if(newText != null && !newText.isEmpty()){
+                if (newText != null && !newText.isEmpty()) {
                     ArrayList<Category> lstfound = new ArrayList<Category>();
-                    for(Category item:suggestList){
+                    for (Category item : suggestList) {
                         // item.getCategoryName().cont
-                        if(item.getCategoryName().contains(newText))
+                        if (item.getCategoryName().contains(newText))
                             lstfound.add(item);
                     }
                     searchListAdapter = new SearchListAdapter(CategoryActivity.this, lstfound);
@@ -299,7 +319,7 @@ public class CategoryActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                 Intent intent = new Intent(CategoryActivity.this, ProductListActivity.class);
-                intent.putExtra("CategoryID",searchListAdapter.getItem(position).getCategoryID() );
+                intent.putExtra("CategoryID", searchListAdapter.getItem(position).getCategoryID());
                 intent.putExtra("CategoryName", searchListAdapter.getItem(position).getCategoryName());
                 startActivity(intent);
             }
@@ -336,18 +356,28 @@ public class CategoryActivity extends AppCompatActivity {
     }
 
 
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.search_item_menu, menu);
         MenuItem item = menu.findItem(R.id.action_search);
         materialSearchView.setMenuItem(item);
+        item = menu.findItem(R.id.action_cart);
+        LayerDrawable icon = (LayerDrawable) item.getIcon();
+        if (!UserID.isEmpty() && !UserID.equals(null)) {
+            setBadgeCount(this, icon, String.valueOf(cartCount));
+        }
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.action_search:
+                return true;
+            case R.id.action_cart:
+                Intent intent = new Intent(CategoryActivity.this, Cart.class);
+                startActivity(intent);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -355,6 +385,21 @@ public class CategoryActivity extends AppCompatActivity {
 
     }
 
+    public static void setBadgeCount(Context context, LayerDrawable icon, String count) {
 
+        BadgeDrawable badge;
 
+        // Reuse drawable if possible
+        Drawable reuse = icon.findDrawableByLayerId(R.id.ic_badge);
+        if (reuse != null && reuse instanceof BadgeDrawable) {
+            badge = (BadgeDrawable) reuse;
+        } else {
+            badge = new BadgeDrawable(context);
         }
+
+        badge.setCount(count);
+        icon.mutate();
+        icon.setDrawableByLayerId(R.id.ic_badge, badge);
+    }
+
+}

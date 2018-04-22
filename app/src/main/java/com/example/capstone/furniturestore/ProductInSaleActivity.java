@@ -1,9 +1,13 @@
 package com.example.capstone.furniturestore;
 
 import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SearchRecentSuggestionsProvider;
+import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.LayerDrawable;
 import android.provider.SearchRecentSuggestions;
 import android.speech.RecognizerIntent;
 import android.support.annotation.NonNull;
@@ -25,6 +29,7 @@ import android.widget.ListView;
 import com.andremion.counterfab.CounterFab;
 import com.example.capstone.furniturestore.Adapter.SearchListAdapter;
 import com.example.capstone.furniturestore.Database.Database;
+import com.example.capstone.furniturestore.Helper.BadgeDrawable;
 import com.example.capstone.furniturestore.Models.Category;
 import com.example.capstone.furniturestore.Models.Product;
 import com.example.capstone.furniturestore.ViewHolder.BottomNavigationViewHolder;
@@ -55,7 +60,14 @@ public class ProductInSaleActivity extends AppCompatActivity {
     private LinearLayout searchList;
     private ArrayList<Category> suggestList = new ArrayList<>();
 
-    CounterFab fb_ShoppingBasket;
+    SharedPreferences sharedPreferences, sharedPref;
+    public static final String MyPREFERENCES = "User" ;
+    public static final String CartPREFERENCES = "Cart" ;
+    public static final String count = "count";
+    public static final String Name = "UserNameKey";
+    public static final String Userid = "UseridKey";
+    private String  ProductID = "", UserID="";
+    private  int cartCount= 0;
 
 
     @Override
@@ -66,6 +78,12 @@ public class ProductInSaleActivity extends AppCompatActivity {
         //Firebase Connectivity
         saleDatabase = FirebaseDatabase.getInstance().getReference("Products");
         categoryDatabase = FirebaseDatabase.getInstance().getReference("Category");
+
+        //Shared preference
+        sharedPreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        UserID = (sharedPreferences.getString(Userid, ""));
+        sharedPref = getSharedPreferences(CartPREFERENCES, Context.MODE_PRIVATE);
+        cartCount =  (sharedPref.getInt(count, 0));
 
 
         //Toolbar setting
@@ -89,7 +107,7 @@ public class ProductInSaleActivity extends AppCompatActivity {
             }
         });
 
-        fb_ShoppingBasket = (CounterFab) findViewById(R.id.fb_ShoppingBasket);
+       /* fb_ShoppingBasket = (CounterFab) findViewById(R.id.fb_ShoppingBasket);
 
         fb_ShoppingBasket.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -100,7 +118,7 @@ public class ProductInSaleActivity extends AppCompatActivity {
             }
         });
         fb_ShoppingBasket.setCount(new Database(this).getCountCart());
-
+*/
 
         //Bottom navigation
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
@@ -321,17 +339,28 @@ public class ProductInSaleActivity extends AppCompatActivity {
     }
 
 
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.search_item_menu, menu);
         MenuItem item = menu.findItem(R.id.action_search);
         materialSearchView.setMenuItem(item);
+        item = menu.findItem(R.id.action_cart);
+        LayerDrawable icon = (LayerDrawable) item.getIcon();
+        if(!UserID.isEmpty() && !UserID.equals(null)) {
+            setBadgeCount(this, icon, String.valueOf(cartCount));
+        }
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+
         switch (item.getItemId()){
             case R.id.action_search:
+                return true;
+            case R.id.action_cart:
+                Intent intent = new Intent(ProductInSaleActivity.this, Cart.class);
+                startActivity(intent);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -339,7 +368,22 @@ public class ProductInSaleActivity extends AppCompatActivity {
 
     }
 
+    public static void setBadgeCount(Context context, LayerDrawable icon, String count) {
 
+        BadgeDrawable badge;
+
+        // Reuse drawable if possible
+        Drawable reuse = icon.findDrawableByLayerId(R.id.ic_badge);
+        if (reuse != null && reuse instanceof BadgeDrawable) {
+            badge = (BadgeDrawable) reuse;
+        } else {
+            badge = new BadgeDrawable(context);
+        }
+
+        badge.setCount(count);
+        icon.mutate();
+        icon.setDrawableByLayerId(R.id.ic_badge, badge);
+    }
 
 
 }

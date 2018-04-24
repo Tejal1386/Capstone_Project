@@ -38,13 +38,33 @@ public class FilterActivity extends AppCompatActivity {
     private Context mContext;
     ArrayList<String> selecteditem = new ArrayList<>();
     HashMap<String, String> filterItem = new HashMap<>();
-
+    Toolbar toolbar;
     Button btn_apply, btn_clear;
     String CategoryID="",CategoryName="";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_filter);
+
+        //toolBar settings
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        toolbar.setTitleTextColor(Color.WHITE);
+        getSupportActionBar().setTitle(" Filter");
+
+        // add back arrow to toolbar
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed(); // Implemented by activity
+            }
+        });
+
 
         mContext = FilterActivity.this;
         Filter_RecyclerView = findViewById(R.id.recycler_Filter);

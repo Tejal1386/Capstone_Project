@@ -116,7 +116,7 @@ public class StoreActivity extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.searchtoolbar);
         setSupportActionBar(toolbar);
         toolbar.setTitleTextColor(Color.WHITE);
-        getSupportActionBar().setTitle("supreme furniture");
+        getSupportActionBar().setTitle("Home Decore");
         // add back arrow to toolbar
         if (getSupportActionBar() != null){
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -131,20 +131,6 @@ public class StoreActivity extends AppCompatActivity {
         });
 
 
-       /* //floating button
-        fb_ShoppingBasket = (CounterFab) findViewById(R.id.fb_ShoppingBasket);
-
-        fb_ShoppingBasket.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(StoreActivity.this, Cart.class);
-                startActivity(intent);
-
-            }
-        });
-        fb_ShoppingBasket.setCount(new Database(this).getCountCart());
-
-*/
         //Tagline taxBox
         textView = (TextView) findViewById(R.id.textviewmarquee);
         textView.setEllipsize(TextUtils.TruncateAt.MARQUEE);

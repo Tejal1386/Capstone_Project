@@ -7,9 +7,6 @@
     android:orientation="vertical"
     tools:context="com.example.capstone.furniturestore.MainActivity">
 
-
-
-
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="300dp"
@@ -26,18 +23,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
-
-
-
-
         <LinearLayout
+
             android:layout_marginTop="20dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:weightSum="2"
+            android:layout_gravity="bottom"
             android:orientation="horizontal">
-
-
 
         <Button
             android:id="@+id/btnSignUp"
@@ -48,6 +41,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="Register" />
+
         <Button
             android:background="@color/white"
             android:textColor="@color/appTheme"
@@ -62,6 +56,7 @@
     </LinearLayout>
 
     <LinearLayout
+
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center|bottom"
@@ -75,6 +70,7 @@
             android:text="Continue as Guest "
             android:textSize="20dp"
             android:onClick="onCLick"
+            android:textStyle="bold"
             android:linksClickable="true"
             tools:ignore="OnClick" />
 

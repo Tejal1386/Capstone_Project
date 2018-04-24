@@ -30,6 +30,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.capstone.furniturestore.Adapter.SearchListAdapter;
+import com.example.capstone.furniturestore.Alert.LoginAlert;
 import com.example.capstone.furniturestore.Helper.BadgeDrawable;
 import com.example.capstone.furniturestore.Models.Category;
 import com.example.capstone.furniturestore.ViewHolder.BottomNavigationViewHolder;
@@ -67,7 +68,7 @@ public class UserAccountActivity extends AppCompatActivity {
 
 
     Toolbar toolbar;
-
+    LoginAlert loginAlert;
 
     //material searchview
     private SearchListAdapter searchListAdapter;
@@ -446,8 +447,13 @@ public class UserAccountActivity extends AppCompatActivity {
             case R.id.action_search:
                 return true;
             case R.id.action_cart:
-                Intent intent = new Intent(UserAccountActivity.this, Cart.class);
-                startActivity(intent);
+                if(!UserID.isEmpty() && !UserID.equals(null)) {
+                    Intent intent = new Intent(UserAccountActivity.this, Cart.class);
+                    startActivity(intent);
+                }
+                else {
+                    loginAlert = new LoginAlert(UserAccountActivity.this);
+                }
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

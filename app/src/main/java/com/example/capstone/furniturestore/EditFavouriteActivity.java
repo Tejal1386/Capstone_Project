@@ -87,7 +87,6 @@ public class EditFavouriteActivity extends AppCompatActivity {
                 String ts ="";
                 for (String pid: selectedProductID) {
                     favouriteDatabase.child(pid).removeValue();
-
                 }
 
             }

@@ -17,6 +17,7 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
+
         imgSplash = (ImageView) findViewById(R.id.imgSplash) ;
 
         Animation myanim = AnimationUtils.loadAnimation(this, R.anim.mytransition);

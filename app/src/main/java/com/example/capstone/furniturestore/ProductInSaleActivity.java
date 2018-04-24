@@ -28,6 +28,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import com.andremion.counterfab.CounterFab;
 import com.example.capstone.furniturestore.Adapter.SearchListAdapter;
+import com.example.capstone.furniturestore.Alert.LoginAlert;
 import com.example.capstone.furniturestore.Database.Database;
 import com.example.capstone.furniturestore.Helper.BadgeDrawable;
 import com.example.capstone.furniturestore.Models.Category;
@@ -68,7 +69,7 @@ public class ProductInSaleActivity extends AppCompatActivity {
     public static final String Userid = "UseridKey";
     private String  ProductID = "", UserID="";
     private  int cartCount= 0;
-
+    LoginAlert loginAlert;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -359,8 +360,13 @@ public class ProductInSaleActivity extends AppCompatActivity {
             case R.id.action_search:
                 return true;
             case R.id.action_cart:
-                Intent intent = new Intent(ProductInSaleActivity.this, Cart.class);
-                startActivity(intent);
+                if(!UserID.isEmpty() && !UserID.equals(null)) {
+                    Intent intent = new Intent(ProductInSaleActivity.this, Cart.class);
+                    startActivity(intent);
+                }
+                else {
+                    loginAlert = new LoginAlert(ProductInSaleActivity.this);
+                }
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

@@ -32,6 +32,7 @@ import android.widget.TextView;
 import com.andremion.counterfab.CounterFab;
 import com.example.capstone.furniturestore.Adapter.SearchListAdapter;
 import com.example.capstone.furniturestore.Adapter.ViewPagerAdapter;
+import com.example.capstone.furniturestore.Alert.LoginAlert;
 import com.example.capstone.furniturestore.Database.Database;
 import com.example.capstone.furniturestore.Helper.BadgeDrawable;
 import com.example.capstone.furniturestore.Models.Category;
@@ -75,6 +76,7 @@ public class StoreActivity extends AppCompatActivity {
     LinearLayoutManager layoutManager;
   //  private CounterFab fb_ShoppingBasket;
     Intent intent;
+    LoginAlert loginAlert;
 
     SharedPreferences sharedPreferences, sharedPref;
     public static final String MyPREFERENCES = "User" ;
@@ -190,6 +192,9 @@ public class StoreActivity extends AppCompatActivity {
         //load sales
         load_productInSaleItems();
 
+        //load new Arrival
+        load_productNewArrival();
+
 
         //Search view
         categoryDatabase.addValueEventListener(new ValueEventListener() {
@@ -275,6 +280,46 @@ public class StoreActivity extends AppCompatActivity {
                 viewHolder.product_saleLimit.setText(" " + model.getProductSaleLimit() + " % off");
 
                 viewHolder.product_saleEndDate.setText("Ends "+model.getProductSaleEndDate());
+
+                viewHolder.setClickListener(new ProductViewHolder.ItemClickListener() {
+                    @Override
+                    public void onClickItem(View view, int pos, boolean b) {
+                        Intent intent = new Intent(StoreActivity.this, ProductDetailActivity.class);
+                        intent.putExtra("ProductID", model.getProductID());
+                        startActivity(intent);
+                    }
+
+                    @Override
+                    public void onClick(View view, int adapterPosition, boolean b) {
+
+                    }
+                });
+            }
+        };
+
+        ProductInSale_RecyclerView.setAdapter(adapter);
+
+    }
+
+    public void load_productNewArrival(){
+        //Recycler View
+        ProductInSale_RecyclerView = (RecyclerView)findViewById(R.id.recycle_newArrival);
+        ProductInSale_RecyclerView.setHasFixedSize(true);
+        ProductInSale_RecyclerView.setNestedScrollingEnabled(false);
+        ProductInSale_RecyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+
+
+
+        FirebaseRecyclerAdapter<Product, ProductViewHolder> adapter = new FirebaseRecyclerAdapter<Product, ProductViewHolder>(Product.class,R.layout.product_sale_layout,ProductViewHolder.class,saleDatabase.orderByChild("ProductSale").equalTo("New Arrival").limitToFirst(2)) {
+            @Override
+            protected void populateViewHolder(ProductViewHolder viewHolder, final Product model, int position) {
+                Picasso.with(getBaseContext()).load(model.getProductImage()).into(viewHolder.product_Image);
+                viewHolder.product_Name.setText(model.getProductName());
+
+
+                viewHolder.product_saleLimit.setText("New Arrival");
+
+               // viewHolder.product_saleEndDate.setText("Ends "+model.getProductSaleEndDate());
 
                 viewHolder.setClickListener(new ProductViewHolder.ItemClickListener() {
                     @Override
@@ -440,8 +485,13 @@ public class StoreActivity extends AppCompatActivity {
             case R.id.action_search:
                 return true;
             case R.id.action_cart:
-                Intent intent = new Intent(StoreActivity.this, Cart.class);
-                startActivity(intent);
+                if(!UserID.isEmpty() && !UserID.equals(null)) {
+                    Intent intent = new Intent(StoreActivity.this, Cart.class);
+                    startActivity(intent);
+                }
+                else {
+                    loginAlert = new LoginAlert(StoreActivity.this);
+                }
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

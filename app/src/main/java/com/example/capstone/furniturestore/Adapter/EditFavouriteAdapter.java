@@ -55,18 +55,15 @@ public class EditFavouriteAdapter extends RecyclerView.Adapter<EditFavouriteAdap
 
     @Override
     public void onBindViewHolder(EditFavouriteViewHolder holder, int position) {
-        Product model = products.get(position);
-        Favourite fav_model = FavProductID.get(position);
+        Product model = holder.products.get(position);
+        Favourite fav_model =  holder.favourites.get(position);
 
         Picasso.with(ctx).load(model.getProductImage()).into(holder.product_Image);
-
-
         holder.product_Name.setText(model.getProductName());
         holder.product_Manufacturer.setText(model.getProductManufacturer());
         holder.product_Sale_Price.setText("$"+String.valueOf( model.getProductSalePrice()));
         holder.product_Price.setText("$"+String.valueOf(model.getProductPrice()));
         holder.product_Price.setPaintFlags(holder.product_Price.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-
         holder.favourite_title.setText(fav_model.getFavorite_title());
     }
 

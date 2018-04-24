@@ -43,6 +43,7 @@ import android.widget.Toast;
 
 import com.andremion.counterfab.CounterFab;
 import com.example.capstone.furniturestore.Adapter.SearchListAdapter;
+import com.example.capstone.furniturestore.Alert.LoginAlert;
 import com.example.capstone.furniturestore.Database.Database;
 import com.example.capstone.furniturestore.Helper.BadgeDrawable;
 import com.example.capstone.furniturestore.Models.Category;
@@ -93,7 +94,7 @@ public class ProductDetailActivity extends AppCompatActivity {
     private String  ProductID = "", UserID="";
     private  int cartCount= 0;
     Intent intent;
-
+    LoginAlert loginAlert;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -222,6 +223,7 @@ public class ProductDetailActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(ProductDetailActivity.this, ProductARActivity.class);
                 intent.putExtra(INTENT_PRODUCT_KEY, "Furniture");
+                intent.putExtra("prodName", txtProductName.getText().toString());
                 startActivity(intent);
             }
         });
@@ -511,8 +513,13 @@ public class ProductDetailActivity extends AppCompatActivity {
             case R.id.action_search:
                 return true;
             case R.id.action_cart:
-                Intent intent = new Intent(ProductDetailActivity.this, Cart.class);
-                startActivity(intent);
+                if(!UserID.isEmpty() && !UserID.equals(null)) {
+                    Intent intent = new Intent(ProductDetailActivity.this, Cart.class);
+                    startActivity(intent);
+                }
+                else {
+                    loginAlert = new LoginAlert(ProductDetailActivity.this);
+                }
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -539,30 +546,7 @@ public class ProductDetailActivity extends AppCompatActivity {
 
     public void ShowAlert(){
         if(UserID.equals(null) || UserID ==  ""){
-            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
-                    ProductDetailActivity.this);
-
-            // set title
-            alertDialogBuilder.setTitle("LogIn First");
-
-            // set dialog message
-            alertDialogBuilder
-                    .setMessage("LogIn First to see your Account!")
-                    .setCancelable(false)
-
-                    .setPositiveButton("LogIn", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int id) {
-                            Intent i = new Intent(ProductDetailActivity.this,LoginActivity.class);
-                            startActivity(i);
-                        }
-                    });
-
-            // create alert dialog
-            AlertDialog alertDialog = alertDialogBuilder.create();
-
-            // show it
-            alertDialog.show();
+            loginAlert = new LoginAlert(ProductDetailActivity.this);
         }
         else {
 

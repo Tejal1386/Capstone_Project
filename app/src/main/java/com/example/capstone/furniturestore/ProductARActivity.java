@@ -1,19 +1,3 @@
-/*
- * Copyright (c) 2017-present, Viro, Inc.
- * All rights reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package com.example.capstone.furniturestore;
 
 import android.Manifest;
@@ -80,14 +64,13 @@ public class ProductARActivity extends Activity {
 
     private static final String TAG = ProductARActivity.class.getSimpleName();
     final public static String INTENT_PRODUCT_KEY = "product_key";
-     public static String key ;
-
 
     private ViroView mViroView;
     private View mHudGroupView;
     private TextView mHUDInstructions;
     private ImageView mCameraButton;
     private View mIconShakeView;
+    private String prodName="";
 
     /*
      The Tracking status is used to coordinate the displaying of our 3D controls and HUD
@@ -113,7 +96,12 @@ public class ProductARActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        RendererConfiguration config = new RendererConfiguration();
+        if (getIntent() != null) {
+            Intent i = getIntent();
+            prodName = i.getExtras().getString("prodName");
+        }
+
+            RendererConfiguration config = new RendererConfiguration();
         config.setShadowsEnabled(true);
         config.setBloomEnabled(true);
         config.setHDREnabled(true);
@@ -133,7 +121,7 @@ public class ProductARActivity extends Activity {
         setContentView(mViroView);
 
         Intent intent = getIntent();
-        key = intent.getStringExtra(INTENT_PRODUCT_KEY);
+        String key = intent.getStringExtra(INTENT_PRODUCT_KEY);
         /*ProductApplicationContext context = (ProductApplicationContext)getApplicationContext();
         mSelectedProduct = context.getProductDB().getProductByName(key);*/
 
@@ -294,8 +282,8 @@ public class ProductARActivity extends Activity {
         });
     }
 
+
     private void init3DModelProduct(ARScene scene){
-        final float[] scaleStart = new float[1];
         // Create our group node containing the light, shadow plane, and 3D models
         mProductModelGroup = new Node();
 
@@ -328,31 +316,24 @@ public class ProductARActivity extends Activity {
         mProductModelGroup.addChildNode(shadowNode);
 
         // Load the model from the given mSelected Product
-
-        final Bitmap bot = getBitmapFromAsset(this, "bed.png");
         final Object3D productModel = new Object3D();
-        productModel.loadModel(Uri.parse("file:///android_asset/bed.obj"), Object3D.Type.OBJ, new AsyncObject3DListener() {
+
+        String URL="";
+        if(prodName.equals("Mcsherry Table Lamp")){
+            URL = "file:///android_asset/object_lamp.vrx";
+        }
+        else {
+            URL = "file:///android_asset/object_table.vrx";
+        }
+        productModel.loadModel(Uri.parse(URL), Object3D.Type.FBX, new AsyncObject3DListener() {
+
+
             @Override
             public void onObject3DLoaded(Object3D object3D, Object3D.Type type) {
                 object3D.setLightReceivingBitMask(1);
-
-                Texture objectTexture = new Texture(bot, Texture.Format.RGBA8, false, false);
-                Material material = new Material();
-                material.setDiffuseTexture(objectTexture);
-
-                // Give the material a more "metallic" appearance, so it reflects the environment map.
-                // By setting its lighting model to PHYSICALLY_BASED, we enable PBR rendering on the
-                // model.
-                material.setRoughness(0.23f);
-                material.setMetalness(0.7f);
-                material.setLightingModel(Material.LightingModel.PHYSICALLY_BASED);
-
-                object3D.getGeometry().setMaterials(Arrays.asList(material));
-
                 mProductModelGroup.setOpacity(0);
-                mProductModelGroup.setScale(new Vector(0.0025, 0.0025, 0.0025));
+                mProductModelGroup.setScale(new Vector(0.9, 0.9, 0.9));
                 mLastProductRotation = object3D.getRotationEulerRealtime();
-
             }
 
             @Override
@@ -392,18 +373,6 @@ public class ProductARActivity extends Activity {
                 mSavedRotateToRotation = rotateTo;
             }
         });
-
-        productModel.setGesturePinchListener(new GesturePinchListener() {
-            @Override
-            public void onPinch(int i, Node node, float scale, PinchState pinchState) {
-                if(pinchState == PinchState.PINCH_START) {
-                    scaleStart[0] = productModel.getScaleRealtime().x;
-                } else {
-                    productModel.setScale(new Vector(scaleStart[0] * scale, scaleStart[0] * scale, scaleStart[0] * scale));
-                }
-            }
-        });
-
 
         mProductModelGroup.setOpacity(0);
         mProductModelGroup.addChildNode(productModel);

@@ -32,6 +32,7 @@ import android.widget.TextView;
 import com.andremion.counterfab.CounterFab;
 import com.example.capstone.furniturestore.Adapter.FavouriteAdapter;
 import com.example.capstone.furniturestore.Adapter.SearchListAdapter;
+import com.example.capstone.furniturestore.Alert.LoginAlert;
 import com.example.capstone.furniturestore.Database.Database;
 import com.example.capstone.furniturestore.Helper.BadgeDrawable;
 import com.example.capstone.furniturestore.Models.Category;
@@ -84,7 +85,7 @@ public class FavouriteActivity extends AppCompatActivity {
 
    // CounterFab fb_ShoppingBasket;
 
-
+    LoginAlert loginAlert;
     Button btnEdit;
     TextView txtcountitem;
     int counter = 0;
@@ -188,13 +189,36 @@ public class FavouriteActivity extends AppCompatActivity {
             }
         });
 
+        LinearLayout loginLayout = (LinearLayout) findViewById(R.id.loginLayout);
+
+        Button btnlogin = (Button) findViewById(R.id.btnlogin);
+        Button btnsignin = (Button) findViewById(R.id.btnSignin);
+
         if(!UserID.isEmpty() && UserID != null)
         {
             //Display Favourite Items
             load_Favourite();
         }
         else {
-            txtcountitem.setText(counter + " Item");
+
+            loginLayout.setVisibility(View.VISIBLE);
+
+
+            btnlogin.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(FavouriteActivity.this,LoginActivity.class);
+                    startActivity(intent);
+                }
+            });
+
+            btnsignin.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(FavouriteActivity.this,SignUpActivity.class);
+                    startActivity(intent);
+                }
+            });
             btnEdit.setVisibility(View.INVISIBLE);
         }
 
@@ -247,15 +271,15 @@ public class FavouriteActivity extends AppCompatActivity {
                                 counter++;
                             }
 
-                            txtcountitem.setText(counter + " Item");
+                                txtcountitem.setText(counter + " Item");
+                                fav_adapter = new FavouriteAdapter(productList, FavouriteActivity.this);
+                                favourite_RecyclerView = (RecyclerView) findViewById(R.id.recycle_Favourite);
+                                favourite_RecyclerView.setHasFixedSize(true);
+                                favourite_RecyclerView.setNestedScrollingEnabled(false);
+                                layoutManager = new LinearLayoutManager(getBaseContext());
+                                favourite_RecyclerView.setLayoutManager(new GridLayoutManager(FavouriteActivity.this, 2));
+                                favourite_RecyclerView.setAdapter(fav_adapter);
 
-                            fav_adapter = new FavouriteAdapter(productList, FavouriteActivity.this);
-                            favourite_RecyclerView = (RecyclerView) findViewById(R.id.recycle_Favourite);
-                            favourite_RecyclerView.setHasFixedSize(true);
-                            favourite_RecyclerView.setNestedScrollingEnabled(false);
-                            layoutManager = new LinearLayoutManager(getBaseContext());
-                            favourite_RecyclerView.setLayoutManager(new GridLayoutManager(FavouriteActivity.this, 2));
-                            favourite_RecyclerView.setAdapter(fav_adapter);
                         }
 
                         @Override
@@ -414,8 +438,13 @@ public class FavouriteActivity extends AppCompatActivity {
             case R.id.action_search:
                 return true;
             case R.id.action_cart:
-                Intent intent = new Intent(FavouriteActivity.this, Cart.class);
-                startActivity(intent);
+                if(!UserID.isEmpty() && !UserID.equals(null)) {
+                    Intent intent = new Intent(FavouriteActivity.this, Cart.class);
+                    startActivity(intent);
+                }
+                else {
+                    loginAlert = new LoginAlert(FavouriteActivity.this);
+                }
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

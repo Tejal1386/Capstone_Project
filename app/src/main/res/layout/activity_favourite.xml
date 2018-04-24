@@ -7,6 +7,8 @@
     android:orientation="vertical"
     tools:context="com.example.capstone.furniturestore.FavouriteActivity">
 
+
+
    <!-- <include layout="@layout/toolbar"></include>-->
 
     <FrameLayout
@@ -51,11 +53,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
+
+
+
         <TextView
             android:textColor="@color/appTheme"
             android:textSize="18dp"
             android:id="@+id/txt_favouriteItem"
-            android:text="Item"
+
 
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
@@ -87,11 +92,52 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
+            <LinearLayout
+                android:layout_gravity="center"
+                android:orientation="vertical"
+                android:id="@+id/loginLayout"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_gravity="center|center_vertical"
+                    android:textColor="@color/appTheme"
+                    android:textSize="16dp"
+                    android:text="Register or Sign in to view your Favourites"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <LinearLayout
+
+                    android:gravity="center"
+                    android:layout_marginTop="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <Button
+                        style="@style/Button_Style"
+                        android:id="@+id/btnSignin"
+                       android:layout_marginRight="10dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Register"/>
+
+                    <Button
+                        style="@style/Button_Style"
+                        android:id="@+id/btnlogin"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Login"/>
+                </LinearLayout>
+
+
+
+            </LinearLayout>
+
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recycle_Favourite"
                 android:layout_width="match_parent"
-
                     android:layout_height="match_parent"
                     android:clickable="true"
                     android:clipToPadding="false"

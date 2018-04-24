@@ -134,13 +134,6 @@ public class ProductListActivity extends AppCompatActivity {
                 txtCategoryName = (TextView) findViewById(R.id.txt_categoryName);
                 txtCategoryName.setText(CategoryName);
 
-                //Recycler View
-                product_RecyclerView = (RecyclerView) findViewById(R.id.recycle_product);
-                product_RecyclerView.setHasFixedSize(true);
-                product_RecyclerView.setNestedScrollingEnabled(false);
-                layoutManager = new LinearLayoutManager(getBaseContext());
-                layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-                product_RecyclerView.setLayoutManager(new GridLayoutManager(this, 2));
                 load_Products();
             }
 
@@ -156,19 +149,6 @@ public class ProductListActivity extends AppCompatActivity {
             }
 
         }
-
-       /* fb_ShoppingBasket = (CounterFab) findViewById(R.id.fb_ShoppingBasket);
-
-        fb_ShoppingBasket.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(ProductListActivity.this, Cart.class);
-                startActivity(intent);
-
-            }
-        });
-        fb_ShoppingBasket.setCount(new Database(this).getCountCart());
-*/
 
         //Bottom navigation
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
@@ -276,12 +256,16 @@ public class ProductListActivity extends AppCompatActivity {
                     public void onClick(View view, int adapterPosition, boolean b) {
 
                     }
-
-
-
                 });
             }
         };
+        //Recycler View
+        product_RecyclerView = (RecyclerView) findViewById(R.id.recycle_product);
+        product_RecyclerView.setHasFixedSize(true);
+        product_RecyclerView.setNestedScrollingEnabled(false);
+        layoutManager = new LinearLayoutManager(getBaseContext());
+        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        product_RecyclerView.setLayoutManager(new GridLayoutManager(this, 2));
         product_RecyclerView.setAdapter(adapter);
 
     }

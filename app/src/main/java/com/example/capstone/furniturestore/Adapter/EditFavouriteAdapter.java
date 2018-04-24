@@ -35,6 +35,7 @@ public class EditFavouriteAdapter extends RecyclerView.Adapter<EditFavouriteAdap
     public EditFavouriteAdapter(ArrayList<Product> products, Context ctx, List<String> selectedProductID, ArrayList<Favourite> favProductID) {
 
         this.products = (ArrayList<Product>) products;
+        notifyDataSetChanged();
         this.ctx = ctx;
         this.SelectedProductID = selectedProductID;
         this.FavProductID = favProductID;

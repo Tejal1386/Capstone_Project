@@ -228,18 +228,7 @@ public class ProductDetailActivity extends AppCompatActivity {
             }
         });
 
-     /*   fb_ShoppingBasket = (CounterFab) findViewById(R.id.fb_ShoppingBasket);
 
-        fb_ShoppingBasket.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(ProductDetailActivity.this, Cart.class);
-                startActivity(intent);
-
-            }
-        });
-        fb_ShoppingBasket.setCount(new Database(this).getCountCart());
-*/
         //Bottom navigation
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
         CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) bottomNavigationView.getLayoutParams();

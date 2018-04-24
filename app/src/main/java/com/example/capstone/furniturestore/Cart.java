@@ -278,6 +278,17 @@ public class Cart extends AppCompatActivity implements RecyclerItemTouchHelperLi
                                 .setValue(request);
                         //delete cart
                         new Database(getBaseContext()).cleanCart();
+                        if(cartCount > 0) {
+                            cartCount = cartCount - 1;
+                        }
+                        else {
+                            cartCount = 0;
+                        }
+
+                        SharedPreferences.Editor editor = sharedPref.edit();
+                        editor.putInt(count , cartCount);
+                        editor.apply();
+
                         Toast.makeText(Cart.this,"Thank you , order placed", Toast.LENGTH_SHORT).show();
 
                         finish();
@@ -328,7 +339,12 @@ public class Cart extends AppCompatActivity implements RecyclerItemTouchHelperLi
             new Database(getBaseContext()).removeFromCart(deleteItem.getProductID());
 
 
-            cartCount = cartCount - 1;
+            if(cartCount > 0) {
+                cartCount = cartCount - 1;
+            }
+            else {
+                cartCount = 0;
+            }
 
             SharedPreferences.Editor editor = sharedPref.edit();
             editor.putInt(count , cartCount);

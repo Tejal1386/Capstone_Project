@@ -30,7 +30,7 @@ public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.Favo
 
 
     public FavouriteAdapter(ArrayList<Product> products, Context ctx) {
-
+        notifyDataSetChanged();
         this.products = (ArrayList<Product>) products;
         this.ctx = ctx;
 

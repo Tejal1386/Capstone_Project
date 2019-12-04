@@ -1,4 +1,4 @@
-# Capstone_Project - Home Decore Furniture Store
+# Capstone_Project - Home Decor Furniture Store
 
 This is an android application buit for a Furniture store 
 
